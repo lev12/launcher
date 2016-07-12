@@ -1,0 +1,7 @@
+server = ser
+client = cln
+
+cln     connect 'version cln'
+ser     connect 'version ser'
+cln     get list version
+ser     return list version
