@@ -1,10 +1,11 @@
 #include "versions.h"
-#include <QTextStream>
-#include <QProcess>
 
-versions::versions(QComboBox *cb, QTcpSocket& g_client)
+
+versions::versions(QComboBox *cb)
 {
-    QTcpSocket *client = g_client;
+    client = new QTcpSocket();
+    client->connectToHost("192.168.1.15",1234);
+    getVersionListOnServer(client);
     g_cb = cb;
     dir.mkdir("data");
     init ();
@@ -48,6 +49,20 @@ void versions::init()
     return;
 }
 
+bool versions::getVersionListOnServer (QTcpSocket *client)
+{
+    QString send = "get list version";
+    client->write( send.toLocal8Bit() );
+    return true;
+}
+
+bool versions::connectNet (QTcpSocket *client)
+{
+    QString send = connect;
+    send.append("1");
+    client->write(send);
+}
+
 bool versions::addVersion(QString type,QString number)
 {
     if(checkVersion(type,number))
@@ -59,8 +74,6 @@ bool versions::addVersion(QString type,QString number)
 
     return true;
 }
-
-
 
 bool versions::deleteVersion(QString type,QString number)
 {
@@ -80,7 +93,6 @@ bool versions::deleteVersion(QString type,QString number)
 
     return true;
 }
-
 
 int versions::removeFolder(QDir & dir)
 {

@@ -8,12 +8,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    client = new QTcpSocket(this);
-    client->connectToHost("192.168.0.1",80);
     versions ver(ui->comboBox);
-    ver.deleteVersion("alpha", "2");
-    ver.FillingComboBox(ui->comboBox);
 
+    ver.FillingComboBox(ui->comboBox);
 }
 
 MainWindow::~MainWindow()

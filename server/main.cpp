@@ -1,5 +1,4 @@
 #include <QCoreApplication>
-#include <QWebSocket>
 
 int main(int argc, char *argv[])
 {

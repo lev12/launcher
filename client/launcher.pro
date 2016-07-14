@@ -24,8 +24,3 @@ HEADERS  += mainwindow.h \
     versions.h
 
 FORMS    += mainwindow.ui
-
-RESOURCES +=
-
-DISTFILES += \
-    protocol.txt

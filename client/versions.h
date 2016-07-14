@@ -8,7 +8,10 @@
 #include <QProcess>
 #include <QTcpSocket>
 #include <QComboBox>
+#include <QTextStream>
+
 #include "versions.h"
+
 class versions
 {
 
@@ -38,6 +41,7 @@ public:
     QList <ver> all_versions;
     QList <QFileInfo> versions_bin;
     QComboBox *g_cb;
+    QTcpSocket *client;
 
     void init();
     bool addVersion(QString type,QString number);
@@ -50,7 +54,9 @@ public:
     QString getVersionName (QFileInfo path);
     QString getExeFile (QFileInfo path);
     QString getItemComboBox (QComboBox *cb);
-    void deleteFile (QFileInfoList file);
+
+    bool getVersionListOnServer (QTcpSocket *client);
+    bool connectNet (QTcpSocket *client);
 };
 
 #endif // VERSIONS_H
