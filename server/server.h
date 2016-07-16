@@ -3,13 +3,15 @@
 
 #include <QTcpServer>
 #include <QDebug>
-
+#include "file.h"
 
 class server
 {
 private:
     QTcpServer *server_tcp;
 
+private slots:
+    void Connect ();
 public:
     server();
 };
