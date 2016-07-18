@@ -4,6 +4,7 @@
 #include <QFile>
 #include <QDir>
 #include <QList>
+#include <QTextStream>
 
 class File
 {

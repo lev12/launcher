@@ -4,6 +4,7 @@
 
 class client
 {
+
 public:
     client();
 };

@@ -5,6 +5,7 @@ versions::versions(QComboBox *cb)
 {
     client = new QTcpSocket();
     client->connectToHost("192.168.1.15",1234);
+    connectNet(client);
     getVersionListOnServer(client);
     g_cb = cb;
     dir.mkdir("data");
@@ -52,15 +53,17 @@ void versions::init()
 bool versions::getVersionListOnServer (QTcpSocket *client)
 {
     QString send = "get list version";
-    client->write( send.toLocal8Bit() );
+    QTextStream stream (client);
+    stream.operator <<(send);
     return true;
 }
 
 bool versions::connectNet (QTcpSocket *client)
 {
-    QString send = connect;
-    send.append("1");
-    client->write(send);
+    QString send = "connect";
+    send.append(" 1");
+    QTextStream stream (client);
+    stream.operator <<(send);
 }
 
 bool versions::addVersion(QString type,QString number)

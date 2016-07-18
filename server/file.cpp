@@ -47,6 +47,7 @@ void File::FillingVersionList ()
 
 bool File::checkVersion(QFileInfo path)
 {
+    QDir dir;
     QString temp_path_ini = path.absoluteFilePath();
     temp_path_ini.append("/data version.ini");
     QFile cfile(temp_path_ini);
@@ -106,11 +107,11 @@ QFileInfo File::getFile (QString type, QString number)
     name.append(" ");
     name.append(number);
 
-    for (int i(0); versions_bin.length() > i+1;i++)
+    for (int i(0); versions.length() > i+1;i++)
     {
-        if(name == versions_bin.at(i).baseName())
+        if(name == versions.at(i).baseName())
         {
-            temp = versions_bin.at(i);
+            temp = versions.at(i);
             return temp;
         }
     }
