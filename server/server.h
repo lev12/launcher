@@ -7,6 +7,7 @@
 #include <QByteArray>
 #include <QDebug>
 #include <QTimer>
+#include <QRegExp>
 #include "file.h"
 
 class server : public QObject
@@ -24,6 +25,10 @@ public slots:
 public:
     QMap<int,QTcpSocket *> SClients;
     server();
+
+    bool parse(QString data, QTcpSocket *client);
+    bool parseAuthorization (QString data,QTcpSocket *client);
+    bool parseGetListVersions (QString data,QTcpSocket *client);
 };
 
 #endif // SERVER_H

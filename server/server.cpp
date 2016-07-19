@@ -22,7 +22,7 @@ server::server()
 
 void server::Connect ()
 {
-    printf ("\n");
+    printf ("connct new user\n");
     QTcpSocket* clientSocket=server_tcp->nextPendingConnection();
     int idusersocs=clientSocket->socketDescriptor();
     SClients[idusersocs]=clientSocket;
@@ -38,10 +38,37 @@ void server::tick ()
 void server::ReadClient()
 {
     QTcpSocket* clientSocket = (QTcpSocket*)sender();
-
-    QTextStream stream (clientSocket);
     QString out;
-    stream.operator >>(out);
-    printf(out.toLocal8Bit());
+    out = clientSocket->readAll();
+    printf(out.toStdString().c_str());
+    parse(out,clientSocket);
+}
+
+//parse
+
+bool server::parse (QString data,QTcpSocket* client)
+{
+    if (parseAuthorization(data,client))
+        return true;
+}
+
+bool server::parseAuthorization (QString data,QTcpSocket* client)
+{
+    QString send = "connect:";
+    send.append("1");
+    send.append(":");
+    QRegExp exp("connect:(\\d+):");
+    if( exp.indexIn(data) == -1 )
+        return false;
+
+    exp.cap(1).toInt();
+    QTextStream stream (client);
+    stream.operator <<(send);
+    return true;
+}
+
+bool server::parseGetListVersions (QString data,QTcpSocket* client)
+{
+
 }
 

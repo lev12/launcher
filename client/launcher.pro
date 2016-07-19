@@ -21,6 +21,8 @@ SOURCES += main.cpp\
 
 HEADERS  += mainwindow.h \
     config.h \
-    versions.h
+    versions.h \
+    global_variable.h
+
 
 FORMS    += mainwindow.ui

@@ -9,11 +9,14 @@
 #include <QTcpSocket>
 #include <QComboBox>
 #include <QTextStream>
+#include <QObject>
 
 #include "versions.h"
+#include "global_variable.h"
 
-class versions
+class versions : public QObject
 {
+    Q_OBJECT
 
 private:
     int removeFolder(QDir & dir);
@@ -32,6 +35,9 @@ private:
         float number;
         bool install;
     };
+
+public slots:
+    void readServer();
 
 public:
     versions(QComboBox *cb);
