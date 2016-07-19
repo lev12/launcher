@@ -1,15 +1,18 @@
 server = ser
 client = cln
-version = [type, ,number]
-end = :
+version = [type_number]
+delimiter = :
 
 Connect to server
-cln     connect 'version cln':
-ser     connect 'version ser':
+cln     connect:'version cln':
+ser     connect:'version ser':
 
 List version
-cln     get list version:
-ser     return list version:
+cln     glv:			//get list versions
+ser	5:			//count versions		
+ser     alpha_1 			//return list version
+	alpha_2 
+	...:
 
 Download version
 cln	download 'version':
