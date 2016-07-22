@@ -8,9 +8,10 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
     versions ver(ui->comboBox);
 
-    ver.FillingComboBox(ui->comboBox);
+
 }
 
 MainWindow::~MainWindow()
@@ -20,6 +21,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_pushButton_clicked()
 {
-    versions ver(ui->comboBox);
-    ver.open();
+
+
+    //ver.open();
 }

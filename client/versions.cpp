@@ -1,11 +1,14 @@
 #include "versions.h"
 
-
 versions::versions(QComboBox *cb)
 {
     client = new QTcpSocket();
     client->connectToHost("192.168.1.15",1234);
     connectNet(client);
+    QObject::connect(client, SIGNAL(readyRead()), this, SLOT(readServer()));
+
+    client->waitForReadyRead();
+
 
     g_cb = cb;
     dir.mkdir("data");
@@ -52,14 +55,12 @@ void versions::init()
 
 void versions::readServer()
 {
-    QString data;
-    data = client->readAll();
-    qDebug() << "Data:" << data;
+    getVersionListOnServer(client);
 }
 
 bool versions::getVersionListOnServer (QTcpSocket *client)
 {
-    QString send = "get list version";
+    QString send = "glv\n";
     QTextStream stream (client);
     stream.operator <<(send);
     return true;
@@ -67,15 +68,11 @@ bool versions::getVersionListOnServer (QTcpSocket *client)
 
 bool versions::connectNet (QTcpSocket *client)
 {
-    QString response;
     QString send = "connect:";
     send.append(QString::number(number_version_launcher));
-    send.append(":");
+    send.append(":\n");
     QTextStream stream (client);
     stream.operator <<(send);
-    QObject::connect(client, SIGNAL(readyRead()), this, SLOT(readServer()));
-    //stream.operator >>(response);
-    //qDebug() << response;
 }
 
 bool versions::addVersion(QString type,QString number)
@@ -248,6 +245,7 @@ bool versions::open()
 
 void versions::FillingComboBox (QComboBox *cb)
 {
+    getVersionListOnServer(client);
     for (int i(1);versions_bin.length() > i;i++)
     {
         cb->addItem(getVersionName(versions_bin.at(i-1)));

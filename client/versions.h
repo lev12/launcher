@@ -11,7 +11,6 @@
 #include <QTextStream>
 #include <QObject>
 
-#include "versions.h"
 #include "global_variable.h"
 
 class versions : public QObject
@@ -36,7 +35,7 @@ private:
         bool install;
     };
 
-public slots:
+private slots:
     void readServer();
 
 public:

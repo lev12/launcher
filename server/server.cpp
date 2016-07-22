@@ -18,6 +18,7 @@ server::server()
 
     QObject::connect(time, SIGNAL(timeout()), this, SLOT(tick()));
     //time->start(100);
+
 }
 
 void server::Connect ()
@@ -27,6 +28,9 @@ void server::Connect ()
     int idusersocs=clientSocket->socketDescriptor();
     SClients[idusersocs]=clientSocket;
     connect(SClients[idusersocs],SIGNAL(readyRead()),this, SLOT(ReadClient()));
+
+
+
     return;
 }
 
@@ -38,10 +42,17 @@ void server::tick ()
 void server::ReadClient()
 {
     QTcpSocket* clientSocket = (QTcpSocket*)sender();
+    int idusersocs=clientSocket->socketDescriptor();
     QString out;
     out = clientSocket->readAll();
     printf(out.toStdString().c_str());
-    parse(out,clientSocket);
+    //parse(out,clientSocket);
+
+    QString send = "connect:";
+    send.append("1");
+    send.append(":");
+    QTextStream os(clientSocket);
+    os << send;
 }
 
 //parse
@@ -54,16 +65,13 @@ bool server::parse (QString data,QTcpSocket* client)
 
 bool server::parseAuthorization (QString data,QTcpSocket* client)
 {
-    QString send = "connect:";
-    send.append("1");
-    send.append(":");
+
     QRegExp exp("connect:(\\d+):");
     if( exp.indexIn(data) == -1 )
         return false;
 
     exp.cap(1).toInt();
-    QTextStream stream (client);
-    stream.operator <<(send);
+
     return true;
 }
 
