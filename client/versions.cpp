@@ -3,10 +3,9 @@
 versions::versions(QComboBox *cb)
 {
     client = new QTcpSocket();
-    client->connectToHost("192.168.1.15",1234);
+    client->connectToHost("192.168.1.14",1234);
     connectNet(client);
     QObject::connect(client, SIGNAL(readyRead()), this, SLOT(readServer()));
-
     client->waitForReadyRead();
 
 
@@ -53,16 +52,54 @@ void versions::init()
     return;
 }
 
-void versions::readServer()
+
+
+//parse
+
+bool versions::parse (QString data,QTcpSocket *client)
 {
-    getVersionListOnServer(client);
+    if (parseConnectServer(data, client))
+    {
+        return true;
+    }
+    else if(parseListVersions (data, client))
+    {
+        return true;
+    }
+
+    return false;
 }
+
+bool versions::parseConnectServer (QString data,QTcpSocket *client)
+{
+    QRegExp rx ("connect:(\\d):\n");
+    int pos = 1;
+
+    if ((pos = rx.indexIn(data, pos)) == -1)
+    {
+        return false;
+    }
+    else
+    {
+        return true;
+    }
+}
+
+bool versions::parseListVersions (QString data,QTcpSocket *client)
+{
+    return false;
+}
+
+//end parse
+
+//net
 
 bool versions::getVersionListOnServer (QTcpSocket *client)
 {
     QString send = "glv\n";
     QTextStream stream (client);
     stream.operator <<(send);
+
     return true;
 }
 
@@ -74,6 +111,21 @@ bool versions::connectNet (QTcpSocket *client)
     QTextStream stream (client);
     stream.operator <<(send);
 }
+
+void versions::readServer()
+{
+    QString data = client->readAll();
+    if(parse (data, client))
+    {
+        QString send = "wrongCmd(";
+        send.append( data); send.append(")");
+        QTextStream stream (client);
+        stream.operator <<(send);
+    }
+    qDebug (client->readAll());
+}
+
+//end net
 
 bool versions::addVersion(QString type,QString number)
 {
@@ -250,6 +302,7 @@ void versions::FillingComboBox (QComboBox *cb)
     {
         cb->addItem(getVersionName(versions_bin.at(i-1)));
     }
+    client->waitForReadyRead();
 }
 
 QString versions::getVersionName (QFileInfo path)

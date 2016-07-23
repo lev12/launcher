@@ -10,7 +10,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
     versions ver(ui->comboBox);
-
+    ver.FillingComboBox(ui->comboBox);
 
 }
 

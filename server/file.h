@@ -9,13 +9,16 @@
 class File
 {
 private:
-    QList<QFileInfo> versions;
+
 public:
+    QList<QFileInfo> versions;
+
     File();
     void FillingVersionList ();
     bool checkVersion(QFileInfo path);
     QFileInfo getFile (QString type, QString number);
     QList<QFileInfo> getVersonsList();
+    QString getVersionName (QFileInfo path);
 };
 
 #endif // FILE_H

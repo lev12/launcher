@@ -5,7 +5,6 @@ server::server()
 {
     server_tcp = new QTcpServer(this);
     QTimer *time = new QTimer (this);
-
     QObject::connect(server_tcp, SIGNAL(newConnection()), this, SLOT(Connect()));
     if(!server_tcp->listen(QHostAddress::Any,1234))
     {
@@ -28,9 +27,6 @@ void server::Connect ()
     int idusersocs=clientSocket->socketDescriptor();
     SClients[idusersocs]=clientSocket;
     connect(SClients[idusersocs],SIGNAL(readyRead()),this, SLOT(ReadClient()));
-
-
-
     return;
 }
 
@@ -46,37 +42,63 @@ void server::ReadClient()
     QString out;
     out = clientSocket->readAll();
     printf(out.toStdString().c_str());
-    //parse(out,clientSocket);
-
-    QString send = "connect:";
-    send.append("1");
-    send.append(":");
-    QTextStream os(clientSocket);
-    os << send;
+    parse(out,clientSocket);
 }
 
 //parse
 
 bool server::parse (QString data,QTcpSocket* client)
 {
-    if (parseAuthorization(data,client))
+    if (parseConnectClient(data,client))
+    {
         return true;
+    }else if (parseGetListVersions(data,client))
+    {
+        return true;
+    }
+    return false;
 }
 
-bool server::parseAuthorization (QString data,QTcpSocket* client)
+bool server::parseConnectClient (QString data,QTcpSocket* client)
 {
+    int versionClient;
+    int pos = 0;
+    QRegExp rx ("connect:(\\d):\n");
 
-    QRegExp exp("connect:(\\d+):");
-    if( exp.indexIn(data) == -1 )
+    if ((pos = rx.indexIn(data, pos)) == -1)
+    {
         return false;
+    }
 
-    exp.cap(1).toInt();
+    QString send = "connect:";
+    send.append("1");
+    send.append(":");
+    QTextStream os(client);
+    os << send;
 
     return true;
 }
 
 bool server::parseGetListVersions (QString data,QTcpSocket* client)
 {
+    int pos = 0;
+    QRegExp rx ("glv\n");
 
+    if ((pos = rx.indexIn(data, pos)) == -1)
+    {
+        return false;
+    }
+
+    QString send = "rlv:";
+    //send.append(QString::number(verCon.versions.length()));
+    send.append(":");
+    QTextStream os(client);
+    os << send;
+    for (QFileInfo temp : verCon.getVersonsList())
+    {
+        os << verCon.getVersionName(temp);
+    }
+
+    return true;
 }
 

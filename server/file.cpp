@@ -10,11 +10,12 @@ File::File()
 void File::FillingVersionList ()
 {
     QDir dir(".//data");
-    QList <QFileInfo> temp;
+    QList<QFileInfo> temp;
     temp = dir.entryInfoList();
 
 
-    temp.erase(temp.begin(),temp.begin()+2);
+    //temp.takeAt(0);
+    //temp.takeAt(1);
 
     if (!temp.length() == 0)
     {
@@ -123,4 +124,22 @@ QList<QFileInfo> File::getVersonsList()
 {
     FillingVersionList();
     return versions;
+}
+
+QString File::getVersionName (QFileInfo path)
+{
+    QString result;
+    QString temp;
+    QString FullPath = path.absoluteFilePath();
+    FullPath.append("/data version.ini");
+    QFile file(FullPath);
+    file.open(QFile::ReadOnly | QFile::Text);
+    QTextStream stream(&file);
+
+    stream.operator >> (result);
+    result.append(" ");
+    stream.operator >> (temp);
+    result.append(temp);
+
+    return result;
 }

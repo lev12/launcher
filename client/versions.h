@@ -10,6 +10,7 @@
 #include <QComboBox>
 #include <QTextStream>
 #include <QObject>
+#include <QRegExp>
 
 #include "global_variable.h"
 
@@ -62,6 +63,10 @@ public:
 
     bool getVersionListOnServer (QTcpSocket *client);
     bool connectNet (QTcpSocket *client);
+
+    bool parse (QString data, QTcpSocket *client);
+    bool parseConnectServer (QString data, QTcpSocket *client);
+    bool parseListVersions (QString data,QTcpSocket *client);
 };
 
 #endif // VERSIONS_H

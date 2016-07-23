@@ -17,6 +17,7 @@ class server : public QObject
 private:
     QTcpServer *server_tcp;
     QTime *timer;
+    File verCon;
 
 public slots:
     void Connect ();
@@ -27,7 +28,7 @@ public:
     server();
 
     bool parse(QString data, QTcpSocket *client);
-    bool parseAuthorization (QString data,QTcpSocket *client);
+    bool parseConnectClient (QString data,QTcpSocket *client);
     bool parseGetListVersions (QString data,QTcpSocket *client);
 };
 

@@ -9,7 +9,7 @@ ser     connect:'version ser':
 
 List version
 cln     glv:			//get list versions
-ser	5:			//count versions		
+ser	rlv:5:			//count versions		
 ser     alpha_1 			//return list version
 	alpha_2 
 	...:
