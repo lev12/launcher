@@ -31,9 +31,8 @@ private:
 
     struct ver
     {
-        type_ver type;
-        float number;
-        bool install;
+        QString type;
+        QString number;
     };
 
 private slots:

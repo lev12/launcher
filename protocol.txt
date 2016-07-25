@@ -9,10 +9,11 @@ ser     connect:'version ser':
 
 List version
 cln     glv:			//get list versions
-ser	rlv:5:			//count versions		
-ser     alpha_1 			//return list version
-	alpha_2 
-	...:
+ser	ver:rlv:5:			//count versions		
+ser     ver:alpha_1: 			//return list version
+	ver:alpha_2: 
+	ver:...:
+	ver:end:
 
 Download version
 cln	download 'version':

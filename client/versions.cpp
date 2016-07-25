@@ -72,10 +72,9 @@ bool versions::parse (QString data,QTcpSocket *client)
 
 bool versions::parseConnectServer (QString data,QTcpSocket *client)
 {
-    QRegExp rx ("connect:(\\d):\n");
-    int pos = 1;
+    QRegExp rx (QString("connect:(\\d+):"));
 
-    if ((pos = rx.indexIn(data, pos)) == -1)
+    if (rx.indexIn(data) == -1)
     {
         return false;
     }
@@ -87,6 +86,29 @@ bool versions::parseConnectServer (QString data,QTcpSocket *client)
 
 bool versions::parseListVersions (QString data,QTcpSocket *client)
 {
+    QRegExp rx (QString("ver:rvl:(\\d+):"));
+    int countVersions = 0;
+    static int count = 0;
+
+    if ((countVersions = rx.indexIn(data)) != -1)
+    {
+        //countVersions = rx.cap(1);
+        return true;
+    }
+
+    QRegExp rxVer ("ver:rvl:(\w):");
+
+    if (rxVer.indexIn(data) != -1)
+    {
+        QStringList dataList = data.split('_');
+        QString type = dataList.at(0);
+        QString number = dataList.at(1);
+        all_versions[count].type = type;
+        all_versions[count].number = number;
+
+        return true;
+    }
+
     return false;
 }
 

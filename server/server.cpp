@@ -1,5 +1,6 @@
 #include "server.h"
 #include <QObject>
+#include <QNetworkInterface>
 
 server::server()
 {
@@ -71,7 +72,7 @@ bool server::parseConnectClient (QString data,QTcpSocket* client)
     }
 
     QString send = "connect:";
-    send.append("1");
+    send.append("8");
     send.append(":");
     QTextStream os(client);
     os << send;
@@ -89,7 +90,7 @@ bool server::parseGetListVersions (QString data,QTcpSocket* client)
         return false;
     }
 
-    QString send = "rlv:";
+    QString send = "ver:rlv:";
     //send.append(QString::number(verCon.versions.length()));
     send.append(":");
     QTextStream os(client);
