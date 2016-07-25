@@ -31,8 +31,8 @@ private:
 
     struct ver
     {
-        QString type;
-        QString number;
+        QString name;
+        bool install;
     };
 
 private slots:
@@ -43,7 +43,7 @@ public:
 
     QDir dir;
     QFile file;
-    QList <ver> all_versions;
+    QStringList all_versions;
     QList <QFileInfo> versions_bin;
     QComboBox *g_cb;
     QTcpSocket *client;

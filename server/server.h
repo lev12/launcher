@@ -23,6 +23,7 @@ public slots:
     void Connect ();
     void tick();
     void ReadClient();
+
 public:
     QMap<int,QTcpSocket *> SClients;
     server();

@@ -2,6 +2,8 @@
 #include <QObject>
 #include <QNetworkInterface>
 
+using namespace std;
+
 server::server()
 {
     server_tcp = new QTcpServer(this);
@@ -91,15 +93,16 @@ bool server::parseGetListVersions (QString data,QTcpSocket* client)
     }
 
     QString send = "ver:rlv:";
-    //send.append(QString::number(verCon.versions.length()));
+    send.append(QString::number(verCon.versions.length()));
     send.append(":");
-    QTextStream os(client);
-    os << send;
+
+
     for (QFileInfo temp : verCon.getVersonsList())
     {
-        os << verCon.getVersionName(temp);
+        QStringList str = verCon.getVersionName(temp).split(" ");
+        send.append(" "); send.append(str[0]); send.append("_"); send.append(str[1]);
     }
-
+    QTextStream os (client);
+    os << send;
     return true;
 }
-

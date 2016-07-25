@@ -3,7 +3,7 @@
 versions::versions(QComboBox *cb)
 {
     client = new QTcpSocket();
-    client->connectToHost("192.168.1.14",1234);
+    client->connectToHost("192.168.1.15",1234);
     connectNet(client);
     QObject::connect(client, SIGNAL(readyRead()), this, SLOT(readServer()));
     client->waitForReadyRead();
@@ -86,30 +86,35 @@ bool versions::parseConnectServer (QString data,QTcpSocket *client)
 
 bool versions::parseListVersions (QString data,QTcpSocket *client)
 {
-    QRegExp rx (QString("ver:rvl:(\\d+):"));
-    int countVersions = 0;
-    static int count = 0;
-
-    if ((countVersions = rx.indexIn(data)) != -1)
+    QStringList cmd = data.split(" ");
+    for (int i(0); i<cmd.count(); i++)
     {
-        //countVersions = rx.cap(1);
-        return true;
+        QRegExp rx (QString("ver:rlv:(\\d+):"));
+        int countVersions = 0;
+        static bool stream;
+
+        if ((countVersions = rx.indexIn(cmd.at(i))) != -1)
+        {
+            stream = true;
+        }
+            else
+        {
+            if (stream)
+            {
+                QStringList dataList = cmd.at(i).split('_');
+                QString type = dataList.at(0);
+                QString number = dataList.at(1);
+                QString name = type; name.append(" "); name.append(number);
+                all_versions.operator <<(name);
+
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
-
-    QRegExp rxVer ("ver:rvl:(\w):");
-
-    if (rxVer.indexIn(data) != -1)
-    {
-        QStringList dataList = data.split('_');
-        QString type = dataList.at(0);
-        QString number = dataList.at(1);
-        all_versions[count].type = type;
-        all_versions[count].number = number;
-
-        return true;
-    }
-
-    return false;
+    return true;
 }
 
 //end parse
@@ -137,7 +142,7 @@ bool versions::connectNet (QTcpSocket *client)
 void versions::readServer()
 {
     QString data = client->readAll();
-    if(parse (data, client))
+    if(!parse (data, client))
     {
         QString send = "wrongCmd(";
         send.append( data); send.append(")");
