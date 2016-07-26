@@ -43,8 +43,11 @@ public:
 
     QDir dir;
     QFile file;
-    QStringList all_versions;
+
+    QList <ver> versions_all;
+    QStringList versions_net;
     QList <QFileInfo> versions_bin;
+
     QComboBox *g_cb;
     QTcpSocket *client;
 

@@ -3,7 +3,7 @@
 versions::versions(QComboBox *cb)
 {
     client = new QTcpSocket();
-    client->connectToHost("192.168.1.15",1234);
+    client->connectToHost("192.168.1.14",1234);
     connectNet(client);
     QObject::connect(client, SIGNAL(readyRead()), this, SLOT(readServer()));
     client->waitForReadyRead();
@@ -105,7 +105,7 @@ bool versions::parseListVersions (QString data,QTcpSocket *client)
                 QString type = dataList.at(0);
                 QString number = dataList.at(1);
                 QString name = type; name.append(" "); name.append(number);
-                all_versions.operator <<(name);
+                versions_net.operator <<(name);
 
             }
             else
@@ -325,11 +325,20 @@ bool versions::open()
 void versions::FillingComboBox (QComboBox *cb)
 {
     getVersionListOnServer(client);
-    for (int i(1);versions_bin.length() > i;i++)
-    {
-        cb->addItem(getVersionName(versions_bin.at(i-1)));
-    }
     client->waitForReadyRead();
+
+    for (int i(0); i<versions_net.length(); i++)
+    {
+        ver temp;
+        temp.name = versions_net.at(i);
+        versions_all.operator <<(temp);
+    }
+
+    for (int i(0);versions_all.length() > i;i++)
+    {
+        cb->addItem(versions_all[i].name);
+    }
+
 }
 
 QString versions::getVersionName (QFileInfo path)
