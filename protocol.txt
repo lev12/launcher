@@ -16,5 +16,10 @@ ser     ver:alpha_1: 			//return list version
 	ver:end:
 
 Download version
-cln	download 'version':
-ser	upload 'version':
+cln	file:get:'version':
+
+ser	file:ul:'version': exe:'start file': count:
+        'name':'size': ...  file:endFile
+        'name':'size': ...  file:endFile
+        'name':'size': ...  file:endFile
+        file:ulEnd:

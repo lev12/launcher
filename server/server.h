@@ -8,6 +8,7 @@
 #include <QDebug>
 #include <QTimer>
 #include <QRegExp>
+
 #include "file.h"
 
 class server : public QObject
@@ -31,6 +32,7 @@ public:
     bool parse(QString data, QTcpSocket *client);
     bool parseConnectClient (QString data,QTcpSocket *client);
     bool parseGetListVersions (QString data,QTcpSocket *client);
+    bool parseGetVersions (QString data, QTcpSocket *client);
 };
 
 #endif // SERVER_H

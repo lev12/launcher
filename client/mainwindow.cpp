@@ -3,14 +3,15 @@
 #include <QWidget>
 
 
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-
-    versions ver(ui->comboBox);
-    ver.FillingComboBox(ui->comboBox);
+    setCentralWidget(ui->verticalFrame);
+    ver = new versions (ui->comboBox);
+    ver->FillingComboBox(ui->comboBox);
 
 }
 
@@ -23,5 +24,5 @@ void MainWindow::on_pushButton_clicked()
 {
 
 
-    //ver.open();
+    ver->open();
 }

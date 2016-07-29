@@ -58,7 +58,11 @@ bool server::parse (QString data,QTcpSocket* client)
     }else if (parseGetListVersions(data,client))
     {
         return true;
+    }else if (parseGetVersions(data,client))
+    {
+        return true;
     }
+
     return false;
 }
 
@@ -104,5 +108,21 @@ bool server::parseGetListVersions (QString data,QTcpSocket* client)
     }
     QTextStream os (client);
     os << send;
+    return true;
+}
+
+bool server::parseGetVersions (QString data, QTcpSocket *client)
+{
+    int pos = 0;
+    QRegExp rx ("file:dl:(\\w+)");
+
+    if ((pos = rx.indexIn(data, pos)) == -1)
+    {
+        return false;
+    }
+    printf("123");
+    //QDataStream stream;
+
+
     return true;
 }

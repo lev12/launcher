@@ -62,9 +62,11 @@ public:
     QString getVersionName (QFileInfo path);
     QString getExeFile (QFileInfo path);
     QString getItemComboBox (QComboBox *cb);
+    bool isInstall (QString type, QString number);
 
     bool getVersionListOnServer (QTcpSocket *client);
     bool connectNet (QTcpSocket *client);
+    bool downloadVersion (QString name, QTcpSocket *client);
 
     bool parse (QString data, QTcpSocket *client);
     bool parseConnectServer (QString data, QTcpSocket *client);

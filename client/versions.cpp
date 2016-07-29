@@ -152,6 +152,19 @@ void versions::readServer()
     qDebug (client->readAll());
 }
 
+bool versions::downloadVersion (QString name, QTcpSocket *client)
+{
+    QString send = "file:get:";
+    QStringList LName = name.split(" ");
+    QString SName = LName.at(0);
+    SName.append(" ");
+    SName.append(LName.at(1));
+    send.append(SName);
+
+    QTextStream stream (client);
+    stream.operator <<(send);
+}
+
 //end net
 
 bool versions::addVersion(QString type,QString number)
@@ -274,9 +287,9 @@ bool versions::checkVersion(QString type, QString number)
     nameVesion.append(" ");
     nameVesion.append(number);
 
-    for (int i(0); versions_bin.length() > i+1;i++)
+    for (int i(0);i < versions_all.length();i++)
     {
-        if(nameVesion == versions_bin.at(i).baseName())
+        if(nameVesion == versions_all.at(i).name)
         {
             return true;
         }
@@ -304,22 +317,44 @@ QFileInfo versions::getFile (QString type, QString number)
     return temp;
 }
 
+bool versions::isInstall (QString type, QString number)
+{
+    bool inst;
+    QString name = type; name.append(" "); name.append(number);
+    for (int i(0); i < versions_all.length(); i++)
+    {
+        if (versions_all.at(i).name == name)
+        {
+            inst = versions_all.at(i).install;
+            break;
+        }
+    }
+    return inst;
+}
+
 bool versions::open()
 {
-    QString item = getItemComboBox(g_cb);
+    /*QString item = getItemComboBox(g_cb);
     QString exe = "./data/";
     exe.append(item);
     exe.append("/");
     QFile temp(exe);
-    exe.append(getExeFile(temp));
+    exe.append(getExeFile(temp));*/
 
+    QString item = getItemComboBox(g_cb);
+    QStringList LItem = item.split(" ");
+    QString name = LItem.at(1); name.append(" "); name.append(LItem.at(2));
+    if (LItem.at(0) == "download")
+    {
+        downloadVersion(name, client);
+    }
 
-    QStringList arguments;
+    /*QStringList arguments;
     arguments << "-style" << "fusion";
     QProcess vec;
     vec.start(exe,arguments);
     vec.waitForFinished(-1);
-    return true;
+    return true;*/
 }
 
 void versions::FillingComboBox (QComboBox *cb)
@@ -411,5 +446,12 @@ QString versions::getItemComboBox (QComboBox *cb)
     {
         return NULL;
     }
+
+    if (isInstall(version.at(0),version.at(1)))
+    {
+        QString download = "download "; download.append(current);
+        return download;
+    }
+
     return current;
 }
