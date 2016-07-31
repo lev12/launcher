@@ -101,6 +101,23 @@ bool File::checkVersion(QFileInfo path)
     return true;
 }
 
+bool File::checkVersion(QString type, QString number)
+{
+    QString nameVesion = type;
+    nameVesion.append(" ");
+    nameVesion.append(number);
+
+    for (int i(0);i < versions.length();i++)
+    {
+        if(nameVesion == getVersionName(versions.at(i)))
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 QFileInfo File::getFile (QString type, QString number)
 {
     QFileInfo temp;
@@ -108,7 +125,7 @@ QFileInfo File::getFile (QString type, QString number)
     name.append(" ");
     name.append(number);
 
-    for (int i(0); versions.length() > i+1;i++)
+    for (int i(0);i < versions.length();i++)
     {
         if(name == versions.at(i).baseName())
         {
@@ -140,6 +157,23 @@ QString File::getVersionName (QFileInfo path)
     result.append(" ");
     stream.operator >> (temp);
     result.append(temp);
+
+    return result;
+}
+
+QString File::getExeFile (QFileInfo path)
+{
+    QString result;
+    QString temp;
+    QString FullPath = path.absoluteFilePath();
+    FullPath.append("/data version.ini");
+    QFile file(FullPath);
+    file.open(QFile::ReadOnly | QFile::Text);
+    QTextStream stream(&file);
+
+    stream.operator >>(temp);
+    stream.operator >>(temp);
+    stream.operator >>(result);
 
     return result;
 }

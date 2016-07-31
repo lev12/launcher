@@ -9,6 +9,7 @@
 #include <QTcpSocket>
 #include <QComboBox>
 #include <QTextStream>
+#include <QDataStream>
 #include <QObject>
 #include <QRegExp>
 
@@ -71,6 +72,7 @@ public:
     bool parse (QString data, QTcpSocket *client);
     bool parseConnectServer (QString data, QTcpSocket *client);
     bool parseListVersions (QString data,QTcpSocket *client);
+    bool parseDownloadFile (QString data,QTcpSocket *client);
 };
 
 #endif // VERSIONS_H

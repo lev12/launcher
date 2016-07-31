@@ -106,6 +106,9 @@ bool server::parseGetListVersions (QString data,QTcpSocket* client)
         QStringList str = verCon.getVersionName(temp).split(" ");
         send.append(" "); send.append(str[0]); send.append("_"); send.append(str[1]);
     }
+
+
+
     QTextStream os (client);
     os << send;
     return true;
@@ -114,15 +117,38 @@ bool server::parseGetListVersions (QString data,QTcpSocket* client)
 bool server::parseGetVersions (QString data, QTcpSocket *client)
 {
     int pos = 0;
-    QRegExp rx ("file:dl:(\\w+)");
+    QRegExp rx ("file:get:(\\w+) (\\d+)");
 
-    if ((pos = rx.indexIn(data, pos)) == -1)
+    if ((pos = rx.indexIn(data, pos)) != -1)
     {
-        return false;
+        QTextStream stream(client);
+        QString send;
+        int countVersions;
+
+        if(!verCon.checkVersion(rx.cap(1),rx.cap(2)))
+        {
+            printf("no version/n");
+        }
+
+        QString tempName = rx.cap(1); tempName.append("_"); tempName.append(rx.cap(2));
+        send.append("file:ul:"); send.append(tempName); send.append(":");
+        send.append("exe:"); send.append(verCon.getExeFile(verCon.getFile(rx.cap(1),rx.cap(2))));
+        //send.append(countVersions);
+        stream.operator <<(send);
+        return true;
     }
-    printf("123");
-    //QDataStream stream;
+    return false;
+    /*QByteArray block;
+    QDataStream out(&block, QIODevice::WriteOnly);
 
+    QString send;
 
-    return true;
+    if(!verCon.checkVersion(rx.cap(1),rx.cap(2)))
+    {
+        printf("no version/n");
+    }
+
+    QString tempName = rx.cap(1); tempName.append("_"); tempName.append(rx.cap(2));
+    send.append("file:ul:"); send.append(tempName); send.append(" ");
+    //out.operator <<(send);*/
 }

@@ -9,7 +9,7 @@ ser     connect:'version ser':
 
 List version
 cln     glv:			//get list versions
-ser	ver:rlv:5:			//count versions		
+ser	ver:rlv:5:			//count versions
 ser     ver:alpha_1: 			//return list version
 	ver:alpha_2: 
 	ver:...:
@@ -18,8 +18,8 @@ ser     ver:alpha_1: 			//return list version
 Download version
 cln	file:get:'version':
 
-ser	file:ul:'version': exe:'start file': count:
-        'name':'size': ...  file:endFile
-        'name':'size': ...  file:endFile
-        'name':'size': ...  file:endFile
+ser	file:ul:'version':exe:'start file':'count':
+        'name':'size': ...  :file:endFile
+        'name':'size': ...  :file:endFile
+        'name':'size': ...  :file:endFile
         file:ulEnd:

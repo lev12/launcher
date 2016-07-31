@@ -8,6 +8,7 @@
 #include <QDebug>
 #include <QTimer>
 #include <QRegExp>
+# include <QDataStream>
 
 #include "file.h"
 

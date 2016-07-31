@@ -87,11 +87,12 @@ bool versions::parseConnectServer (QString data,QTcpSocket *client)
 bool versions::parseListVersions (QString data,QTcpSocket *client)
 {
     QStringList cmd = data.split(" ");
+    bool stream;
     for (int i(0); i<cmd.count(); i++)
     {
         QRegExp rx (QString("ver:rlv:(\\d+):"));
         int countVersions = 0;
-        static bool stream;
+
 
         if ((countVersions = rx.indexIn(cmd.at(i))) != -1)
         {
@@ -114,7 +115,19 @@ bool versions::parseListVersions (QString data,QTcpSocket *client)
             }
         }
     }
+
     return true;
+}
+
+bool versions::parseDownloadFile (QString data,QTcpSocket *client)
+{
+    int pos = 0;
+    QRegExp rx (QString("file:ul:(\\w+):exe:(\\w+)"));
+
+    if ((pos = rx.indexIn(data)) == -1)
+    {
+        return false;
+    }
 }
 
 //end parse
@@ -347,8 +360,10 @@ bool versions::open()
     if (LItem.at(0) == "download")
     {
         downloadVersion(name, client);
-    }
 
+    }
+    client->waitForReadyRead();
+    return true;
     /*QStringList arguments;
     arguments << "-style" << "fusion";
     QProcess vec;
