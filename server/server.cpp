@@ -116,39 +116,136 @@ bool server::parseGetListVersions (QString data,QTcpSocket* client)
 
 bool server::parseGetVersions (QString data, QTcpSocket *client)
 {
+    static bool stream;
+    static bool streamTransfer;
+    static bool streamData;
     int pos = 0;
+
     QRegExp rx ("file:get:(\\w+) (\\d+)");
 
     if ((pos = rx.indexIn(data, pos)) != -1)
     {
+        QString pathFileCount = ".\\data/"; pathFileCount.append(rx.cap(1)); pathFileCount.append(" "); pathFileCount.append(rx.cap(2));
+
+        QDir dir (pathFileCount);
+        FileList.clear();
+        FillingFileList(dir);
+        int countVersions = FileList.length();
+        sizeVersion(dir);
+        int size_temp = size;
+
         QTextStream stream(client);
         QString send;
-        int countVersions;
+
 
         if(!verCon.checkVersion(rx.cap(1),rx.cap(2)))
         {
-            printf("no version/n");
+            printf("no version\n");
         }
 
         QString tempName = rx.cap(1); tempName.append("_"); tempName.append(rx.cap(2));
         send.append("file:ul:"); send.append(tempName); send.append(":");
         send.append("exe:"); send.append(verCon.getExeFile(verCon.getFile(rx.cap(1),rx.cap(2))));
-        //send.append(countVersions);
+        send.append(":"); send.append(QString::number(countVersions));
+        send.append(":"); send.append(QString::number(size_temp));
         stream.operator <<(send);
+
         return true;
     }
-    return false;
-    /*QByteArray block;
-    QDataStream out(&block, QIODevice::WriteOnly);
 
-    QString send;
 
-    if(!verCon.checkVersion(rx.cap(1),rx.cap(2)))
+
+    QRegExp rxFail ("file:fail:");
+
+    if ((pos = rxFail.indexIn(data, pos)) != -1)
     {
-        printf("no version/n");
+        stream = false;
+        return true;
     }
 
-    QString tempName = rx.cap(1); tempName.append("_"); tempName.append(rx.cap(2));
-    send.append("file:ul:"); send.append(tempName); send.append(" ");
-    //out.operator <<(send);*/
+    QRegExp rxSuc ("file:ok_reception_file:");
+
+    if ((pos = rxSuc.indexIn(data)) != -1)
+    {
+        stream = true;
+        streamData = true;
+    }
+
+    if (stream)
+    {
+        static int numberBlock;
+        static int numberFile;
+        static QFileInfo streamFile;
+        streamFile = FileList.at(numberFile);
+
+        QRegExp rxRec ("file:reception:");
+
+        if ((pos = rxRec.indexIn(data)) != -1)
+        {
+            streamTransfer = true;
+        }
+
+        if (streamTransfer)
+        {
+            QByteArray block;
+            QDataStream stream(&block, QIODevice::WriteOnly);
+            stream.setVersion(QDataStream::Qt_4_5);
+            QFile file(".\\data/alpha 2/a.exe");
+            file.open(QIODevice::ReadOnly);
+            QByteArray buf = file.readAll();
+            stream << quint64(file.size());
+            stream << quint16(block.size() - sizeof(quint16));
+
+            client->write(block);
+
+            client->flush();
+        }
+
+        if (streamData)
+        {
+            QTextStream sendStream (client);
+
+
+            QString nameFile = streamFile.fileName();
+            int sizeFile = streamFile.size();
+
+            QString send = "file:";
+            send.append(nameFile); send.append(":");
+            send.append(QString::number(sizeFile)); send.append(":");
+
+            sendStream.operator <<(send);
+            streamData = false;
+            return true;
+        }
+
+
+        return false;
+
+    }
+}
+
+void server::FillingFileList (QDir & dir)
+{
+    QList <QString> lstDirs = dir.entryList(QDir::Dirs | QDir::AllDirs | QDir::NoDotAndDotDot);
+    QList <QFileInfo> lstFiles = dir.entryInfoList(QDir::Files);
+
+    FileList.operator <<(lstFiles);
+
+    foreach (QString tempDir, lstDirs) {
+        QString entryAbsPath = dir.absolutePath() + "/" + tempDir;
+        QDir dr(entryAbsPath);
+        FillingFileList(dr);
+    }
+
+    return;
+}
+
+void server::sizeVersion (QDir & dir)
+{
+    size = 0;
+    foreach (QFileInfo item, FileList) {
+        size = size + item.size() ;
+    };
+
+    return;
 }

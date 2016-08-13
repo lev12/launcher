@@ -2,13 +2,15 @@
 #define SERVER_H
 
 #include <QObject>
+#include <QFile>
 #include <QTcpServer>
 #include <QTcpSocket>
 #include <QByteArray>
 #include <QDebug>
 #include <QTimer>
 #include <QRegExp>
-# include <QDataStream>
+#include <QDataStream>
+#include <QBuffer>
 
 #include "file.h"
 
@@ -28,12 +30,18 @@ public slots:
 
 public:
     QMap<int,QTcpSocket *> SClients;
+    QList <QFileInfo> FileList;
+    long long size;
+
     server();
 
     bool parse(QString data, QTcpSocket *client);
     bool parseConnectClient (QString data,QTcpSocket *client);
     bool parseGetListVersions (QString data,QTcpSocket *client);
     bool parseGetVersions (QString data, QTcpSocket *client);
+
+    void FillingFileList (QDir & dir);
+    void sizeVersion (QDir & dir);
 };
 
 #endif // SERVER_H

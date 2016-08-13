@@ -1,9 +1,10 @@
 #include "versions.h"
 
+
 versions::versions(QComboBox *cb)
 {
     client = new QTcpSocket();
-    client->connectToHost("192.168.1.101",1234);
+    client->connectToHost("192.168.1.15",1234);
     connectNet(client);
     QObject::connect(client, SIGNAL(readyRead()), this, SLOT(readServer()));
     client->waitForReadyRead();
@@ -17,30 +18,27 @@ versions::versions(QComboBox *cb)
 void versions::init()
 {
     dir.cd(".//data");
-    QList <QFileInfo> temp;
-    temp = dir.entryInfoList();
+    QList <QFileInfo> tempFileList;
+    tempFileList = dir.entryInfoList();
 
-
-    //temp.erase(temp.begin(),temp.begin()+2);
-
-    if (!temp.length() == 0)
+    if (!tempFileList.length() == 0)
     {
         int rem_index(0);
-        for (int i(0); i<=(temp.length()+1); i++)
+        for (int i(0); i<=(tempFileList.length()+1); i++)
         {
 
-            if(!temp.at(i-rem_index).isDir())
+            if(!tempFileList.at(i-rem_index).isDir())
             {
 
-                temp.takeAt(i-rem_index);
+                tempFileList.takeAt(i-rem_index);
                 rem_index++;
 
 
             }else
             {
-                if(!checkVersion(temp.at(i-rem_index)))
+                if(!checkVersion(tempFileList.at(i-rem_index)))
                 {
-                    temp.takeAt(i-rem_index);
+                    tempFileList.takeAt(i-rem_index);
                     rem_index++;
                 }
 
@@ -48,7 +46,7 @@ void versions::init()
         }
     }
 
-    versions_bin = temp;
+    versions_bin = tempFileList;
     return;
 }
 
@@ -65,7 +63,11 @@ bool versions::parse (QString data,QTcpSocket *client)
     else if(parseListVersions (data, client))
     {
         return true;
+    }else if(parseDownloadFile (data, client))
+    {
+        return true;
     }
+
 
     return false;
 }
@@ -121,15 +123,107 @@ bool versions::parseListVersions (QString data,QTcpSocket *client)
 
 bool versions::parseDownloadFile (QString data,QTcpSocket *client)
 {
+    static bool streamDownload;
+    static QString nameVersion;
+
     int pos = 0;
-    QRegExp rx (QString("file:ul:(\\w+):exe:(\\w+)"));
+
+    if (streamDownload)
+    {
+        static bool download;
+        static QFileInfo fileDownload;
+
+        QRegExp rxDl ("file:(.+):(\\d+):"); //file:(\\.+) (\\.+):(\\d+):
+        if ((pos = rxDl.indexIn(data)) != -1)
+        {
+            QString pathNewVersion = ".\\data/";
+            pathNewVersion.append(nameVersion); pathNewVersion.append("/");
+            pathNewVersion.append(rxDl.cap(1));
+            QFile createFile (pathNewVersion);
+            createFile.open(QIODevice::ReadOnly);
+            createFile.close();
+            fileDownload = createFile;
+
+            client->write("file:reception:");
+            download = true;
+            return true;
+        }
+
+        if (download)
+        {
+            forever
+            {
+                QDataStream stream(client);
+                stream.setVersion(QDataStream::Qt_4_5);
+
+                if (nextBlockSize == 0)
+                {
+                    if (client->bytesAvailable() < (int)sizeof(quint64))
+                        return true;
+                    stream >> nextBlockSize;
+                }
+
+                if (nextBlockSize > client->bytesAvailable()) {
+                    return true;
+                }
+
+
+                quint32 ttt;
+                stream >> ttt;
+
+                QByteArray arrFile;
+
+                stream >> arrFile;
+                QFile file(fileDownload.absoluteFilePath());
+                file.open(QIODevice::WriteOnly);
+                file.write(arrFile);
+
+                nextBlockSize = 0;
+            }
+
+            return true;
+        }
+    }
+
+    QRegExp rx (QString("file:ul:(\.+):exe:(\.+):(\\d+):(\\d+)"));
 
     if ((pos = rx.indexIn(data)) == -1)
     {
         return false;
     }
-}
+    else
+    {
+        bool success = true;
+        nameVersion = rx.cap(1);
 
+        QDir dir (".\\");
+        QString diskName = dir.absolutePath();
+        QStringList diskNameList = diskName.split(":/");
+        QStorageInfo storage;
+        storage.setPath(diskNameList.at(0));
+        if (storage.bytesFree() > rx.cap(4).toInt())
+        {
+            success = false;
+        }
+
+
+        QString send = "file:";
+        if (success)
+        {
+            send.append("ok_reception_file:");
+            streamDownload = true;
+        }
+        else
+        {
+            send.append("fail:");
+        }
+
+        QTextStream streamTxt (client);
+        streamTxt.operator <<(send);
+
+        return true;
+    }
+}
 //end parse
 
 //net
@@ -150,6 +244,7 @@ bool versions::connectNet (QTcpSocket *client)
     send.append(":\n");
     QTextStream stream (client);
     stream.operator <<(send);
+    return true;
 }
 
 void versions::readServer()
@@ -162,7 +257,7 @@ void versions::readServer()
         QTextStream stream (client);
         stream.operator <<(send);
     }
-    qDebug (client->readAll());
+    qDebug () << data;
 }
 
 bool versions::downloadVersion (QString name, QTcpSocket *client)
@@ -176,6 +271,7 @@ bool versions::downloadVersion (QString name, QTcpSocket *client)
 
     QTextStream stream (client);
     stream.operator <<(send);
+    return true;
 }
 
 //end net

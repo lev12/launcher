@@ -5,6 +5,7 @@
 #include <QString>
 #include <QDir>
 #include <QFile>
+#include <QDir>
 #include <QProcess>
 #include <QTcpSocket>
 #include <QComboBox>
@@ -12,6 +13,8 @@
 #include <QDataStream>
 #include <QObject>
 #include <QRegExp>
+#include <QStorageInfo>
+#include <QBuffer>
 
 #include "global_variable.h"
 
@@ -35,6 +38,9 @@ private:
         QString name;
         bool install;
     };
+
+
+    quint16 nextBlockSize;
 
 private slots:
     void readServer();

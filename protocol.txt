@@ -2,13 +2,14 @@ server = ser
 client = cln
 version = [type_number]
 delimiter = :
+upload = up
 
 Connect to server
 cln     connect:'version cln':
 ser     connect:'version ser':
 
 List version
-cln     glv:			//get list versions
+cln     glv:                            //get list versions
 ser	ver:rlv:5:			//count versions
 ser     ver:alpha_1: 			//return list version
 	ver:alpha_2: 
@@ -18,8 +19,9 @@ ser     ver:alpha_1: 			//return list version
 Download version
 cln	file:get:'version':
 
-ser	file:ul:'version':exe:'start file':'count':
-        'name':'size': ...  :file:endFile
-        'name':'size': ...  :file:endFile
-        'name':'size': ...  :file:endFile
+ser	file:ul:'version':exe:'start file':'count file':'size version':
+cln     file:ok_reception_file: else file:fail:
+ser     file:'name':'size':'count block':
+clr     file:reception:
+ser     ...  :file:endFile
         file:ulEnd:
