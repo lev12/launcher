@@ -187,18 +187,21 @@ bool server::parseGetVersions (QString data, QTcpSocket *client)
 
         if (streamTransfer)
         {
-            QByteArray block;
-            QDataStream stream(&block, QIODevice::WriteOnly);
-            stream.setVersion(QDataStream::Qt_4_5);
+
             QFile file(".\\data/alpha 2/a.exe");
             file.open(QIODevice::ReadOnly);
-            QByteArray buf = file.readAll();
-            stream << quint64(file.size());
-            stream << quint16(block.size() - sizeof(quint16));
+            QByteArray buffer;
 
-            client->write(block);
+            for (int i(0); i < 5; i++)
+            {
+                buffer = file.read(1024);
 
-            client->flush();
+                qDebug () << buffer;
+
+                client->write(buffer);
+                client->flush();
+            }
+
         }
 
         if (streamData)

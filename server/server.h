@@ -11,6 +11,7 @@
 #include <QRegExp>
 #include <QDataStream>
 #include <QBuffer>
+#include <QTime>
 
 #include "file.h"
 

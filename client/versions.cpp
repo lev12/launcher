@@ -151,35 +151,12 @@ bool versions::parseDownloadFile (QString data,QTcpSocket *client)
 
         if (download)
         {
-            forever
-            {
-                QDataStream stream(client);
-                stream.setVersion(QDataStream::Qt_4_5);
+                qDebug() << data;
 
-                if (nextBlockSize == 0)
-                {
-                    if (client->bytesAvailable() < (int)sizeof(quint64))
-                        return true;
-                    stream >> nextBlockSize;
-                }
-
-                if (nextBlockSize > client->bytesAvailable()) {
-                    return true;
-                }
-
-
-                quint32 ttt;
-                stream >> ttt;
-
-                QByteArray arrFile;
-
-                stream >> arrFile;
-                QFile file(fileDownload.absoluteFilePath());
+                QString path = fileDownload.absoluteFilePath();
+                QFile file(path);
                 file.open(QIODevice::WriteOnly);
-                file.write(arrFile);
-
-                nextBlockSize = 0;
-            }
+                file.write(data.toLocal8Bit());
 
             return true;
         }

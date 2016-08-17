@@ -15,6 +15,7 @@
 #include <QRegExp>
 #include <QStorageInfo>
 #include <QBuffer>
+#include <QTime>
 
 #include "global_variable.h"
 
