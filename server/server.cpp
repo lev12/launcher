@@ -6,10 +6,11 @@ using namespace std;
 
 server::server()
 {
+    logPrint = new log(LogPath);
     server_tcp = new QTcpServer(this);
     QTimer *time = new QTimer (this);
     QObject::connect(server_tcp, SIGNAL(newConnection()), this, SLOT(Connect()));
-    if(!server_tcp->listen(QHostAddress::Any,1234))
+    if(!server_tcp->listen(QHostAddress::Any,port))
     {
         printf ("server not started.     ):\n");
     }

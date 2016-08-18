@@ -13,9 +13,12 @@ TEMPLATE = app
 SOURCES += main.cpp \
     server.cpp \
     file.cpp \
-    client.cpp
+    client.cpp \
+    log.cpp
 
 HEADERS += \
     server.h \
     file.h \
-    client.h
+    client.h \
+    globalvariable.h \
+    log.h

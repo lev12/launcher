@@ -14,6 +14,8 @@
 #include <QTime>
 
 #include "file.h"
+#include "log.h"
+#include "globalvariable.h"
 
 class server : public QObject
 {
@@ -23,6 +25,7 @@ private:
     QTcpServer *server_tcp;
     QTime *timer;
     File verCon;
+    log *logPrint;
 
 public slots:
     void Connect ();

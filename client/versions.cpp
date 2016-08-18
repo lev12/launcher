@@ -4,7 +4,7 @@
 versions::versions(QComboBox *cb)
 {
     client = new QTcpSocket();
-    client->connectToHost("192.168.1.15",1234);
+    client->connectToHost(IPServer,PortServer);
     connectNet(client);
     QObject::connect(client, SIGNAL(readyRead()), this, SLOT(readServer()));
     client->waitForReadyRead();
@@ -330,6 +330,9 @@ bool versions::checkVersion(QFileInfo path)
         switch (i)
         {
         case 0:
+
+
+
             if(temp == "pre-alpha")
             {
               break;
