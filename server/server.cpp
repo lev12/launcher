@@ -6,7 +6,7 @@ using namespace std;
 
 server::server()
 {
-    logPrint = new log(LogPath);
+    logPrint = new Log(LogPath);
     server_tcp = new QTcpServer(this);
     QTimer *time = new QTimer (this);
     QObject::connect(server_tcp, SIGNAL(newConnection()), this, SLOT(Connect()));

@@ -25,7 +25,7 @@ private:
     QTcpServer *server_tcp;
     QTime *timer;
     File verCon;
-    log *logPrint;
+    Log *logPrint;
 
 public slots:
     void Connect ();

@@ -6,13 +6,13 @@
 #include <QTextStream>
 #include <QHostAddress>
 
-class log
+class Log
 {
 private:
     QFile *logFile;
 
 public:
-    log(QString PathLog);
+    Log(QString PathLog);
     void print (QString text);
 };
 
