@@ -12,21 +12,20 @@ server::server()
     QObject::connect(server_tcp, SIGNAL(newConnection()), this, SLOT(Connect()));
     if(!server_tcp->listen(QHostAddress::Any,port))
     {
-        printf ("server not started.     ):\n");
+        logPrint->print("server not started.     ):", Log::critical_error);
     }
     else
     {
-        printf("server start.     (:\n");
+        logPrint->print("server start.     (:", Log::info);
     }
 
     QObject::connect(time, SIGNAL(timeout()), this, SLOT(tick()));
     //time->start(100);
-
 }
 
 void server::Connect ()
 {
-    printf ("connct new user\n");
+    logPrint->print ("connct new user", Log::info);
     QTcpSocket* clientSocket=server_tcp->nextPendingConnection();
     int idusersocs=clientSocket->socketDescriptor();
     SClients[idusersocs]=clientSocket;
@@ -45,8 +44,15 @@ void server::ReadClient()
     int idusersocs=clientSocket->socketDescriptor();
     QString out;
     out = clientSocket->readAll();
-    printf(out.toStdString().c_str());
-    parse(out,clientSocket);
+    if (WrongCmd(out))
+    {
+        logPrint->print(out, Log::error);
+    }
+    else
+    {
+        logPrint->print(out, Log::info);
+        parse(out,clientSocket);
+    }
 }
 
 //parse
@@ -71,7 +77,7 @@ bool server::parseConnectClient (QString data,QTcpSocket* client)
 {
     int versionClient;
     int pos = 0;
-    QRegExp rx ("connect:(\\d):\n");
+    QRegExp rx ("connect:(\\d):");
 
     if ((pos = rx.indexIn(data, pos)) == -1)
     {
@@ -90,7 +96,7 @@ bool server::parseConnectClient (QString data,QTcpSocket* client)
 bool server::parseGetListVersions (QString data,QTcpSocket* client)
 {
     int pos = 0;
-    QRegExp rx ("glv\n");
+    QRegExp rx ("glv");
 
     if ((pos = rx.indexIn(data, pos)) == -1)
     {
@@ -126,7 +132,8 @@ bool server::parseGetVersions (QString data, QTcpSocket *client)
 
     if ((pos = rx.indexIn(data, pos)) != -1)
     {
-        QString pathFileCount = ".\\data/"; pathFileCount.append(rx.cap(1)); pathFileCount.append(" "); pathFileCount.append(rx.cap(2));
+        QString pathFileCount = ".\\data/"; pathFileCount.append(rx.cap(1));
+        pathFileCount.append(" "); pathFileCount.append(rx.cap(2));
 
         QDir dir (pathFileCount);
         FileList.clear();
@@ -226,6 +233,15 @@ bool server::parseGetVersions (QString data, QTcpSocket *client)
         return false;
 
     }
+    return false;
+}
+
+bool server::WrongCmd (QString data)
+{
+    QRegExp rx ("wrongCmd");
+    if (rx.indexIn(data) == -1) return false;
+
+    return true;
 }
 
 void server::FillingFileList (QDir & dir)

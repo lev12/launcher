@@ -43,6 +43,7 @@ public:
     bool parseConnectClient (QString data,QTcpSocket *client);
     bool parseGetListVersions (QString data,QTcpSocket *client);
     bool parseGetVersions (QString data, QTcpSocket *client);
+    bool WrongCmd (QString data);
 
     void FillingFileList (QDir & dir);
     void sizeVersion (QDir & dir);

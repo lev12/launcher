@@ -207,7 +207,7 @@ bool versions::parseDownloadFile (QString data,QTcpSocket *client)
 
 bool versions::getVersionListOnServer (QTcpSocket *client)
 {
-    QString send = "glv\n";
+    QString send = "glv";
     QTextStream stream (client);
     stream.operator <<(send);
 
@@ -218,7 +218,7 @@ bool versions::connectNet (QTcpSocket *client)
 {
     QString send = "connect:";
     send.append(QString::number(number_version_launcher));
-    send.append(":\n");
+    send.append(":");
     QTextStream stream (client);
     stream.operator <<(send);
     return true;

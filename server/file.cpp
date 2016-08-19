@@ -14,13 +14,13 @@ void File::FillingVersionList ()
     temp = dir.entryInfoList();
 
 
-    //temp.takeAt(0);
-    //temp.takeAt(1);
+    temp.takeAt(0);
+    temp.takeAt(0);
 
     if (!temp.length() == 0)
     {
         int rem_index(0);
-        for (int i(0); i<=(temp.length()+1); i++)
+        for (int i(0); i < temp.length(); i++)
         {
 
             if(!temp.at(i-rem_index).isDir())
