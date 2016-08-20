@@ -1,3 +1,6 @@
+-------------------------------------------------------------------------
+network
+
 server = ser
 client = cln
 version = [type_number]
@@ -25,3 +28,25 @@ ser     file:'name':'size':'count block':
 clr     file:reception:
 ser     ...  :file:endFile
         file:ulEnd:
+
+
+------------------------------------------------------------------------
+file
+
+Name folders with versions writing across space.
+pre-alpha 1
+alpha 2
+beta 3
+relese 4
+
+Transfer by network.
+pre-alpha_1
+alpha_2
+beta_3
+relese_4
+
+In config verion.
+pre-alpha 1
+alpha 2
+beta 3
+relese 4

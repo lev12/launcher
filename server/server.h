@@ -17,7 +17,7 @@
 #include "log.h"
 #include "globalvariable.h"
 
-class server : public QObject
+class Server : public QObject
 {
     Q_OBJECT
 
@@ -37,7 +37,7 @@ public:
     QList <QFileInfo> FileList;
     long long size;
 
-    server();
+    Server();
 
     bool parse(QString data, QTcpSocket *client);
     bool parseConnectClient (QString data,QTcpSocket *client);
@@ -47,6 +47,8 @@ public:
 
     void FillingFileList (QDir & dir);
     void sizeVersion (QDir & dir);
+
+    ~Server();
 };
 
 #endif // SERVER_H

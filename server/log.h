@@ -31,8 +31,10 @@ public:
     };
 
     Log(QString PathLog);
-    void print (QString text = "Null", type classMessages = info, transfer InOut = null);
+
     void head ();
+    void print (QString text = "Null", type classMessages = info, transfer InOut = null);
+    void end ();
 };
 
 #endif // LOG_H

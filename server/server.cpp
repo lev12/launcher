@@ -4,7 +4,7 @@
 
 using namespace std;
 
-server::server()
+Server::Server()
 {
     logPrint = new Log(LogPath);
     server_tcp = new QTcpServer(this);
@@ -23,7 +23,12 @@ server::server()
     //time->start(100);
 }
 
-void server::Connect ()
+Server::~Server()
+{
+    logPrint->end();
+}
+
+void Server::Connect ()
 {
     logPrint->print ("connct new user", Log::info);
     QTcpSocket* clientSocket=server_tcp->nextPendingConnection();
@@ -33,12 +38,12 @@ void server::Connect ()
     return;
 }
 
-void server::tick ()
+void Server::tick ()
 {
     qDebug ("aswqwe");
 }
 
-void server::ReadClient()
+void Server::ReadClient()
 {
     QTcpSocket* clientSocket = (QTcpSocket*)sender();
     int idusersocs=clientSocket->socketDescriptor();
@@ -57,7 +62,7 @@ void server::ReadClient()
 
 //parse
 
-bool server::parse (QString data,QTcpSocket* client)
+bool Server::parse (QString data,QTcpSocket* client)
 {
     if (parseConnectClient(data,client))
     {
@@ -73,7 +78,7 @@ bool server::parse (QString data,QTcpSocket* client)
     return false;
 }
 
-bool server::parseConnectClient (QString data,QTcpSocket* client)
+bool Server::parseConnectClient (QString data,QTcpSocket* client)
 {
     int versionClient;
     int pos = 0;
@@ -94,7 +99,7 @@ bool server::parseConnectClient (QString data,QTcpSocket* client)
     return true;
 }
 
-bool server::parseGetListVersions (QString data,QTcpSocket* client)
+bool Server::parseGetListVersions (QString data,QTcpSocket* client)
 {
     int pos = 0;
     QRegExp rx ("glv");
@@ -123,7 +128,7 @@ bool server::parseGetListVersions (QString data,QTcpSocket* client)
     return true;
 }
 
-bool server::parseGetVersions (QString data, QTcpSocket *client)
+bool Server::parseGetVersions (QString data, QTcpSocket *client)
 {
     static bool stream;
     static bool streamTransfer;
@@ -242,7 +247,7 @@ bool server::parseGetVersions (QString data, QTcpSocket *client)
     return false;
 }
 
-bool server::WrongCmd (QString data)
+bool Server::WrongCmd (QString data)
 {
     QRegExp rx ("wrongCmd");
     if (rx.indexIn(data) == -1) return false;
@@ -250,7 +255,7 @@ bool server::WrongCmd (QString data)
     return true;
 }
 
-void server::FillingFileList (QDir & dir)
+void Server::FillingFileList (QDir & dir)
 {
     QList <QString> lstDirs = dir.entryList(QDir::Dirs | QDir::AllDirs | QDir::NoDotAndDotDot);
     QList <QFileInfo> lstFiles = dir.entryInfoList(QDir::Files);
@@ -266,7 +271,7 @@ void server::FillingFileList (QDir & dir)
     return;
 }
 
-void server::sizeVersion (QDir & dir)
+void Server::sizeVersion (QDir & dir)
 {
     size = 0;
     foreach (QFileInfo item, FileList) {

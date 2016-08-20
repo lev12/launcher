@@ -111,3 +111,19 @@ void Log::head()
 
     return;
 }
+
+void Log::end ()
+{
+    QTextStream stream (logFile);
+
+    QString printEndInLog;
+    printEndInLog.append("[Date]       "); printEndInLog.append(QDate::currentDate().toString("dd:MM:yyyy"));
+    printEndInLog.append("\n");
+    printEndInLog.append("[Time]       "); printEndInLog.append(QTime::currentTime().toString());
+    printEndInLog.append("\n");
+    printEndInLog.append("[----------------------------END LOG FILE----------------------------");
+
+    stream.operator <<(printEndInLog);
+
+    return;
+}
