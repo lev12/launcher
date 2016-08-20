@@ -16,21 +16,27 @@ Log::Log(QString PathLog)
     logFile = new QFile(pathFileLog);
     if (!(logFile->open(QIODevice::WriteOnly | QIODevice::Text)))
     {
-        printf("error:not log file/n");
+        printf("[");
+        printf(QTime::currentTime().toString().toStdString().c_str());
+        printf("] [warning] [not log file]\n");
         QDir createPath(".//");
         if(createPath.mkdir("log"))
         {
-            printf("info:create path/n");
+            printf("[");
+            printf(QTime::currentTime().toString().toStdString().c_str());
+            printf("] [info] [create log file]\n");
         }else
         {
-            printf("error:failed create the path/n");
+            printf("[");
+            printf(QTime::currentTime().toString().toStdString().c_str());
+            printf("] [error] [failed create log file]\n");
         }
         logFile->open(QIODevice::WriteOnly | QIODevice::Text);
     }
     head();
 }
 
-void Log::print(QString text, type classMessages)
+void Log::print(QString text, type classMessages, transfer InOut)
 {
     QString send = "[";
     send.append(QTime::currentTime().toString());
@@ -55,8 +61,31 @@ void Log::print(QString text, type classMessages)
         break;
     }
 
+    QString InOutTransfer;
+    switch (InOut) {
+    case sreverOut:
+        InOutTransfer = "<< server";
+        break;
+    case clientIn:
+        InOutTransfer = ">> client";
+        break;
+    case null:
+        InOutTransfer = "NULL";
+    default:
+        break;
+    }
+
     send.append(tempClassMassage);
-    send.append("] [");
+    send.append("] ");
+
+    if (InOutTransfer != "NULL")
+    {
+        send.append("[");
+        send.append(InOutTransfer);
+        send.append("] ");
+    }
+
+    send.append("[");
     send.append(text);
     send.append("]\n");
 

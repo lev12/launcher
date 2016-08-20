@@ -23,8 +23,15 @@ public:
         critical_error
     };
 
+    enum transfer
+    {
+        clientIn,
+        sreverOut,
+        null
+    };
+
     Log(QString PathLog);
-    void print (QString text = "Null", type classMessages = info);
+    void print (QString text = "Null", type classMessages = info, transfer InOut = null);
     void head ();
 };
 

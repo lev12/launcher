@@ -46,11 +46,11 @@ void server::ReadClient()
     out = clientSocket->readAll();
     if (WrongCmd(out))
     {
-        logPrint->print(out, Log::error);
+        logPrint->print(out, Log::error, Log::clientIn);
     }
     else
     {
-        logPrint->print(out, Log::info);
+        logPrint->print(out, Log::info, Log::clientIn);
         parse(out,clientSocket);
     }
 }
@@ -89,6 +89,7 @@ bool server::parseConnectClient (QString data,QTcpSocket* client)
     send.append(":");
     QTextStream os(client);
     os << send;
+    logPrint->print (send, Log::info, Log::sreverOut);
 
     return true;
 }
@@ -118,6 +119,7 @@ bool server::parseGetListVersions (QString data,QTcpSocket* client)
 
     QTextStream os (client);
     os << send;
+    logPrint->print (send, Log::info, Log::sreverOut);
     return true;
 }
 
@@ -149,6 +151,7 @@ bool server::parseGetVersions (QString data, QTcpSocket *client)
         if(!verCon.checkVersion(rx.cap(1),rx.cap(2)))
         {
             printf("no version\n");
+            logPrint->print("no version", Log::error);
         }
 
         QString tempName = rx.cap(1); tempName.append("_"); tempName.append(rx.cap(2));
@@ -156,6 +159,7 @@ bool server::parseGetVersions (QString data, QTcpSocket *client)
         send.append("exe:"); send.append(verCon.getExeFile(verCon.getFile(rx.cap(1),rx.cap(2))));
         send.append(":"); send.append(QString::number(countVersions));
         send.append(":"); send.append(QString::number(size_temp));
+        logPrint->print (send, Log::info, Log::sreverOut);
         stream.operator <<(send);
 
         return true;
@@ -205,6 +209,7 @@ bool server::parseGetVersions (QString data, QTcpSocket *client)
                 buffer = file.read(1024);
 
                 qDebug () << buffer;
+                logPrint->print (buffer, Log::info, Log::sreverOut);
 
                 client->write(buffer);
                 client->flush();
@@ -225,6 +230,7 @@ bool server::parseGetVersions (QString data, QTcpSocket *client)
             send.append(QString::number(sizeFile)); send.append(":");
 
             sendStream.operator <<(send);
+            logPrint->print (send, Log::info, Log::sreverOut);
             streamData = false;
             return true;
         }
