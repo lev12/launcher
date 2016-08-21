@@ -102,7 +102,7 @@ bool Server::parseConnectClient (QString data,QTcpSocket* client)
 bool Server::parseGetListVersions (QString data,QTcpSocket* client)
 {
     int pos = 0;
-    QRegExp rx ("glv");
+    QRegExp rx ("glv:");
 
     if ((pos = rx.indexIn(data, pos)) == -1)
     {

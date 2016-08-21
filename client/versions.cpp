@@ -207,7 +207,7 @@ bool versions::parseDownloadFile (QString data,QTcpSocket *client)
 
 bool versions::getVersionListOnServer (QTcpSocket *client)
 {
-    QString send = "glv";
+    QString send = "glv:";
     QTextStream stream (client);
     stream.operator <<(send);
 

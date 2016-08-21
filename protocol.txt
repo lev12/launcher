@@ -13,7 +13,7 @@ ser     connect:'version ser':
 
 List version
 cln     glv:                            //get list versions
-ser	ver:rlv:5:			//count versions
+ser	ver:rlv:'count versions':			//count versions
 ser     ver:alpha_1: 			//return list version
 	ver:alpha_2: 
 	ver:...:
