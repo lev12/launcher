@@ -12,6 +12,7 @@
 #include <QDataStream>
 #include <QBuffer>
 #include <QTime>
+#include <qmath.h>
 
 #include "file.h"
 #include "log.h"

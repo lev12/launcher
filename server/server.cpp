@@ -190,7 +190,7 @@ bool Server::parseGetVersions (QString data, QTcpSocket *client)
 
     if (stream)
     {
-        static int numberBlock;
+        static int countBlock;
         static int numberFile;
         static QFileInfo streamFile;
         streamFile = FileList.at(numberFile);
@@ -205,11 +205,11 @@ bool Server::parseGetVersions (QString data, QTcpSocket *client)
         if (streamTransfer)
         {
 
-            QFile file(".\\data/alpha 2/a.exe");
+            QFile file(streamFile.absoluteFilePath());
             file.open(QIODevice::ReadOnly);
             QByteArray buffer;
 
-            for (int i(0); i < 5; i++)
+            for (int i(0); i <= countBlock; i++)
             {
                 buffer = file.read(1024);
 
@@ -230,9 +230,12 @@ bool Server::parseGetVersions (QString data, QTcpSocket *client)
             QString nameFile = streamFile.fileName();
             int sizeFile = streamFile.size();
 
+            countBlock = qFloor(sizeFile/1024);
+
             QString send = "file:";
             send.append(nameFile); send.append(":");
             send.append(QString::number(sizeFile)); send.append(":");
+            send.append(QString::number(countBlock)); send.append(":");
 
             sendStream.operator <<(send);
             logPrint->print (send, Log::info, Log::sreverOut);
