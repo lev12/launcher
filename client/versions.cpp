@@ -132,18 +132,25 @@ bool versions::parseDownloadFile (QString data,QTcpSocket *client)
     {
         static bool download;
         static QFileInfo fileDownload;
+        static int fileSize;
 
-        QRegExp rxDl ("file:(.+):(\\d+):"); //file:(\\.+) (\\.+):(\\d+):
-        if ((pos = rxDl.indexIn(data)) != -1)
+        QRegExp rxDl ("file:(.+):(\\d+):(\\d+)"); //file:(\\.+) (\\.+):(\\d+):
+        if (rxDl.indexIn(data) != -1)
         {
             QString pathNewVersion = ".\\data/";
-            pathNewVersion.append(nameVersion); pathNewVersion.append("/");
+            QStringList tempVersionName = nameVersion.split("_");
+            pathNewVersion.append(tempVersionName.at(0));
+            pathNewVersion.append(" ");
+            pathNewVersion.append(tempVersionName.at(1));
+            pathNewVersion.append("/");
             pathNewVersion.append(rxDl.cap(1));
+
             QFile createFile (pathNewVersion);
-            createFile.open(QIODevice::ReadOnly);
+            createFile.open(QIODevice::WriteOnly);
             createFile.close();
             fileDownload = createFile;
 
+            fileSize = rxDl.cap(3).toInt();
             client->write("file:reception:");
             download = true;
             return true;
@@ -151,11 +158,30 @@ bool versions::parseDownloadFile (QString data,QTcpSocket *client)
 
         if (download)
         {
-                qDebug() << data;
+                //qDebug() << data;
+
+                QRegExp rxEndTransfer ("file:endFile");
+                if (rxEndTransfer.indexIn(data) != -1)
+                {
+                    QString send = "file:";
+
+                    if(fileDownload.size() >= fileSize)
+                    {
+                        send.append("accepted");
+                    }else{
+                        send.append("error");
+                    }
+
+                    client->write(send.toLocal8Bit());
+                    return true;
+                }
 
                 QString path = fileDownload.absoluteFilePath();
                 QFile file(path);
-                file.open(QIODevice::WriteOnly);
+                if (!file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Append))
+                {
+                    qDebug ()  << "Not file";
+                }
                 file.write(data.toLocal8Bit());
 
             return true;
@@ -234,7 +260,7 @@ void versions::readServer()
         QTextStream stream (client);
         stream.operator <<(send);
     }
-    qDebug () << data;
+    //qDebug () << data;
 }
 
 bool versions::downloadVersion (QString name, QTcpSocket *client)

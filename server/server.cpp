@@ -191,7 +191,7 @@ bool Server::parseGetVersions (QString data, QTcpSocket *client)
     if (stream)
     {
         static int countBlock;
-        static int numberFile;
+        static int numberFile = 0;
         static QFileInfo streamFile;
         streamFile = FileList.at(numberFile);
 
@@ -204,6 +204,13 @@ bool Server::parseGetVersions (QString data, QTcpSocket *client)
 
         if (streamTransfer)
         {
+            QRegExp rxEndAccepted ("file:accepted");
+
+            if (rxEndAccepted.indexIn(data) != -1)
+            {
+                streamTransfer = false;
+                return true;
+            }
 
             QFile file(streamFile.absoluteFilePath());
             file.open(QIODevice::ReadOnly);
@@ -214,12 +221,15 @@ bool Server::parseGetVersions (QString data, QTcpSocket *client)
                 buffer = file.read(1024);
 
                 qDebug () << buffer;
-                logPrint->print (buffer, Log::info, Log::sreverOut);
+                //logPrint->print (buffer, Log::info, Log::sreverOut);
 
                 client->write(buffer);
                 client->flush();
             }
+            client->flush();
+            client->write("file:endFile");
 
+            return true;
         }
 
         if (streamData)

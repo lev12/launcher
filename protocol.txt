@@ -25,8 +25,11 @@ cln	file:get:'version':
 ser	file:ul:'version':exe:'start file':'count file':'size version':
 cln     file:ok_reception_file: else file:fail:
 ser     file:'name':'size':'count block':
-clr     file:reception:
-ser     ...  :file:endFile
+cln     file:reception:
+ser     ...
+        file:endFile
+cln	file:accepted else file:error:'number error'
+
         file:ulEnd:
 
 
