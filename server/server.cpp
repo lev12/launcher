@@ -209,6 +209,7 @@ bool Server::parseGetVersions (QString data, QTcpSocket *client)
             if (rxEndAccepted.indexIn(data) != -1)
             {
                 streamTransfer = false;
+                stream = false;
                 return true;
             }
 

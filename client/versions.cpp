@@ -165,7 +165,7 @@ bool versions::parseDownloadFile (QString data,QTcpSocket *client)
                 {
                     QString send = "file:";
 
-                    if(fileDownload.size() >= fileSize)
+                    if(fileDownload.size() <= fileSize)
                     {
                         send.append("accepted");
                     }else{
@@ -183,6 +183,7 @@ bool versions::parseDownloadFile (QString data,QTcpSocket *client)
                     qDebug ()  << "Not file";
                 }
                 file.write(data.toLocal8Bit());
+                file.flush();
 
             return true;
         }
