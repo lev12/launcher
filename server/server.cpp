@@ -219,16 +219,18 @@ bool Server::parseGetVersions (QString data, QTcpSocket *client)
 
             for (int i(0); i <= countBlock; i++)
             {
-                buffer = file.read(1024);
+                buffer = file.read(SizeInternetPackage);
 
-                qDebug () << buffer;
+                //qDebug () << buffer;
                 //logPrint->print (buffer, Log::info, Log::sreverOut);
+
 
                 client->write(buffer);
                 client->flush();
             }
             client->flush();
-            client->write("file:endFile");
+
+            //client->write("file:endFile");
 
             return true;
         }
@@ -241,7 +243,7 @@ bool Server::parseGetVersions (QString data, QTcpSocket *client)
             QString nameFile = streamFile.fileName();
             int sizeFile = streamFile.size();
 
-            countBlock = qFloor(sizeFile/1024);
+            countBlock = qFloor(sizeFile/SizeInternetPackage);
 
             QString send = "file:";
             send.append(nameFile); send.append(":");

@@ -42,6 +42,7 @@ private:
 
 
     quint16 nextBlockSize;
+    QByteArray buff;
 
 private slots:
     void readServer();

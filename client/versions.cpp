@@ -158,14 +158,12 @@ bool versions::parseDownloadFile (QString data,QTcpSocket *client)
 
         if (download)
         {
-                //qDebug() << data;
-
                 QRegExp rxEndTransfer ("file:endFile");
-                if (rxEndTransfer.indexIn(data) != -1)
+                if (rxEndTransfer.indexIn(buff) != -1)
                 {
                     QString send = "file:";
 
-                    if(fileDownload.size() <= fileSize)
+                    if(fileDownload.size() >= fileSize)
                     {
                         send.append("accepted");
                     }else{
@@ -178,11 +176,12 @@ bool versions::parseDownloadFile (QString data,QTcpSocket *client)
 
                 QString path = fileDownload.absoluteFilePath();
                 QFile file(path);
-                if (!file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Append))
+                //qDebug () << buff.size();
+                if (!file.open(QIODevice::WriteOnly | QIODevice::Append))
                 {
                     qDebug ()  << "Not file";
                 }
-                file.write(data.toLocal8Bit());
+                file.write(buff);
                 file.flush();
 
             return true;
@@ -253,11 +252,12 @@ bool versions::connectNet (QTcpSocket *client)
 
 void versions::readServer()
 {
-    QString data = client->readAll();
+    QByteArray data = client->readAll();
+    buff = data;
     if(!parse (data, client))
     {
         QString send = "wrongCmd(";
-        send.append( data); send.append(")");
+        send.append(QString (data)); send.append(")");
         QTextStream stream (client);
         stream.operator <<(send);
     }
