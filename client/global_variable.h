@@ -5,7 +5,7 @@
 
 
 const unsigned short number_version_launcher = 5;
-const QString IPServer = "192.168.1.15";
+const QString IPServer = "192.168.1.17";
 const unsigned short PortServer = 1234;
 
 

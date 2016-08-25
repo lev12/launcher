@@ -6,6 +6,6 @@
 const quint16 port = 1234;
 const QString LogPath = ".//log";
 const quint16 DefaltInterval = 3000;
-const unsigned short  SizeInternetPackage = 8198;
+const unsigned short  SizeInternetPackage = 4096;
 
 #endif // GLOBALVARIABLE_H
