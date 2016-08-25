@@ -100,7 +100,7 @@ bool versions::parseListVersions (QString data,QTcpSocket *client)
         {
             stream = true;
         }
-            else
+        else
         {
             if (stream)
             {
@@ -124,6 +124,7 @@ bool versions::parseListVersions (QString data,QTcpSocket *client)
 bool versions::parseDownloadFile (QString data,QTcpSocket *client)
 {
     static bool streamDownload;
+    static bool streamData = true;
     static QString nameVersion;
 
     int pos = 0;
@@ -134,61 +135,81 @@ bool versions::parseDownloadFile (QString data,QTcpSocket *client)
         static QFileInfo fileDownload;
         static int fileSize;
 
-        QRegExp rxDl ("file:(.+):(\\d+):(\\d+)"); //file:(\\.+) (\\.+):(\\d+):
-        if (rxDl.indexIn(data) != -1)
+        if (streamData)
         {
-            QString pathNewVersion = ".\\data/";
-            QStringList tempVersionName = nameVersion.split("_");
-            pathNewVersion.append(tempVersionName.at(0));
-            pathNewVersion.append(" ");
-            pathNewVersion.append(tempVersionName.at(1));
-            pathNewVersion.append("/");
-            pathNewVersion.append(rxDl.cap(1));
+            QRegExp rxDl ("file:(.+):(\\d+):(\\d+)"); //file:(\\.+) (\\.+):(\\d+):
+            if (rxDl.indexIn(data) != -1)
+            {
+                QString pathNewVersion = ".\\data/";
+                QStringList tempVersionName = nameVersion.split("_");
+                pathNewVersion.append(tempVersionName.at(0));
+                pathNewVersion.append(" ");
+                pathNewVersion.append(tempVersionName.at(1));
+                pathNewVersion.append("/");
+                pathNewVersion.append(rxDl.cap(1));
 
-            QFile createFile (pathNewVersion);
-            createFile.open(QIODevice::WriteOnly);
-            createFile.close();
-            fileDownload = createFile;
+                QFileInfo fileInfo (pathNewVersion);
+                QString pathRem (".\\data/");
 
-            fileSize = rxDl.cap(3).toInt();
-            client->write("file:reception:");
-            download = true;
-            return true;
-        }
+                QStringList versionName = nameVersion.split("_");
+                QString tempName = versionName.at(0);
+                tempName.append(" ");
+                tempName.append(versionName.at(1));
 
-        if (download)
-        {
-                QRegExp rxEndTransfer ("file:endFile");
-                if (rxEndTransfer.indexIn(buff) != -1)
+                pathRem.append(tempName);
+                QDir dir (pathRem);
+                dir.mkpath(fileInfo.absolutePath().remove(pathRem));
+                qDebug () << fileInfo.baseName();
+                QFile createFile (fileInfo.absoluteFilePath());
+                createFile.open(QIODevice::WriteOnly);
+                createFile.close();
+                fileDownload = createFile;
+
+                fileSize = rxDl.cap(2).toInt();
+                client->write("file:reception:");
+
+                if (fileSize == 0)
                 {
                     QString send = "file:";
-
-                    if(fileDownload.size() >= fileSize)
-                    {
-                        send.append("accepted");
-                    }else{
-                        send.append("error");
-                    }
-
+                    send.append("accepted");
                     client->write(send.toLocal8Bit());
                     return true;
                 }
 
-                QString path = fileDownload.absoluteFilePath();
-                QFile file(path);
-                //qDebug () << buff.size();
-                if (!file.open(QIODevice::WriteOnly | QIODevice::Append))
-                {
-                    qDebug ()  << "Not file";
-                }
-                file.write(buff);
-                file.flush();
+                download = true;
+                streamData = false;
+                return true;
+            }
+        }
 
+        if (download)
+        {
+
+            QString path = fileDownload.absoluteFilePath();
+            QFile file(path);
+            //qDebug () << buff.size();
+            if (!file.open(QIODevice::WriteOnly | QIODevice::Append))
+            {
+                qDebug ()  << "Not file";
+            }
+            file.write(buff);
+            file.flush();
+
+
+
+            if(file.size() == fileSize)
+            {
+                QString send = "file:";
+                send.append("accepted");
+                client->write(send.toLocal8Bit());
+                download = false;
+            }
+            streamData = true;
             return true;
         }
     }
 
-    QRegExp rx (QString("file:ul:(\.+):exe:(\.+):(\\d+):(\\d+)"));
+    QRegExp rx (QString("file:ul:(.+):exe:(.+):(\\d+):(\\d+)"));
 
     if ((pos = rx.indexIn(data)) == -1)
     {
@@ -302,7 +323,7 @@ bool versions::deleteVersion(QString type,QString number)
     QString name = getVersionName(getFile(type,number));
 
     QString path = ".//data/";
-            path.append(name);
+    path.append(name);
     QDir dirDel(path);
 
     removeFolder(dirDel);
@@ -313,31 +334,31 @@ bool versions::deleteVersion(QString type,QString number)
 
 int versions::removeFolder(QDir & dir)
 {
-  int res = 0;
-  QStringList lstDirs = dir.entryList(QDir::Dirs |
-                  QDir::AllDirs |
-                  QDir::NoDotAndDotDot);
-  QStringList lstFiles = dir.entryList(QDir::Files);
+    int res = 0;
+    QStringList lstDirs = dir.entryList(QDir::Dirs |
+                                        QDir::AllDirs |
+                                        QDir::NoDotAndDotDot);
+    QStringList lstFiles = dir.entryList(QDir::Files);
 
-  foreach (QString entry, lstFiles)
-  {
-   QString entryAbsPath = dir.absolutePath() + "/" + entry;
-   QFile::setPermissions(entryAbsPath, QFile::ReadOwner | QFile::WriteOwner);
-   QFile::remove(entryAbsPath);
-  }
+    foreach (QString entry, lstFiles)
+    {
+        QString entryAbsPath = dir.absolutePath() + "/" + entry;
+        QFile::setPermissions(entryAbsPath, QFile::ReadOwner | QFile::WriteOwner);
+        QFile::remove(entryAbsPath);
+    }
 
-  foreach (QString entry, lstDirs)
-  {
-   QString entryAbsPath = dir.absolutePath() + "/" + entry;
-   QDir dr(entryAbsPath);
-   removeFolder(dr);
-  }
+    foreach (QString entry, lstDirs)
+    {
+        QString entryAbsPath = dir.absolutePath() + "/" + entry;
+        QDir dr(entryAbsPath);
+        removeFolder(dr);
+    }
 
-  if (!QDir().rmdir(dir.absolutePath()))
-  {
-    res = 1;
-  }
-  return res;
+    if (!QDir().rmdir(dir.absolutePath()))
+    {
+        res = 1;
+    }
+    return res;
 }
 
 bool versions::checkVersion(QFileInfo path)
@@ -357,24 +378,21 @@ bool versions::checkVersion(QFileInfo path)
         switch (i)
         {
         case 0:
-
-
-
             if(temp == "pre-alpha")
             {
-              break;
+                break;
             }
             if(temp == "alpha")
             {
-              break;
+                break;
             }
             if(temp == "beta")
             {
-              break;
+                break;
             }
             if(temp == "release")
             {
-              break;
+                break;
             }
             return false;
             break;

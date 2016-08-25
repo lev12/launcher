@@ -13,6 +13,7 @@
 #include <QBuffer>
 #include <QTime>
 #include <qmath.h>
+#include <QThread>
 
 #include "file.h"
 #include "log.h"
@@ -45,6 +46,7 @@ public:
     bool parseGetListVersions (QString data,QTcpSocket *client);
     bool parseGetVersions (QString data, QTcpSocket *client);
     bool WrongCmd (QString data);
+    QString streamDataFile (QString file, int sizeFile, int countBlock);
 
     void FillingFileList (QDir & dir);
     void sizeVersion (QDir & dir);
