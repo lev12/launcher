@@ -150,15 +150,22 @@ bool versions::parseDownloadFile (QString data,QTcpSocket *client)
             createFile.close();
             fileDownload = createFile;
 
-            fileSize = rxDl.cap(3).toInt();
+            fileSize = rxDl.cap(2).toInt();
             client->write("file:reception:");
+
+            if(fileSize == 0)
+            {
+                client->write("file:accepted");
+                return true;
+            }
+
             download = true;
             return true;
         }
 
         if (download)
         {
-                QRegExp rxEndTransfer ("file:endFile");
+                /*QRegExp rxEndTransfer ("file:endFile");
                 if (rxEndTransfer.indexIn(buff) != -1)
                 {
                     QString send = "file:";
@@ -172,7 +179,7 @@ bool versions::parseDownloadFile (QString data,QTcpSocket *client)
 
                     client->write(send.toLocal8Bit());
                     return true;
-                }
+                }*/
 
                 QString path = fileDownload.absoluteFilePath();
                 QFile file(path);
@@ -183,6 +190,12 @@ bool versions::parseDownloadFile (QString data,QTcpSocket *client)
                 }
                 file.write(buff);
                 file.flush();
+
+                if (file.size() == fileSize)
+                {
+                    client->write("file:accepted");
+                    download = false;
+                }
 
             return true;
         }

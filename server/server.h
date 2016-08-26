@@ -45,6 +45,7 @@ public:
     bool parseGetListVersions (QString data,QTcpSocket *client);
     bool parseGetVersions (QString data, QTcpSocket *client);
     bool WrongCmd (QString data);
+    QString streamDataFile (QString filePath, int sizeFile, int countBlock);
 
     void FillingFileList (QDir & dir);
     void sizeVersion (QDir & dir);

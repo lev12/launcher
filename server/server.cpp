@@ -133,6 +133,7 @@ bool Server::parseGetVersions (QString data, QTcpSocket *client)
     static bool stream;
     static bool streamTransfer;
     static bool streamData;
+    static QString versionName;
     int pos = 0;
 
     QRegExp rx ("file:get:(\\w+) (\\d+)");
@@ -155,7 +156,6 @@ bool Server::parseGetVersions (QString data, QTcpSocket *client)
 
         if(!verCon.checkVersion(rx.cap(1),rx.cap(2)))
         {
-            printf("no version\n");
             logPrint->print("no version", Log::error);
         }
 
@@ -166,6 +166,10 @@ bool Server::parseGetVersions (QString data, QTcpSocket *client)
         send.append(":"); send.append(QString::number(size_temp));
         logPrint->print (send, Log::info, Log::sreverOut);
         stream.operator <<(send);
+
+        versionName.append(rx.cap(1));
+        versionName.append(" ");
+        versionName.append(rx.cap(2));
 
         return true;
     }
@@ -208,8 +212,26 @@ bool Server::parseGetVersions (QString data, QTcpSocket *client)
 
             if (rxEndAccepted.indexIn(data) != -1)
             {
+                if (numberFile == (FileList.count() - 1))
+                {
+                    client->write("file:ulEnd:");
+                    stream = false;
+                }
+                numberFile++;
+                streamFile = FileList.at(numberFile);
+
+                QString pathRem = ".//data/";
+                pathRem.append(versionName);
+                QFileInfo filePathRem (pathRem);
+                QString filePath = streamFile.absoluteFilePath();
+                filePath.remove(filePathRem.absoluteFilePath());
+
+                int sizeFile = streamFile.size();
+                countBlock = qFloor(sizeFile/SizeInternetPackage);
+                QString send = streamDataFile(filePath,sizeFile,countBlock);
+                client->write(send.toLocal8Bit());
+                logPrint->print(send, Log::info, Log::sreverOut);
                 streamTransfer = false;
-                stream = false;
                 return true;
             }
 
@@ -220,17 +242,10 @@ bool Server::parseGetVersions (QString data, QTcpSocket *client)
             for (int i(0); i <= countBlock; i++)
             {
                 buffer = file.read(SizeInternetPackage);
-
-                //qDebug () << buffer;
-                //logPrint->print (buffer, Log::info, Log::sreverOut);
-
-
                 client->write(buffer);
                 client->flush();
             }
             client->flush();
-
-            //client->write("file:endFile");
 
             return true;
         }
@@ -244,12 +259,7 @@ bool Server::parseGetVersions (QString data, QTcpSocket *client)
             int sizeFile = streamFile.size();
 
             countBlock = qFloor(sizeFile/SizeInternetPackage);
-
-            QString send = "file:";
-            send.append(nameFile); send.append(":");
-            send.append(QString::number(sizeFile)); send.append(":");
-            send.append(QString::number(countBlock)); send.append(":");
-
+            QString send = streamDataFile(nameFile, sizeFile, countBlock);
             sendStream.operator <<(send);
             logPrint->print (send, Log::info, Log::sreverOut);
             streamData = false;
@@ -261,6 +271,15 @@ bool Server::parseGetVersions (QString data, QTcpSocket *client)
 
     }
     return false;
+}
+
+QString Server::streamDataFile (QString filePath, int sizeFile, int countBlock)
+{
+    QString send = "file:";
+    send.append(filePath); send.append(":");
+    send.append(QString::number(sizeFile)); send.append(":");
+    send.append(QString::number(countBlock)); send.append(":");
+    return send;
 }
 
 bool Server::WrongCmd (QString data)
