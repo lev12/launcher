@@ -245,6 +245,7 @@ bool Server::parseGetVersions (QString data, QTcpSocket *client)
                 buffer = file.read(SizeInternetPackage);
                 client->write(buffer);
                 client->flush();
+                client->waitForBytesWritten();
             }
             client->flush();
 

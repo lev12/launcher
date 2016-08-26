@@ -32,6 +32,13 @@ cln	file:accepted else file:error:'number error'
 
         file:ulEnd:
 
+Disconnect server << client
+cln	disconnect:cln
+ser	disconnect:ser else error:disconnect
+
+Disconnect server >> client
+ser	disconnect:ser
+cln	disconnect:cln else error:disconnect
 
 ------------------------------------------------------------------------
 file

@@ -61,26 +61,30 @@ public:
     QTcpSocket *client;
 
     void init();
-    bool addVersion(QString type,QString number);
-    bool deleteVersion(QString type,QString number);
-    bool checkVersion(QString type, QString number);
-    bool checkVersion(QFileInfo path);
-    QFileInfo getFile (QString type, QString number);
+    bool addVersion     (QString type, QString number);
+    bool deleteVersion  (QString type, QString number);
+    bool checkVersion   (QString type, QString number);
+    bool checkVersion  (QFileInfo path);
+    QFileInfo getFile   (QString type, QString number);
     bool open();
-    void FillingComboBox (QComboBox *cb);
-    QString getVersionName (QFileInfo path);
-    QString getExeFile (QFileInfo path);
-    QString getItemComboBox (QComboBox *cb);
-    bool isInstall (QString type, QString number);
+    void FillingComboBox     (QComboBox *cb);
+    QString getVersionName  (QFileInfo path);
+    QString getExeFile      (QFileInfo path);
+    QString getItemComboBox  (QComboBox *cb);
+    bool isInstall          (QString type, QString number);
 
     bool getVersionListOnServer (QTcpSocket *client);
-    bool connectNet (QTcpSocket *client);
-    bool downloadVersion (QString name, QTcpSocket *client);
+    bool connectNet             (QTcpSocket *client);
+    bool downloadVersion         (QString name, QTcpSocket *client);
+    bool disconnectNet          (QTcpSocket *client);
 
-    bool parse (QString data, QTcpSocket *client);
+    bool parse              (QString data, QTcpSocket *client);
     bool parseConnectServer (QString data, QTcpSocket *client);
-    bool parseListVersions (QString data,QTcpSocket *client);
-    bool parseDownloadFile (QString data,QTcpSocket *client);
+    bool parseListVersions  (QString data, QTcpSocket *client);
+    bool parseDownloadFile  (QString data, QTcpSocket *client);
+    bool parseDisconnect    (QString data, QTcpSocket *client);
+
+    ~versions ();
 };
 
 #endif // VERSIONS_H

@@ -50,7 +50,11 @@ void versions::init()
     return;
 }
 
-
+versions::~versions ()
+{
+    disconnectNet(client);
+    client->waitForReadyRead();
+}
 
 //parse
 
@@ -66,8 +70,10 @@ bool versions::parse (QString data,QTcpSocket *client)
     }else if(parseDownloadFile (data, client))
     {
         return true;
+    }else if(parseDisconnect (data, client))
+    {
+        return true;
     }
-
 
     return false;
 }
@@ -237,28 +243,21 @@ bool versions::parseDownloadFile (QString data,QTcpSocket *client)
         return true;
     }
 }
+
+bool versions::parseDisconnect (QString data, QTcpSocket *client)
+{
+    QRegExp rxDiscon ("disconnect:ser");
+
+    if (rxDiscon.indexIn(data) != -1)
+    {
+        return true;
+    }
+    return false;
+}
+
 //end parse
 
 //net
-
-bool versions::getVersionListOnServer (QTcpSocket *client)
-{
-    QString send = "glv:";
-    QTextStream stream (client);
-    stream.operator <<(send);
-
-    return true;
-}
-
-bool versions::connectNet (QTcpSocket *client)
-{
-    QString send = "connect:";
-    send.append(QString::number(number_version_launcher));
-    send.append(":");
-    QTextStream stream (client);
-    stream.operator <<(send);
-    return true;
-}
 
 void versions::readServer()
 {
@@ -272,6 +271,23 @@ void versions::readServer()
         stream.operator <<(send);
     }
     //qDebug () << data;
+}
+
+bool versions::connectNet (QTcpSocket *client)
+{
+    QString send = "connect:";
+    send.append(QString::number(number_version_launcher));
+    send.append(":");
+    QTextStream stream (client);
+    stream.operator <<(send);
+    return true;
+}
+
+bool versions::disconnectNet (QTcpSocket *client)
+{
+    QTextStream streamDiscon (client);
+    streamDiscon.operator <<("disconnect:cln");
+    return true;
 }
 
 bool versions::downloadVersion (QString name, QTcpSocket *client)
@@ -288,6 +304,14 @@ bool versions::downloadVersion (QString name, QTcpSocket *client)
     return true;
 }
 
+bool versions::getVersionListOnServer (QTcpSocket *client)
+{
+    QString send = "glv:";
+    QTextStream stream (client);
+    stream.operator <<(send);
+
+    return true;
+}
 //end net
 
 bool versions::addVersion(QString type,QString number)
@@ -480,8 +504,7 @@ bool versions::open()
     /*QStringList arguments;
     arguments << "-style" << "fusion";
     QProcess vec;
-    vec.start(exe,arguments);
-    vec.waitForFinished(-1);
+    vec.startDetached(exe,arguments);
     return true;*/
 }
 
