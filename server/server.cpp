@@ -275,6 +275,17 @@ bool Server::parseGetVersions (QString data, QTcpSocket *client)
     return false;
 }
 
+bool Server::parseDisconnect (QString data, QTcpSocket *client)
+{
+    QRegExp rxDiscon ("disconnect:cln");
+    if (rxDiscon.indexIn(data) != -1)
+    {
+        return true;
+    }
+
+    return false;
+}
+
 QString Server::streamDataFile (QString filePath, int sizeFile, int countBlock)
 {
     QString send = "file:";

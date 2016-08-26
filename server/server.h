@@ -44,6 +44,7 @@ public:
     bool parseConnectClient (QString data,QTcpSocket *client);
     bool parseGetListVersions (QString data,QTcpSocket *client);
     bool parseGetVersions (QString data, QTcpSocket *client);
+    bool parseDisconnect (QString data, QTcpSocket *client);
     bool WrongCmd (QString data);
     QString streamDataFile (QString filePath, int sizeFile, int countBlock);
 
