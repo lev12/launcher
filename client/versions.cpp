@@ -131,71 +131,68 @@ bool versions::parseDownloadFile (QString data,QTcpSocket *client)
     if (streamDownload)
     {
         static bool download;
+        static bool downloadData = true;
         static QFileInfo fileDownload;
         static int fileSize;
 
-        QRegExp rxDl ("file:(.+):(\\d+):(\\d+)"); //file:(\\.+) (\\.+):(\\d+):
-        if (rxDl.indexIn(data) != -1)
+        if(downloadData)
         {
-            QString pathNewVersion = ".\\data/";
-            QStringList tempVersionName = nameVersion.split("_");
-            pathNewVersion.append(tempVersionName.at(0));
-            pathNewVersion.append(" ");
-            pathNewVersion.append(tempVersionName.at(1));
-            pathNewVersion.append("/");
-            pathNewVersion.append(rxDl.cap(1));
-
-            QFile createFile (pathNewVersion);
-            createFile.open(QIODevice::WriteOnly);
-            createFile.close();
-            fileDownload = createFile;
-
-            fileSize = rxDl.cap(2).toInt();
-            client->write("file:reception:");
-
-            if(fileSize == 0)
+            QRegExp rxDl ("file:(.+):(\\d+):(\\d+)"); //file:(\\.+) (\\.+):(\\d+):
+            if (rxDl.indexIn(data) != -1)
             {
-                client->write("file:accepted");
-                return true;
-            }
+                QString pathNewVersion = ".\\data/";
+                QStringList tempVersionName = nameVersion.split("_");
+                pathNewVersion.append(tempVersionName.at(0));
+                pathNewVersion.append(" ");
+                pathNewVersion.append(tempVersionName.at(1));
+                pathNewVersion.append("/");
+                pathNewVersion.append(rxDl.cap(1));
 
-            download = true;
-            return true;
-        }
+                QString versionFilePath (".//data");
+                versionFilePath.append(nameVersion);
+                QFileInfo versionFile (versionFilePath);
+                QFileInfo pathRem(pathNewVersion);
+                QString pathCreate (pathRem.absolutePath());
+                pathCreate.remove(versionFilePath);
+                QDir dir (versionFile.absoluteFilePath());
+                dir.mkpath(pathCreate);
 
-        if (download)
-        {
-                /*QRegExp rxEndTransfer ("file:endFile");
-                if (rxEndTransfer.indexIn(buff) != -1)
-                {
-                    QString send = "file:";
+                QFile createFile (pathNewVersion);
+                createFile.open(QIODevice::WriteOnly);
+                createFile.close();
+                fileDownload = createFile;
 
-                    if(fileDownload.size() >= fileSize)
-                    {
-                        send.append("accepted");
-                    }else{
-                        send.append("error");
-                    }
+                fileSize = rxDl.cap(2).toInt();
+                client->write("file:reception:");
 
-                    client->write(send.toLocal8Bit());
-                    return true;
-                }*/
-
-                QString path = fileDownload.absoluteFilePath();
-                QFile file(path);
-                //qDebug () << buff.size();
-                if (!file.open(QIODevice::WriteOnly | QIODevice::Append))
-                {
-                    qDebug ()  << "Not file";
-                }
-                file.write(buff);
-                file.flush();
-
-                if (file.size() == fileSize)
+                if(fileSize == 0)
                 {
                     client->write("file:accepted");
-                    download = false;
+                    return true;
                 }
+
+                downloadData = false;
+                download = true;
+                return true;
+            }
+        }
+        if (download)
+        {
+            QString path = fileDownload.absoluteFilePath();
+            QFile file(path);
+            if (!file.open(QIODevice::WriteOnly | QIODevice::Append))
+            {
+                qDebug ()  << "Not file";
+            }
+            file.write(buff);
+            file.flush();
+
+            if (file.size() == fileSize)
+            {
+                client->write("file:accepted");
+                download = false;
+                downloadData = true;
+            }
 
             return true;
         }

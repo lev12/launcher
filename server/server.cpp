@@ -216,6 +216,7 @@ bool Server::parseGetVersions (QString data, QTcpSocket *client)
                 {
                     client->write("file:ulEnd:");
                     stream = false;
+                    return true;
                 }
                 numberFile++;
                 streamFile = FileList.at(numberFile);
