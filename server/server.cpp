@@ -280,6 +280,7 @@ bool Server::parseDisconnect (QString data, QTcpSocket *client)
     QRegExp rxDiscon ("disconnect:cln");
     if (rxDiscon.indexIn(data) != -1)
     {
+        client->write("disconnect:ser");
         return true;
     }
 

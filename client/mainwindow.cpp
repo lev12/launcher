@@ -18,10 +18,13 @@ MainWindow::MainWindow(QWidget *parent) :
     int widthScrean = d->width();     // returns desktop width
     int heightScrean =  d->height();    // returns desktop height
 
+    qDebug () << widthScrean;
+    qDebug () << heightScrean;
+
     brush = new QBrush;
     palette = new QPalette;
     brush->setTextureImage(QImage(".//background.jpg").scaled(QSize(widthScrean,heightScrean),
-                                                              Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+                                                              Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation));
     palette->setBrush(QPalette::Window, *brush);
     this->setPalette(*palette);
 }
