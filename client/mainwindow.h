@@ -5,6 +5,7 @@
 
 #include <QMainWindow>
 #include <QTcpSocket>
+#include <QApplication>
 #include "versions.h"
 
 namespace Ui {
@@ -26,6 +27,10 @@ private slots:
 private:
     Ui::MainWindow *ui;
     versions *ver;
+
+    QBrush *brush;
+    QPalette *palette;
+    QDesktopWidget *d;
 };
 
 #endif // MAINWINDOW_H

@@ -1,5 +1,5 @@
 <RCC>
     <qresource prefix="/new/prefix1">
-        <file>лампочка.png</file>
+        <file>background.png</file>
     </qresource>
 </RCC>

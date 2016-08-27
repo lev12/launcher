@@ -1,7 +1,8 @@
 #include "mainwindow.h"
 #include <QApplication>
 #include "config.h"
-
+#include <QDebug>
+#include <QDesktopWidget>
 #include <QTextStream>
 
 int main(int argc, char *argv[])
