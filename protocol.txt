@@ -60,3 +60,10 @@ pre-alpha 1
 alpha 2
 beta 3
 relese 4
+
+------------------------------------------------------------------------
+settings
+
+width		= 800
+height		= 600
+fullScrean 	= false

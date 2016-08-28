@@ -11,13 +11,14 @@ versions::versions(QComboBox *cb)
 
 
     g_cb = cb;
+    QDir dir (".//");
     dir.mkdir("data");
     init ();
 }
 
 void versions::init()
 {
-    dir.cd(".//data");
+    QDir dir(".//data");
     QList <QFileInfo> tempFileList;
     tempFileList = dir.entryInfoList();
 
@@ -376,6 +377,7 @@ int versions::removeFolder(QDir & dir)
 
 bool versions::checkVersion(QFileInfo path)
 {
+    QDir dir (".//");
     QString temp_path_ini = path.absoluteFilePath();
     temp_path_ini.append("/data version.ini");
     QFile cfile(temp_path_ini);
@@ -391,9 +393,6 @@ bool versions::checkVersion(QFileInfo path)
         switch (i)
         {
         case 0:
-
-
-
             if(temp == "pre-alpha")
             {
               break;
@@ -484,28 +483,26 @@ bool versions::isInstall (QString type, QString number)
 
 bool versions::open()
 {
-    /*QString item = getItemComboBox(g_cb);
-    QString exe = "./data/";
-    exe.append(item);
-    exe.append("/");
-    QFile temp(exe);
-    exe.append(getExeFile(temp));*/
-
     QString item = getItemComboBox(g_cb);
     QStringList LItem = item.split(" ");
     QString name = LItem.at(1); name.append(" "); name.append(LItem.at(2));
     if (LItem.at(0) == "download")
     {
         downloadVersion(name, client);
+        client->waitForReadyRead();
+        return true;
+    }else{
+        QString exe = "./data/";
+        exe.append(item);
+        exe.append("/");
+        QFile temp(exe);
+        exe.append(getExeFile(temp));
 
+        QStringList arguments;
+        arguments << "-style" << "fusion";
+        QProcess::startDetached(exe);
+        return true;
     }
-    client->waitForReadyRead();
-    return true;
-    /*QStringList arguments;
-    arguments << "-style" << "fusion";
-    QProcess vec;
-    vec.startDetached(exe,arguments);
-    return true;*/
 }
 
 void versions::FillingComboBox (QComboBox *cb)

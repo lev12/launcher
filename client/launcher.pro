@@ -17,15 +17,18 @@ CONFIG += c++11
 SOURCES += main.cpp\
         mainwindow.cpp \
     config.cpp \
-    versions.cpp
+    versions.cpp \
+    settings.cpp
 
 HEADERS  += mainwindow.h \
     config.h \
     versions.h \
-    global_variable.h
+    global_variable.h \
+    settings.h
 
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    settings.ui
 
 RESOURCES += \
     rec.qrc

@@ -7,6 +7,7 @@
 #include <QTcpSocket>
 #include <QApplication>
 #include "versions.h"
+#include "settings.h"
 
 namespace Ui {
 class MainWindow;
@@ -23,14 +24,20 @@ public:
 
 private slots:
     void on_pushButton_clicked();
+    void on_folderButton_clicked();
+    void on_refreshButton_clicked();
+    void on_settingsButton_clicked();
 
 private:
     Ui::MainWindow *ui;
     versions *ver;
 
+    settings *setting;
     QBrush *brush;
     QPalette *palette;
     QDesktopWidget *d;
+
+    bool showSettings = false;
 };
 
 #endif // MAINWINDOW_H

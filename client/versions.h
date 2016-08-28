@@ -50,9 +50,6 @@ private slots:
 public:
     versions(QComboBox *cb);
 
-    QDir dir;
-    QFile file;
-
     QList <ver> versions_all;
     QStringList versions_net;
     QList <QFileInfo> versions_bin;
