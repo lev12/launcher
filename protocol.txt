@@ -67,3 +67,4 @@ settings
 width		= 800
 height		= 600
 fullScrean 	= false
+lenguage	= EN || RU

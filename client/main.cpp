@@ -14,7 +14,19 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
     MainWindow w;
 
-    w.setGeometry(500,500,cfg.get("height"),cfg.get("width"));
+    w.setGeometry(100,100,cfg.get("width").toInt(),
+                  cfg.get("height").toInt());
+
+    QString fullScreanStr = cfg.get("fullScrean");
+    if (fullScreanStr == "false")
+    {
+        w.showNormal();
+    }
+    else if (fullScreanStr == "true")
+    {
+        w.showMaximized();
+    }
+
     w.show();
 
 

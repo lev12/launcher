@@ -178,7 +178,7 @@ color: rgb(0, 0, 0);</string>
          </widget>
         </item>
         <item>
-         <widget class="QComboBox" name="comboBox">
+         <widget class="QComboBox" name="lenguageComboBox">
           <property name="minimumSize">
            <size>
             <width>50</width>
@@ -217,6 +217,35 @@ selection-background-color: rgba(150, 150, 150, 128);</string>
          </size>
         </property>
        </spacer>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_4">
+        <property name="spacing">
+         <number>15</number>
+        </property>
+        <item>
+         <widget class="QPushButton" name="saveButton">
+          <property name="styleSheet">
+           <string notr="true">color: rgb(55, 75, 255);
+background-color: rgba(0, 0, 0, 200);</string>
+          </property>
+          <property name="text">
+           <string>save</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="cancelButton">
+          <property name="styleSheet">
+           <string notr="true">color: rgb(255, 25, 25);
+background-color: rgba(0, 0, 0, 200);</string>
+          </property>
+          <property name="text">
+           <string>cancel</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </item>
      </layout>
     </item>

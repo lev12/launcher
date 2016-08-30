@@ -1,32 +1,53 @@
 #include "config.h"
-#include <QFile>
+
 #include <QMessageBox>
 #include <QTextStream>
 
 config::config()
 {
-   QFile conf();
+   name = new QStringList();
+   argumet = new QStringList();
+
    if (!QFile::exists(".\\conf.cfg"))
    {
        create();
    }
    else
    {
-       refresh();
+       raedFile();
    }
 }
 
-void config::init()
+void config::setDefaltParametr()
 {
-    data.height = 800;
-    data.str_height = "height";
-    data.width = 600;
-    data.str_width = "width";
+    QFile defParam(":/other/configDefaltParametr.txt");
+    if(!(defParam.open(QFile::ReadOnly | QFile::Text)))
+    {
+        return;
+    }
+
+    QTextStream stream (&defParam);
+
+    for (int i(0); i < 8; i++)
+    {
+        if (i%2 == 0)
+        {
+            QString temp;
+            stream >> temp;
+            name->operator <<(temp);
+        }
+        else
+        {
+            QString temp;
+            stream >> temp;
+            argumet->operator <<(temp);
+        }
+    }
 }
 
 bool config::create()
 {
-    init();
+    setDefaltParametr();
 
     QFile cFile(".//conf.cfg");
     if (!(cFile.open(QFile::WriteOnly | QFile::Text))) {
@@ -35,13 +56,17 @@ bool config::create()
 
     QTextStream stream(&cFile);
 
-    stream << data.str_height << " " << data.height << "\n";
-    stream << data.str_width  << " " << data.width << "\n";
+    for (int i(0); i < name->count(); i++)
+    {
+        stream << name->at(i) << " " << argumet->at(i) << "\n";
+    }
+
+    cFile.flush();
     cFile.close();
     return true;
 }
 
-bool config::refresh()
+bool config::raedFile()
 {
     QFile cFile(".//conf.cfg");
 
@@ -52,40 +77,99 @@ bool config::refresh()
 
     QTextStream stream(&cFile);
 
-    bool ok;
-    QString buffer[6];
-    for (int i(0); i<6; i++)
+    for (int i(0); i < 8; i++)
     {
-        stream.operator >> (buffer[i]);
-
-        switch (i) {
-        case 0:
-            data.str_height = buffer[i];
-        case 1:
-            data.height = buffer[i].toInt(&ok, 10);
-        case 2:
-            data.str_width = buffer[i];
-        case 3:
-            data.width = buffer[i].toInt(&ok, 10);
-        default:
-            break;
+        if (i%2 == 0)
+        {
+            QString temp;
+            stream >> temp;
+            name->operator <<(temp);
+        }
+        else
+        {
+            QString temp;
+            stream >> temp;
+            argumet->operator <<(temp);
         }
     }
+
     cFile.flush();
     cFile.close();
     return true;
 }
 
-int config::get (QString str)
+bool config::save()
 {
-    if (str == "height")
+    QFile cFile(".//conf.cfg");
+    cFile.remove();
+    if (!cFile.open(QFile::WriteOnly | QFile::Text))
     {
-        return data.height;
-    }
-    if (str == "width")
-    {
-        return data.width;
+        return false;
     }
 
-    return false;
+    QTextStream stream(&cFile);
+
+    for (int i(0); i < 8; i++)
+    {
+        int tempI = 0;
+        if (i%2 == 0)
+        {
+            if (i != 0)
+            {
+                tempI = qFloor(i/2);
+            }
+            QString temp = name->at(tempI);
+            stream << temp << " ";
+        }
+        else
+        {
+            if (i != 0)
+            {
+                tempI = i/2;
+            }
+            QString temp = argumet->at(tempI);
+            stream << temp << "\n";
+        }
+    }
+
+    cFile.flush();
+    cFile.close();
+    return true;
+}
+
+QString config::get(QString parametr)
+{
+    int number = -1;
+
+    for (int i(0); i < name->count(); i++)
+    {
+        if (parametr == name->at(i))
+        {
+            number = i;
+            break;
+        }
+    }
+
+    if (number == -1) return false;
+
+    QString result = argumet->at(number);
+    return result;
+}
+
+bool config::set(QString parametr, QString value)
+{
+    int number = -1;
+    for (int i(0); i < name->count(); i++)
+    {
+        if (parametr == name->at(i))
+        {
+            number = i;
+            break;
+        }
+    }
+    if (number == -1) return false;
+
+    argumet->replace(number, value);
+
+    return true;
 }

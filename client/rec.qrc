@@ -6,4 +6,7 @@
         <file>checkBox on.png</file>
         <file>off.png</file>
     </qresource>
+    <qresource prefix="/other">
+        <file>configDefaltParametr.txt</file>
+    </qresource>
 </RCC>

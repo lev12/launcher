@@ -118,7 +118,7 @@
              <widget class="QComboBox" name="comboBox">
               <property name="minimumSize">
                <size>
-                <width>100</width>
+                <width>50</width>
                 <height>0</height>
                </size>
               </property>

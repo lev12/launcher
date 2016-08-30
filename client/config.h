@@ -2,24 +2,25 @@
 #define CONFIG_H
 
 #include <QTextStream>
+#include <QFile>
+#include <QList>
+#include <qmath.h>
 
 class config
 {
 private:
-    struct str_conf{
-    QString str_height;
-    int height;
-    QString str_width;
-    int width;
-    };
-
-    void init();
+    void setDefaltParametr();
 public:
-    str_conf data;
+
+    QStringList *name;
+    QStringList *argumet;
+
     config();
     bool create();
-    bool refresh();
-    int get(QString str);
+    bool raedFile();
+    bool save ();
+    QString get(QString parametr);
+    bool set(QString parametr, QString value);
 };
 
 #endif // CONFIG_H

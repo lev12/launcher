@@ -15,6 +15,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ver = new versions (ui->comboBox);
     ver->FillingComboBox(ui->comboBox);
 
+    cfg  = new config();
+
     QDesktopWidget *d = QApplication::desktop();
     int widthScrean = d->width();     // returns desktop width
     int heightScrean =  d->height();    // returns desktop height
@@ -58,13 +60,26 @@ void MainWindow::on_settingsButton_clicked()
 {
     if (!showSettings)
     {
-        setting = new settings ();
+        setting = new settings (ui->settingsLayout->widget(),cfg);
+        connect(setting,SIGNAL(close()),
+                this,SLOT(on_settingsButton_clicked()));
         ui->settingsLayout->insertWidget(1,setting);
         showSettings = true;
     }
     else
     {
         ui->settingsLayout->removeWidget(setting);
+
+        QString fullScreanStr = cfg->get("fullScrean");
+        if (fullScreanStr == "false")
+        {
+            this->showNormal();
+        }
+        else if (fullScreanStr == "true")
+        {
+            this->showMaximized();
+        }
+
         delete setting;
         showSettings = false;
     }

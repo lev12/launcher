@@ -31,6 +31,7 @@ private slots:
 private:
     Ui::MainWindow *ui;
     versions *ver;
+    config *cfg;
 
     settings *setting;
     QBrush *brush;
