@@ -25,12 +25,7 @@ MainWindow::MainWindow(QWidget *parent) :
     qDebug () << widthScrean;
     qDebug () << heightScrean;
 
-    brush = new QBrush;
-    palette = new QPalette;
-    brush->setTextureImage(QImage(":/icon/background.jpg").scaled(QSize(3840,2160),
-                                                                  Qt::IgnoreAspectRatio));
-    palette->setBrush(QPalette::Background, *brush);
-    this->setPalette(*palette);
+    //backgroundImage = new background (this, ":/icon/background.png");
 
     this->setGeometry(100,100,cfg->get("width").toInt(),cfg->get("height").toInt());
 
@@ -67,15 +62,6 @@ void MainWindow::on_folderButton_clicked()
 void MainWindow::on_refreshButton_clicked()
 {
 
-    brush = new QBrush;
-    palette = new QPalette;
-    QImage image(":/icon/background.jpg");
-    brush->setTextureImage(image.scaled(QSize(this->width(),this->height()),
-                                                                  Qt::KeepAspectRatioByExpanding));
-    palette->setBrush(QPalette::Background, *brush);
-    this->setPalette(*palette);
-    qDebug () << image.width();
-    qDebug () << image.height();
 }
 
 void MainWindow::on_settingsButton_clicked()

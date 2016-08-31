@@ -18,13 +18,15 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     config.cpp \
     versions.cpp \
-    settings.cpp
+    settings.cpp \
+    background.cpp
 
 HEADERS  += mainwindow.h \
     config.h \
     versions.h \
     global_variable.h \
-    settings.h
+    settings.h \
+    background.h
 
 
 FORMS    += mainwindow.ui \
