@@ -5,6 +5,7 @@
         <file>folder.png</file>
         <file>checkBox on.png</file>
         <file>off.png</file>
+        <file>background.jpg</file>
     </qresource>
     <qresource prefix="/other">
         <file>configDefaltParametr.txt</file>
