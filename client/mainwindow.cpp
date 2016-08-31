@@ -30,6 +30,18 @@ MainWindow::MainWindow(QWidget *parent) :
                                                               Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation));
     palette->setBrush(QPalette::Window, *brush);
     this->setPalette(*palette);
+
+    this->setGeometry(100,100,cfg->get("width").toInt(),cfg->get("height").toInt());
+
+    QString fullScreanStr = cfg->get("fullScrean");
+    if (fullScreanStr == "false")
+    {
+        this->showNormal();
+    }
+    else if (fullScreanStr == "true")
+    {
+        this->showMaximized();
+    }
 }
 
 MainWindow::~MainWindow()
