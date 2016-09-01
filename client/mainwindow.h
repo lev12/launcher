@@ -8,7 +8,7 @@
 #include <QApplication>
 #include "versions.h"
 #include "settings.h"
-//#include "background.h"
+#include "background.h"
 
 namespace Ui {
 class MainWindow;
@@ -33,7 +33,7 @@ private:
     Ui::MainWindow *ui;
     versions *ver;
     config *cfg;
-    //background *backgroundImage;
+    background *backgroundImage;
 
     settings *setting;
     QBrush *brush;

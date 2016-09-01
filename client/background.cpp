@@ -1,14 +1,28 @@
 #include "background.h"
 
-
-background::background(QWidget *parent, QString path)
+background::background(QWidget *parent, QString pathToImage) : QWidget(parent)
 {
-    pathImage = new QString(path);
-    image = new QImage ();
+    qDebug () << pathToImage;
+
     brush = new QBrush ();
     palette = new QPalette ();
-    brush->setTextureImage(QImage(pathImage->toLocal8Bit()).scaled(QSize(3840,2160),
+    image = new QImage (pathToImage);
+    widget = new QWidget ();
+    widget = parent;
+
+    brush->setTextureImage(image->
+                           scaled(QSize(parent->width(),parent->height()),
                            Qt::KeepAspectRatioByExpanding));
-    palette->setBrush(QPalette::Background, *brush);
+    palette->setBrush(QPalette::Window, *brush);
     parent->setPalette(*palette);
+
+}
+
+void background::paintEvent (QPaintEvent *event)
+{
+    brush->setTextureImage(image->
+                           scaled(QSize(widget->width(),widget->height()),
+                           Qt::KeepAspectRatioByExpanding));
+    palette->setBrush(QPalette::Window, *brush);
+    widget->setPalette(*palette);
 }

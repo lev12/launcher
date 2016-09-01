@@ -1,23 +1,33 @@
 #ifndef BACKGROUND_H
 #define BACKGROUND_H
 
+#include <QObject>
 #include <QWidget>
-#include <QImage>
-#include <QString>
+#include <QDebug>
 #include <QBrush>
 #include <QPalette>
-#include <QPainter>
+#include <QImage>
+#include <QSize>
 
-class background
+class background : public QWidget
 {
+    Q_OBJECT
+public:
+    explicit background(QWidget *parent = 0, QString pathToImage = NULL);
 
 private:
     QBrush *brush;
     QPalette *palette;
-public:
-    background(QWidget *parent, QString path);
-
     QImage *image;
-    QString *pathImage;
+    QWidget *widget;
+
+signals:
+
+public slots:
+
+    // QWidget interface
+protected:
+    void paintEvent(QPaintEvent *event);
+};
 
 #endif // BACKGROUND_H

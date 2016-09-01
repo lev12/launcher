@@ -5,7 +5,6 @@
 #include <QDesktopWidget>
 #include <QDesktopServices>
 #include <QUrl>
-#include <QGraphicsView>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -25,7 +24,6 @@ MainWindow::MainWindow(QWidget *parent) :
     qDebug () << widthScrean;
     qDebug () << heightScrean;
 
-    //backgroundImage = new background (this, ":/icon/background.png");
 
     this->setGeometry(100,100,cfg->get("width").toInt(),cfg->get("height").toInt());
 
