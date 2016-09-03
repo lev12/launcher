@@ -17,6 +17,9 @@
    <enum>QTabWidget::Triangular</enum>
   </property>
   <widget class="QWidget" name="centralWidget">
+   <property name="autoFillBackground">
+    <bool>true</bool>
+   </property>
    <widget class="QFrame" name="verticalFrame">
     <property name="geometry">
      <rect>
@@ -145,6 +148,18 @@ color: rgb(255, 255, 255);</string>
              <layout class="QHBoxLayout" name="horizontalLayout">
               <item>
                <widget class="QPushButton" name="folderButton">
+                <property name="minimumSize">
+                 <size>
+                  <width>16</width>
+                  <height>16</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>32</width>
+                  <height>32</height>
+                 </size>
+                </property>
                 <property name="text">
                  <string/>
                 </property>
@@ -165,8 +180,8 @@ color: rgb(255, 255, 255);</string>
                 </property>
                 <property name="minimumSize">
                  <size>
-                  <width>0</width>
-                  <height>0</height>
+                  <width>16</width>
+                  <height>16</height>
                  </size>
                 </property>
                 <property name="maximumSize">
@@ -187,10 +202,16 @@ color: rgb(255, 255, 255);</string>
               </item>
               <item>
                <widget class="QPushButton" name="settingsButton">
+                <property name="minimumSize">
+                 <size>
+                  <width>16</width>
+                  <height>16</height>
+                 </size>
+                </property>
                 <property name="maximumSize">
                  <size>
                   <width>32</width>
-                  <height>22</height>
+                  <height>32</height>
                  </size>
                 </property>
                 <property name="text">

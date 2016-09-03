@@ -16,14 +16,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ver->FillingComboBox(ui->comboBox);
 
     cfg  = new config();
-
-    QDesktopWidget *d = QApplication::desktop();
-    int widthScrean = d->width();     // returns desktop width
-    int heightScrean =  d->height();    // returns desktop height
-
-    qDebug () << widthScrean;
-    qDebug () << heightScrean;
-
+    backgroundImage = new background (this, ":/icon/background.jpg");
 
     this->setGeometry(100,100,cfg->get("width").toInt(),cfg->get("height").toInt());
 
