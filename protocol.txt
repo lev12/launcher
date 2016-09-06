@@ -12,17 +12,22 @@ cln     connect:'version cln':
 ser     connect:'version ser':
 
 List version
-cln     glv:                            //get list versions
-ser	ver:rlv:'count versions':			//count versions
-ser     ver:alpha_1: 			//return list version
-	ver:alpha_2: 
-	ver:...:
-	ver:end:
+cln     glv:'application':                  //get list versions
+ser		ver:rlv:'count versions':			//count versions
+		else
+		ver:error:'number error':
+ser     ver:alpha_1: 						//return list version
+		ver:alpha_2: 
+		ver:...:
+		ver:end:
 
-Download version
-cln	file:get:'version':
+Download
+cln	file:get:'application':'version':
 
 ser	file:ul:'version':exe:'start file':'count file':'size version':
+        else
+	file:error:'number error':
+
 cln     file:ok_reception_file: else file:fail:
 ser     file:'name':'size':'count block':
 cln     file:reception:
@@ -31,6 +36,10 @@ ser     ...
 cln	file:accepted else file:error:'number error'
 
         file:ulEnd:
+
+Number error
+1 - no application
+2 - no version
 
 Disconnect server << client
 cln	disconnect:cln

@@ -19,18 +19,27 @@ SOURCES += main.cpp\
     config.cpp \
     versions.cpp \
     settings.cpp \
-    background.cpp
+    background.cpp \
+    files.cpp \
+    application.cpp \
+    network.cpp \
+    menu.cpp
 
 HEADERS  += mainwindow.h \
     config.h \
     versions.h \
     global_variable.h \
     settings.h \
-    background.h
+    background.h \
+    files.h \
+    application.h \
+    network.h \
+    menu.h
 
 
 FORMS    += mainwindow.ui \
-    settings.ui
+    settings.ui \
+    menu.ui
 
 RESOURCES += \
     rec.qrc
