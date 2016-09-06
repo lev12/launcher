@@ -9,6 +9,8 @@
 #include "versions.h"
 #include "settings.h"
 #include "background.h"
+#include "network.h"
+#include "menu.h"
 
 namespace Ui {
 class MainWindow;
@@ -31,7 +33,9 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-    versions *ver;
+    //versions *ver;
+    Network *network;
+    Menu *menu;
     config *cfg;
     background *backgroundImage;
 

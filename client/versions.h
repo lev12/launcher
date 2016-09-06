@@ -81,7 +81,7 @@ public:
     bool parseDownloadFile  (QString data, QTcpSocket *client);
     bool parseDisconnect    (QString data, QTcpSocket *client);
 
-    ~versions ();
+    ~versions();
 };
 
 #endif // VERSIONS_H

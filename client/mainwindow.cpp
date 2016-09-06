@@ -5,6 +5,7 @@
 #include <QDesktopWidget>
 #include <QDesktopServices>
 #include <QUrl>
+#include "global_variable.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -12,12 +13,12 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     setCentralWidget(ui->verticalFrame);
-    ver = new versions (ui->comboBox);
-    ver->FillingComboBox(ui->comboBox);
 
     cfg  = new config();
-    backgroundImage = new background (this, ":/icon/background.jpg");
+    menu = new Menu ();
+    network = new Network();
 
+    ui->horizontalLayout_2->addWidget(menu);
     this->setGeometry(100,100,cfg->get("width").toInt(),cfg->get("height").toInt());
 
     QString fullScreanStr = cfg->get("fullScrean");
@@ -33,13 +34,13 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
-    delete ver;
+    //delete ver;
     delete ui;
 }
 
 void MainWindow::on_pushButton_clicked()
 {
-    ver->open();
+    //ver->open();
 }
 
 void MainWindow::on_folderButton_clicked()
