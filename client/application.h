@@ -11,12 +11,18 @@ private:
 
     QComboBox *g_cb;
 
+public slots:
+    void connectServer ();
+
+signals:
+    void getListVersions ();
+
 public:
     Application();
 
     QString getItemComboBox  (QComboBox *cb);
     void FillingComboBox     (QComboBox *cb);
-    bool open();
+    void open();
 };
 
 #endif // APPLICATION_H

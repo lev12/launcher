@@ -4,3 +4,8 @@ Application::Application()
 {
 
 }
+
+void Application::connectServer()
+{
+    getListVersions ();
+}

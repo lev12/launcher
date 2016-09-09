@@ -6,11 +6,13 @@
 #include <QMainWindow>
 #include <QTcpSocket>
 #include <QApplication>
+#include <QObject>
 #include "versions.h"
 #include "settings.h"
 #include "background.h"
 #include "network.h"
 #include "menu.h"
+#include "application.h"
 
 namespace Ui {
 class MainWindow;
@@ -38,6 +40,7 @@ private:
     Menu *menu;
     config *cfg;
     background *backgroundImage;
+    Application *app;
 
     settings *setting;
     QBrush *brush;

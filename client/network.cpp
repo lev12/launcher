@@ -26,7 +26,6 @@ bool Network::connectToServer()
 
     server->waitForBytesWritten();
     server->waitForReadyRead();
-
     return true;
 }
 
@@ -121,6 +120,7 @@ bool Network::parseConnectServer(QByteArray data, QTcpSocket *server)
     }
     else
     {
+        connectServer();
         return true;
     }
 }
@@ -157,6 +157,7 @@ bool Network::parseListVersions(QByteArray data)
         }
     }
 
+    listVersion ();
     return true;
 }
 
@@ -283,6 +284,7 @@ bool Network::parseDisconnect(QByteArray data, QTcpSocket *server)
 
     if (rxDiscon.indexIn(data) != -1)
     {
+        disConnectServer();
         return true;
     }
     return false;

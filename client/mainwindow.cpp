@@ -17,6 +17,10 @@ MainWindow::MainWindow(QWidget *parent) :
     cfg  = new config();
     menu = new Menu ();
     network = new Network();
+    app = new Application ();
+
+    QObject::connect(network, SIGNAL (connectServer()), app, SLOT (connectServer()));
+    QObject::connect(app, SIGNAL (getListVersions()), network, SLOT (getVersionListOnServer ()));
 
     ui->horizontalLayout_2->addWidget(menu);
     this->setGeometry(100,100,cfg->get("width").toInt(),cfg->get("height").toInt());

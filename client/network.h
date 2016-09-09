@@ -39,7 +39,10 @@ public slots:
 
 signals:
     void updateListVersion ();
-
+    void connectServer();
+    void listVersions ();
+    void downloadFileEnd ();
+    void disConnectServer ();
 public:
     Network();
 
