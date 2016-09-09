@@ -46,7 +46,7 @@ void Server::tick ()
 void Server::ReadClient()
 {
     QTcpSocket* clientSocket = (QTcpSocket*)sender();
-    int idusersocs=clientSocket->socketDescriptor();
+    //int idusersocs=clientSocket->socketDescriptor();
     QString out;
     out = clientSocket->readAll();
     if (WrongCmd(out))

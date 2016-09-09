@@ -37,7 +37,6 @@ private:
     Network *network;
     Menu *menu;
     config *cfg;
-    background *backgroundImage;
 
     settings *setting;
     QBrush *brush;

@@ -16,4 +16,13 @@ enum versionType
     release,
 };
 
+struct appInfo
+{
+    QString nameApp;
+    QString webSite;
+    QString vk;
+    QString youtube;
+    //todo
+};
+
 #endif // GLOBAL_VARIABLE_H
