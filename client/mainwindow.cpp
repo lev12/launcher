@@ -17,23 +17,17 @@ MainWindow::MainWindow(QWidget *parent) :
     cfg  = new config();
     menu = new Menu ();
     network = new Network();
-    app = new Application ();
+    app = new ElectricalSimulator ();
+
+    menu->addAppInfo(app->getAppInfo());
+    QObject::connect(menu, SIGNAL (swithWidget()), this, SLOT(setWidgetApp ()));
 
     QObject::connect(network, SIGNAL (connectServer()), app, SLOT (connectServer()));
-    QObject::connect(app, SIGNAL (getListVersions()), network, SLOT (getVersionListOnServer ()));
+    QObject::connect(app, SIGNAL (getListVersions ()), network, SLOT (getVersionListOnServer (QString)));
+    network->getVersionListOnServer("asd");
 
-    ui->horizontalLayout_2->addWidget(menu);
+    ui->general->addWidget(app);
     this->setGeometry(100,100,cfg->get("width").toInt(),cfg->get("height").toInt());
-
-    QString fullScreanStr = cfg->get("fullScrean");
-    if (fullScreanStr == "false")
-    {
-        this->showNormal();
-    }
-    else if (fullScreanStr == "true")
-    {
-        this->showMaximized();
-    }
 }
 
 MainWindow::~MainWindow()
@@ -42,49 +36,10 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::on_pushButton_clicked()
-{
-    //ver->open();
-}
-
-void MainWindow::on_folderButton_clicked()
-{
-    QFileInfo openFile (".//data");
-    QString openPath ("file:///");
-    openPath.append(openFile.absoluteFilePath());
-    QDesktopServices::openUrl(QUrl(openPath, QUrl::TolerantMode));
-}
-
-void MainWindow::on_refreshButton_clicked()
+void MainWindow::setWidgetApp ()
 {
 
-}
+    ui->general->removeWidget(app);
 
-void MainWindow::on_settingsButton_clicked()
-{
-    if (!showSettings)
-    {
-        setting = new settings (ui->settingsLayout->widget(),cfg);
-        connect(setting,SIGNAL(close()),
-                this,SLOT(on_settingsButton_clicked()));
-        ui->settingsLayout->insertWidget(1,setting);
-        showSettings = true;
-    }
-    else
-    {
-        ui->settingsLayout->removeWidget(setting);
-
-        QString fullScreanStr = cfg->get("fullScrean");
-        if (fullScreanStr == "false")
-        {
-            this->showNormal();
-        }
-        else if (fullScreanStr == "true")
-        {
-            this->showMaximized();
-        }
-
-        delete setting;
-        showSettings = false;
-    }
+    ui->general->addWidget(app);
 }

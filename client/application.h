@@ -2,11 +2,13 @@
 #define APPLICATION_H
 
 #include <QComboBox>
+#include <QObject>
 
 #include "files.h"
 
-class Application : Files
+class Application : public Files
 {
+    Q_OBJECT
 private:
 
     QComboBox *g_cb;

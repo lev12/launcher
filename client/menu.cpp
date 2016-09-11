@@ -12,3 +12,14 @@ Menu::~Menu()
 {
     delete ui;
 }
+
+void Menu::on_pushButtonElectricalSimulator_clicked()
+{
+    showApp = appinfo.at(0);
+    swithWidget();
+}
+
+void Menu::addAppInfo (appInfo info)
+{
+    appinfo << info;
+}

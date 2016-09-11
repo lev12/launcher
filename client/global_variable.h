@@ -2,10 +2,10 @@
 #define GLOBAL_VARIABLE_H
 
 #include <QString>
-
+#include <QWidget>
 
 const unsigned short number_version_launcher = 5;
-const QString IPServer = "192.168.1.12";
+const QString IPServer = "192.168.1.16";
 const unsigned short PortServer = 1234;
 
 enum versionType
@@ -14,6 +14,15 @@ enum versionType
     alpha,
     beta,
     release,
+};
+
+struct appInfo
+{
+    QWidget widget ();
+    QString nameApp;
+    QString webSite;
+    QString vk;
+    QString youtube;
 };
 
 #endif // GLOBAL_VARIABLE_H

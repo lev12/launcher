@@ -6,13 +6,14 @@
 
 #include <QFile>
 #include <QDir>
+#include <QFrame>
 
 #include <QList>
 #include <QString>
 
 #include "global_variable.h"
 
-class Files : QObject
+class Files : public QFrame
 {
 private:
 

@@ -157,7 +157,7 @@ bool Network::parseListVersions(QByteArray data)
         }
     }
 
-    listVersion ();
+    listVersions ();
     return true;
 }
 

@@ -1,11 +1,12 @@
 <RCC>
     <qresource prefix="/icon">
-        <file>tools.png</file>
         <file>Update.png</file>
         <file>folder.png</file>
         <file>checkBox on.png</file>
         <file>off.png</file>
         <file>background.jpg</file>
+        <file>electrical simulator.png</file>
+        <file>tools.png</file>
     </qresource>
     <qresource prefix="/other">
         <file>configDefaltParametr.txt</file>

@@ -7,5 +7,6 @@ Application::Application()
 
 void Application::connectServer()
 {
-    getListVersions ();
+    getListVersions();
+    return;
 }

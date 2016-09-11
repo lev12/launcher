@@ -4,15 +4,12 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <QTcpSocket>
 #include <QApplication>
 #include <QObject>
-#include "versions.h"
-#include "settings.h"
-#include "background.h"
+#include <QWidget>
 #include "network.h"
 #include "menu.h"
-#include "application.h"
+#include "electricalsimulator.h"
 
 namespace Ui {
 class MainWindow;
@@ -25,13 +22,8 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
-
-
 private slots:
-    void on_pushButton_clicked();
-    void on_folderButton_clicked();
-    void on_refreshButton_clicked();
-    void on_settingsButton_clicked();
+    void setWidgetApp ();
 
 private:
     Ui::MainWindow *ui;
@@ -40,14 +32,11 @@ private:
     Menu *menu;
     config *cfg;
     background *backgroundImage;
-    Application *app;
+    ElectricalSimulator *app;
 
-    settings *setting;
     QBrush *brush;
     QPalette *palette;
     QDesktopWidget *d;
-
-    bool showSettings = false;
 };
 
 #endif // MAINWINDOW_H
