@@ -7,6 +7,7 @@
 #include <QApplication>
 #include <QObject>
 #include <QWidget>
+#include "config.h"
 #include "network.h"
 #include "menu.h"
 #include "electricalsimulator.h"
@@ -31,7 +32,7 @@ private:
     Network *network;
     Menu *menu;
     config *cfg;
-    background *backgroundImage;
+    //background *backgroundImage;
     ElectricalSimulator *app;
 
     QBrush *brush;

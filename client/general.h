@@ -2,6 +2,9 @@
 #define GENERAL_H
 
 #include <QFrame>
+#include "settings.h"
+#include "global_variable.h"
+#include "background.h"
 
 namespace Ui {
 class General;
@@ -14,6 +17,10 @@ class General : public QFrame
 public:
     explicit General(QWidget *parent = 0);
     ~General();
+
+    config *cfg;
+    bool showSettings = false;
+    settings *setting;
 
 private:
     Ui::General *ui;
