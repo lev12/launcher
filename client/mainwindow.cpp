@@ -17,14 +17,10 @@ MainWindow::MainWindow(QWidget *parent) :
     cfg  = new config();
     menu = new Menu ();
     network = new Network();
-    app = new ElectricalSimulator ();
+    app = new ElectricalSimulator (network);
 
     menu->addAppInfo(app->getAppInfo());
     QObject::connect(menu, SIGNAL (swithWidget()), this, SLOT(setWidgetApp ()));
-
-    QObject::connect(network, SIGNAL (connectServer()), app, SLOT (connectServer()));
-    QObject::connect(app, SIGNAL (getListVersions ()), network, SLOT (getVersionListOnServer (QString)));
-    network->getVersionListOnServer("asd");
 
     ui->general->addWidget(menu);
     ui->general->addWidget(app);

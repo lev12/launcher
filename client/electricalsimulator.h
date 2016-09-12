@@ -3,17 +3,20 @@
 
 #include <QFrame>
 #include "global_variable.h"
+#include "files.h"
+#include "application.h"
+#include "network.h"
 
 namespace Ui {
 class ElectricalSimulator;
 }
 
-class ElectricalSimulator : public QFrame
+class ElectricalSimulator : public Application
 {
     Q_OBJECT
 
 public:
-    explicit ElectricalSimulator(QWidget *parent = 0);
+    explicit ElectricalSimulator(Network *net);
     ~ElectricalSimulator();
 
     virtual appInfo getAppInfo ();

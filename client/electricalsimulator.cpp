@@ -1,12 +1,11 @@
 #include "electricalsimulator.h"
 #include "ui_electricalsimulator.h"
 
-ElectricalSimulator::ElectricalSimulator(QWidget *parent) :
-    QFrame(parent),
+ElectricalSimulator::ElectricalSimulator(Network *net) :
     ui(new Ui::ElectricalSimulator)
 {
     ui->setupUi(this);
-
+    init(net, "ElectricalSimulator", ui->comboBox, ui->start);
 
 }
 
