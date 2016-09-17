@@ -85,13 +85,18 @@ void Application::fillingComboBox()
 
     for (int i(0); i < tempListVersions.length(); i++)
     {
-        QIcon icon();
+        QIcon *icon;
         QString tempItem = tempListVersions.at(i);
         comboBox->addItem(tempItem);
         if (isInstall(tempItem.split(" ").at(0),tempItem.split(" ").at(1)))
         {
-            qDebug () << "ass";
+            icon = new QIcon (":/icon/folder.png");
         }
+        else
+        {
+            icon = new QIcon (":/icon/download.png");
+        }
+        comboBox->setItemIcon(i,*icon);
     }
 }
 

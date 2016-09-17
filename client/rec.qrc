@@ -7,6 +7,7 @@
         <file>background.jpg</file>
         <file>electrical simulator.png</file>
         <file>tools.png</file>
+        <file>download.png</file>
     </qresource>
     <qresource prefix="/other">
         <file>configDefaltParametr.txt</file>

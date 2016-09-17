@@ -33,16 +33,34 @@ Files::Files()
 
 bool Files::checkVersion(QFileInfo path)
 {
-    QDir dir (".//");
+    if (path.isFile())
+    {
+        return false;
+    }
+
+    QString pathToConfigVersion = path.absoluteFilePath(); pathToConfigVersion.append("/data version.ini");
+    QFile confIni (pathToConfigVersion);
+    confIni.open(QFile::ReadOnly | QFile::Text);
+
+    QStringList data;
+    data = QString (confIni.readAll()).split(" ");
+
+    /*QDir dir (".//");
     QString temp_path_ini = path.absoluteFilePath();
     temp_path_ini.append("/data version.ini");
     QFile cfile(temp_path_ini);
     cfile.open(QFile::ReadOnly | QFile::Text);
     QTextStream stream(&cfile);
     QString temp;
-    QString temp_path = path.absolutePath();
+    QString temp_path = path.absolutePath();*/
 
-    for (int i(0); i<2; i++)
+    if (data.at(0) == "pre-alpha" || data.at(0) == "alpha" || data.at(0) == "beta" || data.at(0) == "release")
+    {
+        qDebug () << "qwertyuippasdfasdfgsfg";
+        return true;
+    }
+
+    /*for (int i(0); i<2; i++)
     { //TODO
         stream.operator >>(temp);
 
@@ -66,7 +84,6 @@ bool Files::checkVersion(QFileInfo path)
               break;
             }
             return false;
-            break;
 
         case 1:
             break;
@@ -81,9 +98,9 @@ bool Files::checkVersion(QFileInfo path)
         default:
             break;
         }
-    }
+    }*/
 
-    return true;
+    return false;
 }
 
 bool Files::checkVersion(QString type, QString number)

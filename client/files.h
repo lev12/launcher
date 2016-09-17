@@ -2,6 +2,7 @@
 #define FILES_H
 
 #include <QObject>
+#include <QDebug>
 #include <QTextStream>
 
 #include <QFile>
