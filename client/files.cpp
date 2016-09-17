@@ -4,6 +4,7 @@ Files::Files()
 {
     QDir dir (".//");
     dir.mkdir("data");
+    dir.cd(".//data");
 
     QList <QFileInfo> tempFileList = dir.entryInfoList();
 

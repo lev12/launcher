@@ -6,6 +6,7 @@
 #include <QObject>
 #include <QString>
 #include <QDebug>
+#include <QVariant>
 
 #include "files.h"
 #include "network.h"
@@ -20,22 +21,27 @@ private:
     QPushButton *startButton;
     Network *network;
 
-    QStringList versions;
+    QStringList versionsNetwork;
+
 
 public slots:
     void connectServer ();
     void listVersion ();
+    void endDownloadFile ();
+    void open();
 
 signals:
     void getListVersions ();
+    void downloadVersion ();
 
 public:
     Application();
     void init (Network *netWork, QString AppName, QComboBox *cb, QPushButton *StartButton);
+    void getlistversion ();
+    void downloadversion ();
 
     QString getItemComboBox  ();
-    void FillingComboBox     ();
-    void open();
+    void fillingComboBox     ();
 };
 
 #endif // APPLICATION_H

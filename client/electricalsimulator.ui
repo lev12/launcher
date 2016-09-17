@@ -22,7 +22,7 @@
   <property name="frameShadow">
    <enum>QFrame::Raised</enum>
   </property>
-  <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="2,1,2">
+  <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="6,2,6">
    <property name="spacing">
     <number>0</number>
    </property>
@@ -73,8 +73,8 @@
        </property>
        <property name="minimumSize">
         <size>
-         <width>120</width>
-         <height>50</height>
+         <width>110</width>
+         <height>80</height>
         </size>
        </property>
        <property name="maximumSize">
@@ -141,7 +141,7 @@ selection-color: rgb(255, 255, 255);</string>
              </size>
             </property>
             <property name="text">
-             <string>PushButton</string>
+             <string/>
             </property>
            </widget>
           </item>
@@ -160,7 +160,7 @@ selection-color: rgb(255, 255, 255);</string>
              </size>
             </property>
             <property name="text">
-             <string>PushButton</string>
+             <string/>
             </property>
            </widget>
           </item>
@@ -179,7 +179,7 @@ selection-color: rgb(255, 255, 255);</string>
              </size>
             </property>
             <property name="text">
-             <string>PushButton</string>
+             <string/>
             </property>
            </widget>
           </item>
