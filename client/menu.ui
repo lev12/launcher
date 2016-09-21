@@ -61,7 +61,7 @@ color: rgb(255, 255, 255);
 background-color: rgba(0, 0, 0, 255);</string>
      </property>
      <property name="text">
-      <string>launher</string>
+      <string>launcher</string>
      </property>
     </widget>
    </item>
@@ -101,7 +101,7 @@ color: rgb(255, 255, 255);
 font: 75 12pt &quot;Arial&quot;;</string>
        </property>
        <property name="text">
-        <string>Electriacl simulator</string>
+        <string>Electrical simulator</string>
        </property>
       </widget>
      </item>
@@ -164,8 +164,8 @@ font: 75 12pt &quot;Arial&quot;;</string>
         </property>
         <property name="maximumSize">
          <size>
-          <width>32</width>
-          <height>32</height>
+          <width>24</width>
+          <height>24</height>
          </size>
         </property>
         <property name="text">
@@ -177,8 +177,8 @@ font: 75 12pt &quot;Arial&quot;;</string>
         </property>
         <property name="iconSize">
          <size>
-          <width>32</width>
-          <height>32</height>
+          <width>24</width>
+          <height>24</height>
          </size>
         </property>
        </widget>

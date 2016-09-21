@@ -51,7 +51,7 @@ bool Network::downloadVersion(QString appName, versionType type, int number)
     QString tempType;
     switch (type) {
     case pre_alpha:
-        tempType = "pre_alpha";
+        tempType = "pre-alpha";
         break;
     case alpha:
         tempType = "alpha";
@@ -68,7 +68,7 @@ bool Network::downloadVersion(QString appName, versionType type, int number)
     }
 
     send.append(tempType); send.append(":");
-    send.append(number); send.append(":");
+    send.append(QString::number(number)); send.append(":");
     QTextStream stream (server);
     stream.operator <<(send);
     return true;
@@ -164,6 +164,7 @@ bool Network::parseListVersions(QByteArray data)
 bool Network::parseDownloadFile(QByteArray data, QTcpSocket *server)
 {
     static bool streamDownload;
+    static QString nameApp;
     static QString nameVersion;
 
     int pos = 0;
@@ -175,12 +176,14 @@ bool Network::parseDownloadFile(QByteArray data, QTcpSocket *server)
         static QFileInfo fileDownload;
         static int fileSize;
 
-        if(downloadData)
+        if (downloadData)
         {
-            QRegExp rxDl ("file:(.+):(\\d+):(\\d+)"); //file:(\\.+) (\\.+):(\\d+):
+            QRegExp rxDl ("file:(.+):(\\d+):(\\d+)");
             if (rxDl.indexIn(data) != -1)
             {
                 QString pathNewVersion = ".\\data/";
+                pathNewVersion.append(nameApp);
+                pathNewVersion.append("/");
                 QStringList tempVersionName = nameVersion.split("_");
                 pathNewVersion.append(tempVersionName.at(0));
                 pathNewVersion.append(" ");
@@ -208,11 +211,23 @@ bool Network::parseDownloadFile(QByteArray data, QTcpSocket *server)
                 if(fileSize == 0)
                 {
                     server->write("file:accepted");
+                    numberFiles++;
+                    downloadFile();
                     return true;
                 }
 
                 downloadData = false;
                 download = true;
+                return true;
+            }
+            QRegExp rxEnd ("file:ulEnd:");
+            if (rxEnd.indexIn(data) != -1)
+            {
+                streamDownload = false;
+                downloadData = true;
+                download = false;
+                fileDownload.~QFileInfo();
+                downloadFileEnd ();
                 return true;
             }
         }
@@ -229,6 +244,8 @@ bool Network::parseDownloadFile(QByteArray data, QTcpSocket *server)
 
             if (file.size() == fileSize)
             {
+                numberFiles++;
+                downloadFile();
                 server->write("file:accepted");
                 download = false;
                 downloadData = true;
@@ -238,7 +255,7 @@ bool Network::parseDownloadFile(QByteArray data, QTcpSocket *server)
         }
     }
 
-    QRegExp rx (QString("file:ul:(.+):exe:(.+):(\\d+):(\\d+)"));
+    QRegExp rx (QString("file:ul:(.+):(.+):exe:(.+):(\\d+):(\\d+)"));
 
     if ((pos = rx.indexIn(data)) == -1)
     {
@@ -246,15 +263,17 @@ bool Network::parseDownloadFile(QByteArray data, QTcpSocket *server)
     }
     else
     {
+        countFiles = rx.cap(4).toInt();
         bool success = true;
-        nameVersion = rx.cap(1);
+        nameVersion = rx.cap(2);
+        nameApp = rx.cap(1);
 
         QDir dir (".\\");
         QString diskName = dir.absolutePath();
         QStringList diskNameList = diskName.split(":/");
         QStorageInfo storage;
         storage.setPath(diskNameList.at(0));
-        if (storage.bytesFree() > rx.cap(4).toInt())
+        if (storage.bytesFree() > rx.cap(5).toInt())
         {
             success = false;
         }

@@ -14,6 +14,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     setCentralWidget(ui->verticalFrame);
 
+    QDir dir (".//");
+    dir.mkdir("data");
+
     cfg  = new config();
     menu = new Menu ();
     network = new Network();

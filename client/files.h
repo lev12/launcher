@@ -18,11 +18,13 @@ class Files : public QFrame
 {
 private:
 
+    QString folderName;
     int removeFolder(QDir & dir);
 
 public:
     Files();
 
+    void initFiles (QString FolderName);
     bool deleteVersion  (QString type, QString number);
     bool checkVersion   (QString type, QString number);
     bool checkVersion   (QFileInfo path);
@@ -30,6 +32,7 @@ public:
     bool isInstall      (QString type, QString number);
     QString getVersionName  (QFileInfo path);
     QString getExeFile      (QFileInfo path);
+    void refreshFiles ();
 
 protected:
 

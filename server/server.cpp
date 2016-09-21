@@ -133,15 +133,18 @@ bool Server::parseGetVersions (QString data, QTcpSocket *client)
     static bool stream;
     static bool streamTransfer;
     static bool streamData;
+    static QString appName;
     static QString versionName;
     int pos = 0;
 
-    QRegExp rx ("file:get:(\\w+) (\\d+)");
+    QRegExp rx ("file:get:(.+):(.+):(\\d+):");
 
     if ((pos = rx.indexIn(data, pos)) != -1)
     {
-        QString pathFileCount = ".\\data/"; pathFileCount.append(rx.cap(1));
-        pathFileCount.append(" "); pathFileCount.append(rx.cap(2));
+        appName = rx.cap(1);
+
+        QString pathFileCount = ".\\data/"; pathFileCount.append(rx.cap(2));
+        pathFileCount.append(" "); pathFileCount.append(rx.cap(3));
 
         QDir dir (pathFileCount);
         FileList.clear();
@@ -154,22 +157,25 @@ bool Server::parseGetVersions (QString data, QTcpSocket *client)
         QString send;
 
 
-        if(!verCon.checkVersion(rx.cap(1),rx.cap(2)))
+        if(!verCon.checkVersion(rx.cap(2),rx.cap(3)))
         {
             logPrint->print("no version", Log::error);
         }
 
-        QString tempName = rx.cap(1); tempName.append("_"); tempName.append(rx.cap(2));
-        send.append("file:ul:"); send.append(tempName); send.append(":");
-        send.append("exe:"); send.append(verCon.getExeFile(verCon.getFile(rx.cap(1),rx.cap(2))));
+        QString tempName = rx.cap(2); tempName.append("_"); tempName.append(rx.cap(3));
+        send.append("file:ul:"); send.append(appName); send.append(":");
+        send.append(tempName); send.append(":");
+        send.append("exe:"); send.append(verCon.getExeFile(verCon.getFile(rx.cap(2),rx.cap(3))));
         send.append(":"); send.append(QString::number(countVersions));
         send.append(":"); send.append(QString::number(size_temp));
         logPrint->print (send, Log::info, Log::sreverOut);
         stream.operator <<(send);
 
-        versionName.append(rx.cap(1));
-        versionName.append(" ");
         versionName.append(rx.cap(2));
+        versionName.append(" ");
+        versionName.append(rx.cap(3));
+
+
 
         return true;
     }
@@ -215,6 +221,10 @@ bool Server::parseGetVersions (QString data, QTcpSocket *client)
                 if (numberFile == (FileList.count() - 1))
                 {
                     client->write("file:ulEnd:");
+                    streamFile.~QFileInfo();
+                    numberFile = 0;
+                    streamTransfer = false;
+                    streamData = false;
                     stream = false;
                     return true;
                 }

@@ -41,12 +41,15 @@ signals:
     void updateListVersion ();
     void connectServer();
     void listVersions ();
+    void downloadFile ();
     void downloadFileEnd ();
     void disConnectServer ();
 public:
     Network();
 
     QStringList listVersion;
+    int countFiles;
+    int numberFiles;
 
     bool connectToServer    ();
     bool disconnectServer   ();

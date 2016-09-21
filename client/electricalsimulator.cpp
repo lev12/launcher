@@ -5,7 +5,7 @@ ElectricalSimulator::ElectricalSimulator(Network *net) :
     ui(new Ui::ElectricalSimulator)
 {
     ui->setupUi(this);
-    init(net, "ElectricalSimulator", ui->comboBox, ui->start);
+    init(net, "Electrical Simulator", ui->comboBox, ui->start, ui->horizontalLayout_for_progressBar);
 
 }
 
@@ -17,4 +17,14 @@ ElectricalSimulator::~ElectricalSimulator()
 appInfo ElectricalSimulator::getAppInfo ()
 {
     return appinfo;
+}
+
+void ElectricalSimulator::on_refresh_clicked()
+{
+    refresh();
+}
+
+void ElectricalSimulator::on_pushButton_openFolder_clicked()
+{
+    openFolder();
 }

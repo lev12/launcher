@@ -2,10 +2,22 @@
 
 Files::Files()
 {
-    QDir dir (".//");
-    dir.mkdir("data");
-    dir.cd(".//data");
 
+}
+
+void Files::initFiles (QString FolderName)
+{
+    QDir dir (".//data");
+    dir.mkdir(FolderName);
+    folderName = FolderName;
+    refreshFiles();
+}
+
+void Files::refreshFiles()
+{
+    QString path = ".//data/";
+    path.append(folderName);
+    QDir dir (path);
     QList <QFileInfo> tempFileList = dir.entryInfoList();
 
     if (!tempFileList.length() == 0)
@@ -38,67 +50,34 @@ bool Files::checkVersion(QFileInfo path)
         return false;
     }
 
-    QString pathToConfigVersion = path.absoluteFilePath(); pathToConfigVersion.append("/data version.ini");
+    QString pathToConfigVersion = path.absoluteFilePath();
+    pathToConfigVersion.append("/data version.ini");
     QFile confIni (pathToConfigVersion);
-    confIni.open(QFile::ReadOnly | QFile::Text);
+    if (!(confIni.open(QFile::ReadOnly | QFile::Text)))
+    {
+        return false;
+    }
 
     QStringList data;
     data = QString (confIni.readAll()).split(" ");
 
-    /*QDir dir (".//");
-    QString temp_path_ini = path.absoluteFilePath();
-    temp_path_ini.append("/data version.ini");
-    QFile cfile(temp_path_ini);
-    cfile.open(QFile::ReadOnly | QFile::Text);
-    QTextStream stream(&cfile);
-    QString temp;
-    QString temp_path = path.absolutePath();*/
-
-    if (data.at(0) == "pre-alpha" || data.at(0) == "alpha" || data.at(0) == "beta" || data.at(0) == "release")
+    if (data.at(0) == "pre-alpha"
+     || data.at(0) == "alpha"
+     || data.at(0) == "beta"
+     || data.at(0) == "release")
     {
-        qDebug () << "qwertyuippasdfasdfgsfg";
-        return true;
-    }
-
-    /*for (int i(0); i<2; i++)
-    { //TODO
-        stream.operator >>(temp);
-
-        switch (i)
+        if (QString(data.at(1)).toInt() != 0)
         {
-        case 0:
-            if(temp == "pre-alpha")
+            QString pathToExe = path.absoluteFilePath();
+            pathToExe.append("/");
+            pathToExe.append(data.at(2));
+            QFile exe (pathToExe);
+            if (exe.exists())
             {
-              break;
+                return true;
             }
-            if(temp == "alpha")
-            {
-              break;
-            }
-            if(temp == "beta")
-            {
-              break;
-            }
-            if(temp == "release")
-            {
-              break;
-            }
-            return false;
-
-        case 1:
-            break;
-        case 2:
-            temp_path.append(temp);
-            if(!dir.cd (temp_path))
-            {
-                return false;
-            }
-
-            break;
-        default:
-            break;
         }
-    }*/
+    }
 
     return false;
 }
@@ -162,7 +141,7 @@ QFileInfo Files::getFile(QString type, QString number)
     name.append(" ");
     name.append(number);
 
-    for (int i(0); versionsInstalled.length() > i+1;i++)
+    for (int i(0); i < versionsInstalled.length();i++)
     {
         if(name == versionsInstalled.at(i).baseName())
         {
@@ -176,7 +155,7 @@ QFileInfo Files::getFile(QString type, QString number)
 
 bool Files::isInstall(QString type, QString number)
 {
-    bool install;
+    bool install = false;
     QString name = type; name.append(" "); name.append(number);
     for (int i(0); i < versionsInstalled.length(); i++)
     {

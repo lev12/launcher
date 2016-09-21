@@ -20,6 +20,11 @@ public:
     ~ElectricalSimulator();
 
     virtual appInfo getAppInfo ();
+private slots:
+    void on_refresh_clicked();
+
+    void on_pushButton_openFolder_clicked();
+
 private:
     Ui::ElectricalSimulator *ui;
     appInfo appinfo;

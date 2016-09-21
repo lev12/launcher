@@ -22,138 +22,115 @@
   <property name="frameShadow">
    <enum>QFrame::Raised</enum>
   </property>
-  <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="6,2,6">
+  <layout class="QVBoxLayout" name="verticalLayout" stretch="6,0">
    <property name="spacing">
     <number>0</number>
    </property>
    <item>
-    <spacer name="horizontalSpacer">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="sizeType">
-      <enum>QSizePolicy::Expanding</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>250</width>
-       <height>20</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
-   <item>
-    <layout class="QVBoxLayout" name="verticalLayout">
-     <property name="sizeConstraint">
-      <enum>QLayout::SetMinimumSize</enum>
-     </property>
-     <property name="leftMargin">
-      <number>0</number>
-     </property>
+    <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
-      <spacer name="verticalSpacer">
+      <spacer name="horizontalSpacer_2">
        <property name="orientation">
-        <enum>Qt::Vertical</enum>
+        <enum>Qt::Horizontal</enum>
        </property>
        <property name="sizeType">
         <enum>QSizePolicy::Expanding</enum>
        </property>
        <property name="sizeHint" stdset="0">
         <size>
-         <width>20</width>
-         <height>500</height>
+         <width>250</width>
+         <height>20</height>
         </size>
        </property>
       </spacer>
      </item>
      <item>
-      <widget class="QFrame" name="verticalFrame_2">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
+      <layout class="QVBoxLayout" name="verticalLayout_2">
+       <property name="sizeConstraint">
+        <enum>QLayout::SetMinimumSize</enum>
        </property>
-       <property name="minimumSize">
-        <size>
-         <width>120</width>
-         <height>100</height>
-        </size>
+       <property name="leftMargin">
+        <number>0</number>
        </property>
-       <property name="maximumSize">
-        <size>
-         <width>250</width>
-         <height>220</height>
-        </size>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">color: rgb(0, 0, 0);
+       <item>
+        <spacer name="verticalSpacer">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Expanding</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>500</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="QFrame" name="verticalFrame_2">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>120</width>
+           <height>100</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>250</width>
+           <height>220</height>
+          </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">color: rgb(0, 0, 0);
 background-color: rgba(0, 0, 0, 128);</string>
-       </property>
-       <layout class="QVBoxLayout" name="control">
-        <property name="leftMargin">
-         <number>2</number>
-        </property>
-        <property name="topMargin">
-         <number>2</number>
-        </property>
-        <property name="rightMargin">
-         <number>2</number>
-        </property>
-        <property name="bottomMargin">
-         <number>2</number>
-        </property>
-        <item>
-         <widget class="QComboBox" name="comboBox">
-          <property name="minimumSize">
-           <size>
-            <width>25</width>
-            <height>25</height>
-           </size>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">color: rgb(255, 255, 255);
-selection-color: rgb(255, 255, 255);</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="start">
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>25</height>
-           </size>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">color: rgb(255, 255, 255);</string>
-          </property>
-          <property name="text">
-           <string>PushButton</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <layout class="QHBoxLayout" name="action">
-          <property name="sizeConstraint">
-           <enum>QLayout::SetDefaultConstraint</enum>
+         </property>
+         <layout class="QVBoxLayout" name="control">
+          <property name="leftMargin">
+           <number>2</number>
           </property>
           <property name="topMargin">
-           <number>0</number>
+           <number>2</number>
+          </property>
+          <property name="rightMargin">
+           <number>2</number>
+          </property>
+          <property name="bottomMargin">
+           <number>2</number>
           </property>
           <item>
-           <widget class="QPushButton" name="refreh">
+           <widget class="QComboBox" name="comboBox">
             <property name="minimumSize">
              <size>
-              <width>24</width>
-              <height>24</height>
+              <width>25</width>
+              <height>25</height>
              </size>
             </property>
-            <property name="maximumSize">
+            <property name="styleSheet">
+             <string notr="true">color: rgb(255, 255, 255);
+selection-color: rgb(255, 255, 255);</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="start">
+            <property name="minimumSize">
              <size>
-              <width>64</width>
-              <height>64</height>
+              <width>0</width>
+              <height>25</height>
              </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">color: rgb(255, 255, 255);
+selection-color: rgba(61, 61, 61, 128);
+font: 75 9pt &quot;Arial&quot;;</string>
             </property>
             <property name="text">
              <string/>
@@ -161,60 +138,127 @@ selection-color: rgb(255, 255, 255);</string>
            </widget>
           </item>
           <item>
-           <widget class="QPushButton" name="pushButton_2">
-            <property name="minimumSize">
-             <size>
-              <width>24</width>
-              <height>24</height>
-             </size>
+           <layout class="QHBoxLayout" name="action">
+            <property name="sizeConstraint">
+             <enum>QLayout::SetDefaultConstraint</enum>
             </property>
-            <property name="maximumSize">
-             <size>
-              <width>64</width>
-              <height>64</height>
-             </size>
+            <property name="topMargin">
+             <number>0</number>
             </property>
-            <property name="text">
-             <string/>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="pushButton_4">
-            <property name="minimumSize">
-             <size>
-              <width>24</width>
-              <height>24</height>
-             </size>
-            </property>
-            <property name="maximumSize">
-             <size>
-              <width>64</width>
-              <height>64</height>
-             </size>
-            </property>
-            <property name="text">
-             <string/>
-            </property>
-           </widget>
+            <item>
+             <widget class="QPushButton" name="refresh">
+              <property name="minimumSize">
+               <size>
+                <width>24</width>
+                <height>24</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>64</width>
+                <height>64</height>
+               </size>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+              <property name="icon">
+               <iconset>
+                <normalon>:/icon/Update.png</normalon>
+               </iconset>
+              </property>
+              <property name="iconSize">
+               <size>
+                <width>24</width>
+                <height>24</height>
+               </size>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="pushButton_openFolder">
+              <property name="minimumSize">
+               <size>
+                <width>24</width>
+                <height>24</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>64</width>
+                <height>64</height>
+               </size>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+              <property name="icon">
+               <iconset>
+                <normalon>:/icon/folder.png</normalon>
+               </iconset>
+              </property>
+              <property name="iconSize">
+               <size>
+                <width>24</width>
+                <height>24</height>
+               </size>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="pushButton_4">
+              <property name="minimumSize">
+               <size>
+                <width>24</width>
+                <height>24</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>64</width>
+                <height>64</height>
+               </size>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+             </widget>
+            </item>
+           </layout>
           </item>
          </layout>
-        </item>
-       </layout>
-      </widget>
+        </widget>
+       </item>
+       <item>
+        <spacer name="verticalSpacer_2">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Expanding</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>500</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
      </item>
      <item>
-      <spacer name="verticalSpacer_2">
+      <spacer name="horizontalSpacer">
        <property name="orientation">
-        <enum>Qt::Vertical</enum>
+        <enum>Qt::Horizontal</enum>
        </property>
        <property name="sizeType">
         <enum>QSizePolicy::Expanding</enum>
        </property>
        <property name="sizeHint" stdset="0">
         <size>
-         <width>20</width>
-         <height>500</height>
+         <width>250</width>
+         <height>20</height>
         </size>
        </property>
       </spacer>
@@ -222,20 +266,7 @@ selection-color: rgb(255, 255, 255);</string>
     </layout>
    </item>
    <item>
-    <spacer name="horizontalSpacer_2">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="sizeType">
-      <enum>QSizePolicy::Expanding</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>250</width>
-       <height>20</height>
-      </size>
-     </property>
-    </spacer>
+    <layout class="QHBoxLayout" name="horizontalLayout_for_progressBar"/>
    </item>
   </layout>
  </widget>
