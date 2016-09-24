@@ -28,3 +28,8 @@ void ElectricalSimulator::on_pushButton_openFolder_clicked()
 {
     openFolder();
 }
+
+void ElectricalSimulator::on_pushButton_versionManager_clicked()
+{
+    openVersionManager(ui->horizontalLayout_versionManager);
+}

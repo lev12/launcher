@@ -206,7 +206,7 @@ font: 75 9pt &quot;Arial&quot;;</string>
              </widget>
             </item>
             <item>
-             <widget class="QPushButton" name="pushButton_4">
+             <widget class="QPushButton" name="pushButton_versionManager">
               <property name="minimumSize">
                <size>
                 <width>24</width>
@@ -245,6 +245,13 @@ font: 75 9pt &quot;Arial&quot;;</string>
          </property>
         </spacer>
        </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_versionManager">
+       <property name="leftMargin">
+        <number>10</number>
+       </property>
       </layout>
      </item>
      <item>

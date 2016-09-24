@@ -16,6 +16,7 @@
 
 #include "files.h"
 #include "network.h"
+#include "versionmanager.h"
 
 class Application : public Files
 {
@@ -28,6 +29,9 @@ private:
     QHBoxLayout *pbHb;
     QProgressBar *progressBar;
     Network *network;
+    VersionManager *versionmanager;
+
+    bool showVersionManager;
 
     QStringList versionsNetwork;
 
@@ -51,6 +55,7 @@ public:
     void downloadversion ();
     void refresh ();
     void openFolder();
+    void openVersionManager(QHBoxLayout *widget);
 
     QString getItemComboBox  ();
     void fillingComboBox     ();

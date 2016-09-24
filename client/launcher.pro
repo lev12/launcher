@@ -25,7 +25,8 @@ SOURCES += main.cpp\
     network.cpp \
     menu.cpp \
     general.cpp \
-    electricalsimulator.cpp
+    electricalsimulator.cpp \
+    versionmanager.cpp
 
 HEADERS  += mainwindow.h \
     config.h \
@@ -38,14 +39,16 @@ HEADERS  += mainwindow.h \
     network.h \
     menu.h \
     general.h \
-    electricalsimulator.h
+    electricalsimulator.h \
+    versionmanager.h
 
 
 FORMS    += mainwindow.ui \
     settings.ui \
     menu.ui \
     general.ui \
-    electricalsimulator.ui
+    electricalsimulator.ui \
+    versionmanager.ui
 
 RESOURCES += \
     rec.qrc

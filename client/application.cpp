@@ -2,7 +2,7 @@
 
 Application::Application()
 {
-
+    showVersionManager = false;
 }
 
 void Application::connectServer()
@@ -85,8 +85,8 @@ void Application::init(Network *netWork, QString AppName, QComboBox *cb, QPushBu
 
     progressBar = new QProgressBar ();
 
-    fillingComboBox();
     initFiles(appName);
+    fillingComboBox();
 
     QObject::connect(network, SIGNAL (connectServer()), this, SLOT (connectServer()));
     QObject::connect(this, SIGNAL (getListVersions ()), network, SLOT (getVersionListOnServer (QString)));
@@ -112,6 +112,27 @@ void Application::refresh()
 {
     refreshFiles();
     fillingComboBox();
+}
+
+void Application::openVersionManager(QHBoxLayout *widget)
+{
+    if (!showVersionManager)
+    {
+        QStringList tempVersionsInstalled;
+        for (int i(0); i < versionsInstalled.length(); i++)
+        {
+            tempVersionsInstalled.operator <<(versionsInstalled.at(i).baseName());
+        }
+
+        versionmanager = new VersionManager(tempVersionsInstalled);
+        widget->addWidget(versionmanager);
+    }
+    else
+    {
+        widget->removeWidget(versionmanager);
+        delete versionmanager;
+    }
+    showVersionManager = !showVersionManager;
 }
 
 void Application::fillingComboBox()
