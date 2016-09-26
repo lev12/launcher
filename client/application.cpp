@@ -114,8 +114,16 @@ void Application::refresh()
     fillingComboBox();
 }
 
+void Application::removeVersionManager()
+{
+    VMHB->removeWidget(versionmanager);
+    delete versionmanager;
+    showVersionManager = !showVersionManager;
+}
+
 void Application::openVersionManager(QHBoxLayout *widget)
 {
+    VMHB = widget;
     if (!showVersionManager)
     {
         QStringList tempVersionsInstalled;
@@ -124,8 +132,9 @@ void Application::openVersionManager(QHBoxLayout *widget)
             tempVersionsInstalled.operator <<(versionsInstalled.at(i).baseName());
         }
 
-        versionmanager = new VersionManager(tempVersionsInstalled);
+        versionmanager = new VersionManager(tempVersionsInstalled, versionsNetwork);
         widget->addWidget(versionmanager);
+        QObject::connect(versionmanager, SIGNAL(closeButton()), this, SLOT(removeVersionManager()));
     }
     else
     {
@@ -183,7 +192,7 @@ void Application::fillingComboBox()
             comboBox->addItem(tempItem);
             if (isInstall(tempItem.split(" ").at(0),tempItem.split(" ").at(1)))
             {
-                icon = new QIcon (":/icon/folder.png");
+                icon = new QIcon (":/icon/diskette.png");
             }
             else
             {

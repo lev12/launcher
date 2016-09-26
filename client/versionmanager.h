@@ -7,22 +7,28 @@
 #include <QString>
 #include <QFileInfo>
 
-//#include "application.h"
+#include "files.h"
 
 namespace Ui {
 class VersionManager;
 }
 
-class VersionManager : public QFrame
+class VersionManager : public Files
 {
     Q_OBJECT
 
 public:
-    VersionManager(QStringList Versions);
+    VersionManager(QStringList instVersions, QStringList netVersions);
 
     void refreshVersionManager(QStringList Versions);
 
     ~VersionManager();
+
+private slots:
+    void on_pushButton_clicked();
+
+signals:
+    void closeButton();
 
 private:
     QStringList versions;

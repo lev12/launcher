@@ -59,7 +59,8 @@ font: 75 italic 12pt &quot;Times New Roman&quot;;</string>
    <item>
     <widget class="QListWidget" name="listWidget">
      <property name="styleSheet">
-      <string notr="true"/>
+      <string notr="true">&lt;resource type=&quot;image&quot; file=&quot;:/icon/background.jpg&quot;/&gt;
+</string>
      </property>
     </widget>
    </item>
@@ -71,8 +72,7 @@ font: 75 italic 12pt &quot;Times New Roman&quot;;</string>
      <item>
       <widget class="QPushButton" name="pushButton">
        <property name="styleSheet">
-        <string notr="true">color: rgb(55, 75, 255);
-background-color: rgba(0, 0, 0, 200);</string>
+        <string notr="true">color: rgb(55, 75, 255);</string>
        </property>
        <property name="text">
         <string>Ok</string>

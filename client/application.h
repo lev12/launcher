@@ -32,6 +32,7 @@ private:
     VersionManager *versionmanager;
 
     bool showVersionManager;
+    QHBoxLayout *VMHB;
 
     QStringList versionsNetwork;
 
@@ -43,6 +44,7 @@ public slots:
     void open();
     void updateButton();
     void updateDownload();
+    void removeVersionManager();
 
 signals:
     void getListVersions ();
