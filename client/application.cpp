@@ -19,7 +19,6 @@ void Application::getlistversion()
 
 void Application::downloadversion()
 {
-
     pbHb->addWidget(progressBar);
     progressBar->setStyleSheet("color: rgb(255, 255, 255);\nbackground-color: rgb(41, 90, 108);");
     downloadVersion();
@@ -132,7 +131,7 @@ void Application::openVersionManager(QHBoxLayout *widget)
             tempVersionsInstalled.operator <<(versionsInstalled.at(i).baseName());
         }
 
-        versionmanager = new VersionManager(tempVersionsInstalled, versionsNetwork);
+        versionmanager = new VersionManager(sortVersions(tempVersionsInstalled), versionsNetwork);
         widget->addWidget(versionmanager);
         QObject::connect(versionmanager, SIGNAL(closeButton()), this, SLOT(removeVersionManager()));
     }
@@ -144,16 +143,60 @@ void Application::openVersionManager(QHBoxLayout *widget)
     showVersionManager = !showVersionManager;
 }
 
+QStringList Application::sortVersions (QStringList versions)
+{
+    QStringList returnVersionsList;
+
+    QStringList preAlpha;
+    QStringList Alpha;
+    QStringList Beta;
+    QStringList Release;
+
+    for (int i(0); i < versions.length(); i++)
+    {
+        QString temp = versions.at(i);
+        QString type = temp.split(" ").at(0);
+
+        if      (type == "pre-alpha")   preAlpha.operator <<(versions.at(i));
+        else if (type == "alpha")       Alpha.operator <<(versions.at(i));
+        else if (type == "beta")        Beta.operator <<(versions.at(i));
+        else if (type == "release")     Release.operator <<(versions.at(i));
+        else
+        {
+            qDebug () << "error sort versions" << versions.at(i);
+        }
+    }
+
+    returnVersionsList.operator <<(Release);
+    returnVersionsList.operator <<(Beta);
+    returnVersionsList.operator <<(Alpha);
+    returnVersionsList.operator <<(preAlpha);
+
+    return returnVersionsList;
+}
+
 void Application::fillingComboBox()
 {
     comboBox->clear();
     if (versionsNetwork.length() == 0)
     {
         qDebug () << "offline";
+
+        QStringList tempVersionsInstallList;
+
         for (int i(0); i < versionsInstalled.length(); i++)
         {
-            comboBox->addItem(QIcon(":/icon/folder.png"),versionsInstalled.at(i).baseName());
+            tempVersionsInstallList.operator <<(getVersionName(versionsInstalled.at(i)));
         }
+
+
+        tempVersionsInstallList = sortVersions(tempVersionsInstallList);
+        comboBox->addItems(tempVersionsInstallList);
+        for (int i(0); i < tempVersionsInstallList.length(); i++)
+        {
+            comboBox->setItemIcon(i, QIcon(":/icon/diskette.png"));
+        }
+
     }
     else
     {
@@ -188,6 +231,7 @@ void Application::fillingComboBox()
         for (int i(0); i < tempListVersions.length(); i++)
         {
             QIcon *icon;
+            tempListVersions = sortVersions(tempListVersions);
             QString tempItem = tempListVersions.at(i);
             comboBox->addItem(tempItem);
             if (isInstall(tempItem.split(" ").at(0),tempItem.split(" ").at(1)))

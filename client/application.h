@@ -36,7 +36,7 @@ private:
 
     QStringList versionsNetwork;
 
-
+    QStringList sortVersions (QStringList versions);
 public slots:
     void connectServer ();
     void listVersion ();

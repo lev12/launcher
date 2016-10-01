@@ -30,7 +30,7 @@ VersionManager::VersionManager(QStringList instVersions, QStringList netVersions
     for (int i(0); i < versions.length(); i++)
     {
         QListWidgetItem *item = new QListWidgetItem(QString(versions.at(i)));
-        item->setBackground(QBrush(QColor(61,185,108),Qt::SolidPattern));
+        item->setBackground(QBrush(QColor(11, 58, 185),Qt::SolidPattern));
         item->setTextColor(QColor (255,255,255));
         ui->listWidget->addItem(item);
     }
