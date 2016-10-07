@@ -131,9 +131,11 @@ void Application::openVersionManager(QHBoxLayout *widget)
             tempVersionsInstalled.operator <<(versionsInstalled.at(i).baseName());
         }
 
-        versionmanager = new VersionManager(sortVersions(tempVersionsInstalled), versionsNetwork);
+        versionmanager = new VersionManager(appName ,sortVersions(tempVersionsInstalled), versionsNetwork);
         widget->addWidget(versionmanager);
         QObject::connect(versionmanager, SIGNAL(closeButton()), this, SLOT(removeVersionManager()));
+        QObject::connect(versionmanager, SIGNAL(downloadVersion()), this, SLOT(downloadVersionVersionManager()));
+        QObject::connect(versionmanager, SIGNAL(deleteVersion()), this, SLOT(deleteVersionVersionManager()));
     }
     else
     {
@@ -141,6 +143,28 @@ void Application::openVersionManager(QHBoxLayout *widget)
         delete versionmanager;
     }
     showVersionManager = !showVersionManager;
+}
+
+void Application::deleteVersionVersionManager ()
+{
+    qDebug () << versionmanager->currentVersion;
+    QStringList name = versionmanager->currentVersion.split(" ");
+    deleteVersion(name.at(0), name.at(1));
+    refreshFiles();
+    fillingComboBox();
+
+    QStringList tempVersionsInstalled;
+    for (int i(0); i < versionsInstalled.length(); i++)
+    {
+        tempVersionsInstalled.operator <<(versionsInstalled.at(i).baseName());
+    }
+
+    versionmanager->refreshVersionManager(tempVersionsInstalled);
+}
+
+void Application::downloadVersionVersionManager()
+{
+
 }
 
 QStringList Application::sortVersions (QStringList versions)

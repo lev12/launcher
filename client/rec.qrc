@@ -9,6 +9,7 @@
         <file>tools.png</file>
         <file>download.png</file>
         <file>diskette.png</file>
+        <file>trash.png</file>
     </qresource>
     <qresource prefix="/other">
         <file>configDefaltParametr.txt</file>

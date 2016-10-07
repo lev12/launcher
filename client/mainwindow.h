@@ -7,6 +7,7 @@
 #include <QApplication>
 #include <QObject>
 #include <QWidget>
+#include <QLabel>
 #include "config.h"
 #include "network.h"
 #include "menu.h"
@@ -28,11 +29,9 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-    //versions *ver;
     Network *network;
     Menu *menu;
     config *cfg;
-    //background *backgroundImage;
     ElectricalSimulator *app;
 
     QBrush *brush;

@@ -18,7 +18,7 @@
   </property>
   <property name="maximumSize">
    <size>
-    <width>280</width>
+    <width>270</width>
     <height>8192</height>
    </size>
   </property>
@@ -119,6 +119,18 @@ font: 75 12pt &quot;Arial&quot;;</string>
       </size>
      </property>
     </spacer>
+   </item>
+   <item>
+    <widget class="QLabel" name="line">
+     <property name="styleSheet">
+      <string notr="true">color: rgb(255, 0, 0);
+font: 75 italic 16pt &quot;Times New Roman&quot;;
+background-color: rgb(3, 4, 30, 60);</string>
+     </property>
+     <property name="text">
+      <string>offline</string>
+     </property>
+    </widget>
    </item>
    <item>
     <widget class="QFrame" name="horizontalFrame">

@@ -6,6 +6,7 @@
 #include <QList>
 #include <QString>
 #include <QFileInfo>
+#include <QPushButton>
 
 #include "files.h"
 
@@ -18,21 +19,30 @@ class VersionManager : public Files
     Q_OBJECT
 
 public:
-    VersionManager(QStringList instVersions, QStringList netVersions);
+    VersionManager(QString AppName, QStringList instVersions, QStringList netVersions);
 
     void refreshVersionManager(QStringList Versions);
+    QString currentVersion;
 
     ~VersionManager();
 
 private slots:
     void on_pushButton_clicked();
 
+    void on_pushButton_action_clicked();
+
+    void on_listWidget_clicked(const QModelIndex &index);
+
 signals:
     void closeButton();
+    void downloadVersion();
+    void deleteVersion();
 
 private:
     QStringList versions;
     Ui::VersionManager *ui;
+
+    void refreshActionButton();
 };
 
 #endif // VERSIONMANAGER_H

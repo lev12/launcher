@@ -178,6 +178,8 @@ bool Files::deleteVersion(QString type, QString number)
     QString name = getVersionName(getFile(type,number));
 
     QString path = ".//data/";
+            path.append(folderName);
+            path.append("/");
             path.append(name);
     QDir dirDel(path);
 

@@ -27,6 +27,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->general->addWidget(menu);
     ui->general->addWidget(app);
+
     this->setGeometry(100,100,cfg->get("width").toInt(),cfg->get("height").toInt());
 }
 

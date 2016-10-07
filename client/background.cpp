@@ -9,12 +9,13 @@ background::background(QWidget *parent, QString pathToImage) : QWidget(parent)
     image = new QImage (pathToImage);
     widget = new QWidget ();
     widget = parent;
-
+    qDebug () << image->isNull();
     brush->setTextureImage(image->
                            scaled(QSize(parent->width(),parent->height()),
                            Qt::KeepAspectRatioByExpanding));
     palette->setBrush(QPalette::Window, *brush);
     parent->setPalette(*palette);
+    qDebug () << palette;
 
 }
 

@@ -45,6 +45,8 @@ public slots:
     void updateButton();
     void updateDownload();
     void removeVersionManager();
+    void deleteVersionVersionManager();
+    void downloadVersionVersionManager();
 
 signals:
     void getListVersions ();

@@ -53,7 +53,11 @@
       <number>0</number>
      </property>
      <item>
-      <layout class="QHBoxLayout" name="general"/>
+      <layout class="QHBoxLayout" name="general">
+       <property name="spacing">
+        <number>0</number>
+       </property>
+      </layout>
      </item>
     </layout>
    </widget>

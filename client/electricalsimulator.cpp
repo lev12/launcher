@@ -6,7 +6,7 @@ ElectricalSimulator::ElectricalSimulator(Network *net) :
 {
     ui->setupUi(this);
     init(net, "Electrical Simulator", ui->comboBox, ui->start, ui->horizontalLayout_for_progressBar);
-
+    //bg = new background(ui->horizontal_widget, ":/icon/background.jpg");
 }
 
 ElectricalSimulator::~ElectricalSimulator()

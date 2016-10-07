@@ -71,8 +71,15 @@ font: 75 italic 12pt &quot;Times New Roman&quot;;</string>
      </property>
      <item>
       <widget class="QPushButton" name="pushButton">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>30</height>
+        </size>
+       </property>
        <property name="styleSheet">
-        <string notr="true">color: rgb(55, 75, 255);</string>
+        <string notr="true">color: rgb(55, 75, 255);
+font: 9pt &quot;Arial&quot;;</string>
        </property>
        <property name="text">
         <string>Ok</string>
@@ -81,8 +88,20 @@ font: 75 italic 12pt &quot;Times New Roman&quot;;</string>
      </item>
      <item>
       <widget class="QPushButton" name="pushButton_action">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>30</height>
+        </size>
+       </property>
        <property name="text">
         <string/>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>20</width>
+         <height>20</height>
+        </size>
        </property>
       </widget>
      </item>

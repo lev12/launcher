@@ -6,6 +6,7 @@
 #include "files.h"
 #include "application.h"
 #include "network.h"
+#include "background.h"
 
 namespace Ui {
 class ElectricalSimulator;
@@ -30,6 +31,7 @@ private slots:
 private:
     Ui::ElectricalSimulator *ui;
     appInfo appinfo;
+    background *bg;
 };
 
 #endif // ELECTRICALSIMULATOR_H
