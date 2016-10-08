@@ -56,7 +56,7 @@ public:
     Application();
     void init (Network *netWork, QString AppName, QComboBox *cb, QPushButton *StartButton, QHBoxLayout *pb);
     void getlistversion ();
-    void downloadversion ();
+    void downloadversion (QString typeString, QString number);
     void refresh ();
     void openFolder();
     void openVersionManager(QHBoxLayout *widget);

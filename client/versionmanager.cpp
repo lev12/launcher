@@ -45,9 +45,10 @@ void VersionManager::refreshVersionManager(QStringList Versions)
     ui->listWidget->clear();
     for (int i(0); i < Versions.length(); i++)
     {
-        QListWidgetItem item (QString(Versions.at(i)));
-        item.setBackground(QBrush(QColor(255,0,0),Qt::SolidPattern));
-        ui->listWidget->addItem(&item);
+        QListWidgetItem *item = new QListWidgetItem(QString(Versions.at(i)));
+        item->setBackground(QBrush(QColor(11, 58, 120),Qt::SolidPattern));
+        item->setTextColor(QColor (255,255,255));
+        ui->listWidget->addItem(item);
     }
 }
 

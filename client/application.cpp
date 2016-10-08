@@ -17,21 +17,20 @@ void Application::getlistversion()
     QObject::connect(network, SIGNAL(listVersions()), this, SLOT(listVersion()));
 }
 
-void Application::downloadversion()
+void Application::downloadversion(QString typeString, QString number)
 {
     pbHb->addWidget(progressBar);
     progressBar->setStyleSheet("color: rgb(255, 255, 255);\nbackground-color: rgb(41, 90, 108);");
     downloadVersion();
-    QStringList name = getItemComboBox().split(" ");
     versionType type;
-    QString typeStr = name.at(0);
+    QString typeStr = typeString;
 
     if      (typeStr == "pre-alpha") type = pre_alpha;
     else if (typeStr == "alpha")     type = alpha;
     else if (typeStr == "beta")      type = beta;
     else if (typeStr == "release")   type = release;
 
-    network->downloadVersion(appName,type,QString (name.at(1)).toInt());
+    network->downloadVersion(appName,type,number.toInt());
     QObject::connect(network, SIGNAL(downloadFileEnd()), this, SLOT(endDownloadFile()));
 }
 
@@ -85,7 +84,7 @@ void Application::init(Network *netWork, QString AppName, QComboBox *cb, QPushBu
     progressBar = new QProgressBar ();
 
     initFiles(appName);
-    fillingComboBox();
+    refresh();
 
     QObject::connect(network, SIGNAL (connectServer()), this, SLOT (connectServer()));
     QObject::connect(this, SIGNAL (getListVersions ()), network, SLOT (getVersionListOnServer (QString)));
@@ -111,6 +110,7 @@ void Application::refresh()
 {
     refreshFiles();
     fillingComboBox();
+    updateButton();
 }
 
 void Application::removeVersionManager()
@@ -125,13 +125,33 @@ void Application::openVersionManager(QHBoxLayout *widget)
     VMHB = widget;
     if (!showVersionManager)
     {
-        QStringList tempVersionsInstalled;
+        QStringList tempListVersions;
+
         for (int i(0); i < versionsInstalled.length(); i++)
         {
-            tempVersionsInstalled.operator <<(versionsInstalled.at(i).baseName());
+            tempListVersions << versionsInstalled.at(i).baseName();
+            qDebug () << i << versionsInstalled.at(i).baseName();
         }
 
-        versionmanager = new VersionManager(appName ,sortVersions(tempVersionsInstalled), versionsNetwork);
+        for (int i(0); i < versionsNetwork.length(); i++)
+        {
+            bool isItem = false;
+            for (int a(0); a < tempListVersions.length(); a++)
+            {
+                if (versionsNetwork.at(i) == tempListVersions.at(a))
+                {
+                    isItem = true;
+                    break;
+                }
+            }
+
+            if (!isItem)
+            {
+                tempListVersions << versionsNetwork.at(i);
+            }
+        }
+
+        versionmanager = new VersionManager(appName ,sortVersions(tempListVersions), versionsNetwork);
         widget->addWidget(versionmanager);
         QObject::connect(versionmanager, SIGNAL(closeButton()), this, SLOT(removeVersionManager()));
         QObject::connect(versionmanager, SIGNAL(downloadVersion()), this, SLOT(downloadVersionVersionManager()));
@@ -147,24 +167,44 @@ void Application::openVersionManager(QHBoxLayout *widget)
 
 void Application::deleteVersionVersionManager ()
 {
-    qDebug () << versionmanager->currentVersion;
     QStringList name = versionmanager->currentVersion.split(" ");
     deleteVersion(name.at(0), name.at(1));
     refreshFiles();
     fillingComboBox();
 
-    QStringList tempVersionsInstalled;
+    QStringList tempListVersions;
+
     for (int i(0); i < versionsInstalled.length(); i++)
     {
-        tempVersionsInstalled.operator <<(versionsInstalled.at(i).baseName());
+        tempListVersions << versionsInstalled.at(i).baseName();
+        qDebug () << i << versionsInstalled.at(i).baseName();
     }
 
-    versionmanager->refreshVersionManager(tempVersionsInstalled);
+    for (int i(0); i < versionsNetwork.length(); i++)
+    {
+        bool isItem = false;
+        for (int a(0); a < tempListVersions.length(); a++)
+        {
+            if (versionsNetwork.at(i) == tempListVersions.at(a))
+            {
+                isItem = true;
+                break;
+            }
+        }
+
+        if (!isItem)
+        {
+            tempListVersions << versionsNetwork.at(i);
+        }
+    }
+
+    versionmanager->refreshVersionManager(sortVersions(tempListVersions));
 }
 
 void Application::downloadVersionVersionManager()
 {
-
+    QStringList name = versionmanager->currentVersion.split(" ");
+    downloadversion(name.at(0), name.at(1));
 }
 
 QStringList Application::sortVersions (QStringList versions)
@@ -293,6 +333,6 @@ void Application::open()
     }
     else
     {
-        downloadversion();
+        downloadversion(tempItem.at(0), tempItem.at(1));
     }
 }
