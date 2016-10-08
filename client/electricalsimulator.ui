@@ -6,15 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>460</width>
-    <height>314</height>
+    <width>545</width>
+    <height>413</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Frame</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color: rgb(24, 190, 187);</string>
+   <string notr="true">background-color: rgb(43, 134, 219);</string>
   </property>
   <property name="frameShape">
    <enum>QFrame::StyledPanel</enum>
@@ -66,7 +66,7 @@
         </property>
         <property name="sizeHint" stdset="0">
          <size>
-          <width>250</width>
+          <width>300</width>
           <height>20</height>
          </size>
         </property>
@@ -91,7 +91,7 @@
           <property name="sizeHint" stdset="0">
            <size>
             <width>20</width>
-            <height>500</height>
+            <height>300</height>
            </size>
           </property>
          </spacer>
@@ -99,15 +99,15 @@
         <item>
          <widget class="QFrame" name="verticalFrame_2">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+           <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
           <property name="minimumSize">
            <size>
-            <width>120</width>
-            <height>100</height>
+            <width>160</width>
+            <height>140</height>
            </size>
           </property>
           <property name="maximumSize">
@@ -121,6 +121,9 @@
 background-color: rgba(0, 0, 0, 128);</string>
           </property>
           <layout class="QVBoxLayout" name="control">
+           <property name="spacing">
+            <number>2</number>
+           </property>
            <property name="leftMargin">
             <number>2</number>
            </property>
@@ -138,7 +141,7 @@ background-color: rgba(0, 0, 0, 128);</string>
              <property name="minimumSize">
               <size>
                <width>25</width>
-               <height>25</height>
+               <height>32</height>
               </size>
              </property>
              <property name="styleSheet">
@@ -152,7 +155,7 @@ selection-color: rgb(255, 255, 255);</string>
              <property name="minimumSize">
               <size>
                <width>0</width>
-               <height>25</height>
+               <height>32</height>
               </size>
              </property>
              <property name="styleSheet">
@@ -183,8 +186,8 @@ font: 75 9pt &quot;Arial&quot;;</string>
                </property>
                <property name="maximumSize">
                 <size>
-                 <width>64</width>
-                 <height>64</height>
+                 <width>48</width>
+                 <height>48</height>
                 </size>
                </property>
                <property name="text">
@@ -197,8 +200,8 @@ font: 75 9pt &quot;Arial&quot;;</string>
                </property>
                <property name="iconSize">
                 <size>
-                 <width>24</width>
-                 <height>24</height>
+                 <width>32</width>
+                 <height>32</height>
                 </size>
                </property>
               </widget>
@@ -213,8 +216,8 @@ font: 75 9pt &quot;Arial&quot;;</string>
                </property>
                <property name="maximumSize">
                 <size>
-                 <width>64</width>
-                 <height>64</height>
+                 <width>48</width>
+                 <height>48</height>
                 </size>
                </property>
                <property name="text">
@@ -227,8 +230,8 @@ font: 75 9pt &quot;Arial&quot;;</string>
                </property>
                <property name="iconSize">
                 <size>
-                 <width>24</width>
-                 <height>24</height>
+                 <width>32</width>
+                 <height>32</height>
                 </size>
                </property>
               </widget>
@@ -243,12 +246,22 @@ font: 75 9pt &quot;Arial&quot;;</string>
                </property>
                <property name="maximumSize">
                 <size>
-                 <width>64</width>
-                 <height>64</height>
+                 <width>48</width>
+                 <height>48</height>
                 </size>
                </property>
                <property name="text">
                 <string/>
+               </property>
+               <property name="icon">
+                <iconset resource="rec.qrc">
+                 <normaloff>:/icon/versions manager.png</normaloff>:/icon/versions manager.png</iconset>
+               </property>
+               <property name="iconSize">
+                <size>
+                 <width>32</width>
+                 <height>32</height>
+                </size>
                </property>
               </widget>
              </item>
@@ -268,7 +281,7 @@ font: 75 9pt &quot;Arial&quot;;</string>
           <property name="sizeHint" stdset="0">
            <size>
             <width>20</width>
-            <height>500</height>
+            <height>300</height>
            </size>
           </property>
          </spacer>
@@ -292,7 +305,7 @@ font: 75 9pt &quot;Arial&quot;;</string>
         </property>
         <property name="sizeHint" stdset="0">
          <size>
-          <width>250</width>
+          <width>300</width>
           <height>20</height>
          </size>
         </property>
@@ -306,6 +319,8 @@ font: 75 9pt &quot;Arial&quot;;</string>
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="rec.qrc"/>
+ </resources>
  <connections/>
 </ui>
