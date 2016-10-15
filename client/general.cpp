@@ -8,6 +8,10 @@ General::General(QWidget *parent) :
     ui->setupUi(this);
     cfg  = new config();
 
+    appinfo.page = 0;
+    appinfo.nameApp = "general";
+    appinfo.widget = this;
+
     QString fullScreanStr = cfg->get("fullScrean");
     if (fullScreanStr == "false")
     {
@@ -43,6 +47,11 @@ General::General(QWidget *parent) :
         delete setting;
         showSettings = false;
     }*/
+}
+
+appInfo General::getAppInfo()
+{
+    return appinfo;
 }
 
 General::~General()

@@ -18,10 +18,11 @@ public:
     ~Menu();
 
     appInfo getShowWiget ();
-    bool setShowWiget (appInfo app);
+    bool setShowWiget (int i);
     void addAppInfo (appInfo info);
 
-    appInfo showApp;
+    QWidget *showApp;
+    int showIndex;
     QList <appInfo> appinfo;
     Ui::Menu *ui;
 
@@ -31,6 +32,7 @@ signals:
 
 private slots:
     void on_pushButtonElectricalSimulator_clicked();
+    void on_LaunherPushButton_clicked();
 };
 
 #endif // MENU_H

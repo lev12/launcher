@@ -20,27 +20,41 @@ MainWindow::MainWindow(QWidget *parent) :
     cfg  = new config();
     menu = new Menu ();
     network = new Network();
-    app = new ElectricalSimulator (network);
+    electricalsimulator = new ElectricalSimulator (network);
+    general = new General ();
 
-    menu->addAppInfo(app->getAppInfo());
-    QObject::connect(menu, SIGNAL (swithWidget()), this, SLOT(setWidgetApp ()));
+    menu->addAppInfo(general->getAppInfo());
+    menu->addAppInfo(electricalsimulator->getAppInfo());
+
+    QObject::connect(menu, SIGNAL (swithWidget()), this, SLOT(setWidgetApp()));
 
     ui->general->addWidget(menu);
-    ui->general->addWidget(app);
 
     this->setGeometry(100,100,cfg->get("width").toInt(),cfg->get("height").toInt());
 }
 
 MainWindow::~MainWindow()
 {
-    //delete ver;
     delete ui;
 }
 
 void MainWindow::setWidgetApp ()
 {
+    static QWidget *removeWidget;
+    static int removeIndex;
+    ui->general->removeWidget(removeWidget);
+    if (removeIndex == 0)
+    {
+        delete general;
+        general = new General();
+    }
 
-    ui->general->removeWidget(app);
-
-    ui->general->addWidget(app);
+    if (removeIndex == 1)
+    {
+        delete electricalsimulator;
+        electricalsimulator = new ElectricalSimulator(network);
+    }
+    removeWidget = menu->showApp;
+    ui->general->addWidget(removeWidget);
+    removeIndex = menu->showIndex;
 }

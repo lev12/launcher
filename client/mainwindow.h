@@ -12,6 +12,7 @@
 #include "network.h"
 #include "menu.h"
 #include "electricalsimulator.h"
+#include "general.h"
 
 namespace Ui {
 class MainWindow;
@@ -32,7 +33,8 @@ private:
     Network *network;
     Menu *menu;
     config *cfg;
-    ElectricalSimulator *app;
+    ElectricalSimulator *electricalsimulator;
+    General *general;
 
     QBrush *brush;
     QPalette *palette;

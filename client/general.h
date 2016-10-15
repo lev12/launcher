@@ -16,6 +16,9 @@ class General : public QFrame
 
 public:
     explicit General(QWidget *parent = 0);
+
+    virtual appInfo getAppInfo ();
+
     ~General();
 
     config *cfg;
@@ -24,6 +27,7 @@ public:
 
 private:
     Ui::General *ui;
+    appInfo appinfo;
 };
 
 #endif // GENERAL_H

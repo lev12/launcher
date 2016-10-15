@@ -5,7 +5,7 @@
 #include <QWidget>
 
 const unsigned short number_version_launcher = 5;
-const QString IPServer = "192.168.1.16";
+const QString IPServer = "192.168.1.11";
 const unsigned short PortServer = 1234;
 
 enum versionType
@@ -18,7 +18,8 @@ enum versionType
 
 struct appInfo
 {
-    QWidget widget ();
+    short int page;
+    QWidget *widget;
     QString nameApp;
     QString webSite;
     QString vk;
