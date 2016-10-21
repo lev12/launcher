@@ -108,6 +108,7 @@ void Application::openFolder()
 
 void Application::refresh()
 {
+    network->getVersionListOnServer(appName);
     refreshFiles();
     fillingComboBox();
     updateButton();

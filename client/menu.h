@@ -3,6 +3,8 @@
 
 #include <QFrame>
 #include <QString>
+#include <QDesktopServices>
+#include <QUrl>
 #include "global_variable.h"
 
 namespace Ui {
@@ -18,8 +20,9 @@ public:
     ~Menu();
 
     appInfo getShowWiget ();
-    bool setShowWiget (int i);
+    bool setShowWidget (int i);
     void addAppInfo (appInfo info);
+    void setStatusNet (bool stat);
 
     QWidget *showApp;
     int showIndex;
@@ -33,6 +36,7 @@ signals:
 private slots:
     void on_pushButtonElectricalSimulator_clicked();
     void on_LaunherPushButton_clicked();
+    void on_pushButton_2_clicked();
 };
 
 #endif // MENU_H

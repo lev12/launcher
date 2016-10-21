@@ -24,8 +24,8 @@ bool Network::connectToServer()
     QTextStream stream (server);
     stream << send;
 
-    server->waitForBytesWritten();
-    server->waitForReadyRead();
+    //server->waitForBytesWritten();
+    server->waitForReadyRead(10);
     return true;
 }
 
@@ -36,8 +36,7 @@ bool Network::getVersionListOnServer(QString appName)
     stream << appName;
     stream << ":";
 
-    server->waitForBytesWritten();
-    server->waitForReadyRead();
+    server->waitForReadyRead(10);
 
     return true;
 }

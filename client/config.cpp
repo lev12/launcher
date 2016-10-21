@@ -18,6 +18,11 @@ config::config()
    }
 }
 
+config::~config()
+{
+    save();
+}
+
 void config::setDefaltParametr()
 {
     QFile defParam(":/other/configDefaltParametr.txt");
@@ -28,7 +33,7 @@ void config::setDefaltParametr()
 
     QTextStream stream (&defParam);
 
-    for (int i(0); i < 8; i++)
+    for (int i(0); i < 10; i++)
     {
         if (i%2 == 0)
         {
@@ -77,7 +82,7 @@ bool config::raedFile()
 
     QTextStream stream(&cFile);
 
-    for (int i(0); i < 8; i++)
+    for (int i(0); i < 10; i++)
     {
         if (i%2 == 0)
         {
@@ -109,7 +114,7 @@ bool config::save()
 
     QTextStream stream(&cFile);
 
-    for (int i(0); i < 8; i++)
+    for (int i(0); i < 10; i++)
     {
         int tempI = 0;
         if (i%2 == 0)

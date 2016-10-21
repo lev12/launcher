@@ -26,7 +26,10 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 private slots:
+    void connectServerStat();
     void setWidgetApp ();
+    void setFullScreanMode ();
+    void setNormalMode ();
 
 private:
     Ui::MainWindow *ui;

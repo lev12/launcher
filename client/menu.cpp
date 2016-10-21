@@ -6,6 +6,7 @@ Menu::Menu(QWidget *parent) :
     ui(new Ui::Menu)
 {
     ui->setupUi(this);
+    setStatusNet(false);
 }
 
 Menu::~Menu()
@@ -25,10 +26,25 @@ void Menu::addAppInfo (appInfo info)
     appinfo << info;
 }
 
-bool Menu::setShowWiget (int i)
+bool Menu::setShowWidget (int i)
 {
     showApp = appinfo.at(i).widget;
+    showIndex = i;
     swithWidget();
+}
+
+void Menu::setStatusNet(bool stat)
+{
+    if (stat)
+    {
+        ui->line->setText("online");
+        ui->line->setStyleSheet("color: rgb(46, 216, 60);\nfont: 75 italic 16pt Times New Roman;\nbackground-color: rgb(3, 4, 30, 60);");
+    }
+    else
+    {
+        ui->line->setText("offline");
+        ui->line->setStyleSheet("color: rgb(255, 0, 0);\nfont: 75 italic 16pt Times New Roman;\nbackground-color: rgb(3, 4, 30, 60);");
+    }
 }
 
 void Menu::on_LaunherPushButton_clicked()
@@ -36,4 +52,9 @@ void Menu::on_LaunherPushButton_clicked()
     showApp = appinfo.at(0).widget;
     showIndex = 0;
     swithWidget();
+}
+
+void Menu::on_pushButton_2_clicked()
+{
+    QDesktopServices::openUrl(QUrl("http://www.cyberforum.ru/beta-testing/thread617608.html"));
 }

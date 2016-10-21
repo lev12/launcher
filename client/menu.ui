@@ -103,6 +103,15 @@ font: 75 12pt &quot;Arial&quot;;</string>
        <property name="text">
         <string>Electrical simulator</string>
        </property>
+       <property name="autoDefault">
+        <bool>false</bool>
+       </property>
+       <property name="default">
+        <bool>false</bool>
+       </property>
+       <property name="flat">
+        <bool>false</bool>
+       </property>
       </widget>
      </item>
     </layout>
@@ -124,11 +133,14 @@ font: 75 12pt &quot;Arial&quot;;</string>
     <widget class="QLabel" name="line">
      <property name="styleSheet">
       <string notr="true">color: rgb(255, 0, 0);
-font: 75 italic 16pt &quot;Times New Roman&quot;;
+font: 75 italic 16pt Times New Roman;
 background-color: rgb(3, 4, 30, 60);</string>
      </property>
      <property name="text">
       <string>offline</string>
+     </property>
+     <property name="margin">
+      <number>3</number>
      </property>
     </widget>
    </item>
@@ -189,8 +201,8 @@ background-color: rgb(3, 4, 30, 60);</string>
         </property>
         <property name="iconSize">
          <size>
-          <width>24</width>
-          <height>24</height>
+          <width>32</width>
+          <height>32</height>
          </size>
         </property>
        </widget>

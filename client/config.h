@@ -16,6 +16,7 @@ public:
     QStringList *argumet;
 
     config();
+    ~config();
     bool create();
     bool raedFile();
     bool save ();
