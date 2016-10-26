@@ -20,7 +20,11 @@ MainWindow::MainWindow(QWidget *parent) :
     cfg  = new config();
     menu = new Menu ();
     network = new Network();
+    threadNet = new QThread (this);
     QObject::connect(network,  SIGNAL(connectServer()), this, SLOT(connectServerStat()));
+    network->moveToThread(threadNet);
+    QObject::connect(this, SIGNAL(destroyed(QObject*)), threadNet, SLOT(quit()));
+
     electricalsimulator = new ElectricalSimulator (network);
     general = new General (NULL,menu);
 
@@ -37,6 +41,8 @@ MainWindow::MainWindow(QWidget *parent) :
     {
         this->showMaximized();
     }
+
+    threadNet->start();
 }
 
 MainWindow::~MainWindow()

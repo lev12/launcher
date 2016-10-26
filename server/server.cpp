@@ -221,7 +221,6 @@ bool Server::parseGetVersions (QString data, QTcpSocket *client)
                 if (numberFile == (FileList.count() - 1))
                 {
                     client->write("file:ulEnd:");
-                    streamFile.~QFileInfo();
                     numberFile = 0;
                     streamTransfer = false;
                     streamData = false;

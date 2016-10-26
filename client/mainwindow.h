@@ -8,6 +8,8 @@
 #include <QObject>
 #include <QWidget>
 #include <QLabel>
+#include <QThread>
+
 #include "config.h"
 #include "network.h"
 #include "menu.h"
@@ -34,6 +36,7 @@ private slots:
 private:
     Ui::MainWindow *ui;
     Network *network;
+    QThread *threadNet;
     Menu *menu;
     config *cfg;
     ElectricalSimulator *electricalsimulator;

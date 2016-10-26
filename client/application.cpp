@@ -1,4 +1,5 @@
 #include "application.h"
+#include <QTime>
 
 Application::Application()
 {
@@ -19,8 +20,10 @@ void Application::getlistversion()
 
 void Application::downloadversion(QString typeString, QString number)
 {
+    progressBar = new QProgressBar ();
     pbHb->addWidget(progressBar);
-    progressBar->setStyleSheet("color: rgb(255, 255, 255);\nbackground-color: rgb(41, 90, 108);");
+    progressBar->setTextDirection(QProgressBar::BottomToTop);
+    progressBar->setStyleSheet("background-color: rgb(255, 164, 37);");
     downloadVersion();
     versionType type;
     QString typeStr = typeString;
@@ -31,13 +34,14 @@ void Application::downloadversion(QString typeString, QString number)
     else if (typeStr == "release")   type = release;
 
     network->downloadVersion(appName,type,number.toInt());
-    QObject::connect(network, SIGNAL(downloadFileEnd()), this, SLOT(endDownloadFile()));
 }
 
 void Application::endDownloadFile()
 {
+    qDebug () << "upDwlo1";
+    pbHb->removeWidget(progressBar);
+    delete progressBar;
     refresh();
-    fillingComboBox();
 }
 
 void Application::listVersion()
@@ -51,9 +55,9 @@ void Application::updateDownload()
 {
     static int i;
     i++;
-    qDebug () << "upDwlo";
+    qDebug () << "upDwlo" << QTime::currentTime().toString() << (i*100/network->countFiles) << network->countFiles << i;
     progressBar->setRange(0,100);
-    progressBar->setValue(i/network->countFiles*100);
+    progressBar->setValue(i*100/network->countFiles);
 }
 
 void Application::updateButton()
@@ -81,13 +85,12 @@ void Application::init(Network *netWork, QString AppName, QComboBox *cb, QPushBu
     appName = AppName;
     network = netWork;
 
-    progressBar = new QProgressBar ();
-
     initFiles(appName);
     refresh();
 
     QObject::connect(network, SIGNAL (connectServer()), this, SLOT (connectServer()));
     QObject::connect(this, SIGNAL (getListVersions ()), network, SLOT (getVersionListOnServer (QString)));
+    QObject::connect(network, SIGNAL(listVersions()), this, SLOT(listVersion()));
     network->getVersionListOnServer(appName);
     QObject::connect(startButton, SIGNAL(clicked()), this, SLOT(open()));
     QObject::connect(this, SIGNAL (downloadVersion ()), network, SLOT(downloadVersion(QString,versionType,int)));
@@ -108,6 +111,7 @@ void Application::openFolder()
 
 void Application::refresh()
 {
+    QObject::connect(network, SIGNAL(listVersions()), this, SLOT(listVersion()));
     network->getVersionListOnServer(appName);
     refreshFiles();
     fillingComboBox();

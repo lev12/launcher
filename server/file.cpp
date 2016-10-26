@@ -48,7 +48,7 @@ void File::FillingVersionList ()
 
 bool File::checkVersion(QFileInfo path)
 {
-    QDir dir;
+/*    QDir dir;
     QString temp_path_ini = path.absoluteFilePath();
     temp_path_ini.append("/data version.ini");
     QFile cfile(temp_path_ini);
@@ -98,7 +98,43 @@ bool File::checkVersion(QFileInfo path)
         }
     }
 
-    return true;
+    return true;*/
+
+    if (path.isFile())
+    {
+        return false;
+    }
+
+    QString pathToConfigVersion = path.absoluteFilePath();
+    pathToConfigVersion.append("/data version.ini");
+    QFile confIni (pathToConfigVersion);
+    if (!(confIni.open(QFile::ReadOnly | QFile::Text)))
+    {
+        return false;
+    }
+
+    QStringList data;
+    data = QString (confIni.readAll()).split(" ");
+
+    if (data.at(0) == "pre-alpha"
+     || data.at(0) == "alpha"
+     || data.at(0) == "beta"
+     || data.at(0) == "release")
+    {
+        if (QString(data.at(1)).toInt() != 0)
+        {
+            QString pathToExe = path.absoluteFilePath();
+            pathToExe.append("/");
+            pathToExe.append(data.at(2));
+            QFile exe (pathToExe);
+            if (exe.exists())
+            {
+                return true;
+            }
+        }
+    }
+
+    return false;
 }
 
 bool File::checkVersion(QString type, QString number)

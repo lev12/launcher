@@ -5,8 +5,7 @@ Network::Network()
     server = new QTcpSocket();
     server->connectToHost(IPServer,PortServer);
     connectToServer();
-    QObject::connect(server, SIGNAL(readyRead()),
-                     this, SLOT(readServer()));
+    QObject::connect(server, SIGNAL(readyRead()), this, SLOT(readServer()), Qt::DirectConnection);
 }
 
 Network::~Network()
@@ -24,8 +23,8 @@ bool Network::connectToServer()
     QTextStream stream (server);
     stream << send;
 
-    //server->waitForBytesWritten();
-    server->waitForReadyRead(10);
+    server->waitForBytesWritten();
+    server->waitForReadyRead(300);
     return true;
 }
 
@@ -36,7 +35,7 @@ bool Network::getVersionListOnServer(QString appName)
     stream << appName;
     stream << ":";
 
-    server->waitForReadyRead(10);
+    server->waitForReadyRead(100);
 
     return true;
 }
@@ -87,7 +86,6 @@ bool Network::disconnectServer()
 void Network::readServer()
 {
     QByteArray data = server->readAll();
-
     if(!parse (data, server))
     {
         QString send = "wrongCmd(";
@@ -102,8 +100,8 @@ void Network::readServer()
 bool Network::parse(QByteArray data, QTcpSocket *server)
 {
     if (parseConnectServer(data,server)) return true;
-    if (parseListVersions (data)) return true;
     if (parseDownloadFile (data, server)) return true;
+    if (parseListVersions (data)) return true;
     if (parseDisconnect (data, server)) return true;
 
     return false;
@@ -130,22 +128,22 @@ bool Network::parseListVersions(QByteArray data)
     bool stream;
     for (int i(0); i<cmd.count(); i++)
     {
-        QRegExp rx (QString("ver:rlv:(\\d+):"));
-        int countVersions = 0;
+        QRegExp rx ("ver:rlv:(\\d+):");
 
-
-        if ((countVersions = rx.indexIn(cmd.at(i))) != -1)
+        if (rx.indexIn(cmd.at(i)) != -1)
         {
             stream = true;
         }
-            else
+        else
         {
             if (stream)
             {
+                qDebug () << "              dwnload4";
                 QStringList dataList = cmd.at(i).split('_');
                 QString type = dataList.at(0);
                 QString number = dataList.at(1);
                 QString name = type; name.append(" "); name.append(number);
+                qDebug () << name;
                 listVersion.operator <<(name);
 
             }
