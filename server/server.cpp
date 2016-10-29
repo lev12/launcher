@@ -171,6 +171,7 @@ bool Server::parseGetVersions (QString data, QTcpSocket *client)
         logPrint->print (send, Log::info, Log::sreverOut);
         stream.operator <<(send);
 
+        versionName = "";
         versionName.append(rx.cap(2));
         versionName.append(" ");
         versionName.append(rx.cap(3));

@@ -2,8 +2,9 @@
 
 Network::Network()
 {
+    cfg = new config();
     server = new QTcpSocket();
-    server->connectToHost(IPServer,PortServer);
+    server->connectToHost(cfg->get("IPServer"),cfg->get("PortServer").toInt());
     connectToServer();
     QObject::connect(server, SIGNAL(readyRead()), this, SLOT(readServer()), Qt::DirectConnection);
 }

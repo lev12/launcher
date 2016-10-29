@@ -13,6 +13,7 @@
 #include <QList>
 
 #include "global_variable.h"
+#include "config.h"
 
 class Network : public QObject
 {
@@ -47,6 +48,7 @@ signals:
 public:
     Network();
 
+    config *cfg;
     QStringList listVersion;
     int countFiles;
     int numberFiles;
