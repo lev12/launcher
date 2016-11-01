@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>545</width>
-    <height>413</height>
+    <width>940</width>
+    <height>507</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -91,7 +91,7 @@
           <property name="sizeHint" stdset="0">
            <size>
             <width>20</width>
-            <height>300</height>
+            <height>200</height>
            </size>
           </property>
          </spacer>
@@ -106,14 +106,14 @@
           </property>
           <property name="minimumSize">
            <size>
-            <width>160</width>
-            <height>140</height>
+            <width>210</width>
+            <height>183</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>300</width>
-            <height>270</height>
+            <width>220</width>
+            <height>190</height>
            </size>
           </property>
           <property name="styleSheet">
@@ -122,26 +122,26 @@ background-color: rgba(0, 0, 0, 128);</string>
           </property>
           <layout class="QVBoxLayout" name="control">
            <property name="spacing">
-            <number>2</number>
+            <number>5</number>
            </property>
            <property name="leftMargin">
-            <number>2</number>
+            <number>5</number>
            </property>
            <property name="topMargin">
-            <number>2</number>
+            <number>5</number>
            </property>
            <property name="rightMargin">
-            <number>2</number>
+            <number>5</number>
            </property>
            <property name="bottomMargin">
-            <number>2</number>
+            <number>5</number>
            </property>
            <item>
             <widget class="QComboBox" name="comboBox">
              <property name="minimumSize">
               <size>
-               <width>25</width>
-               <height>36</height>
+               <width>50</width>
+               <height>48</height>
               </size>
              </property>
              <property name="styleSheet">
@@ -155,7 +155,7 @@ selection-color: rgb(255, 255, 255);</string>
              <property name="minimumSize">
               <size>
                <width>0</width>
-               <height>36</height>
+               <height>48</height>
               </size>
              </property>
              <property name="styleSheet">
@@ -170,6 +170,9 @@ font: 75 9pt &quot;Arial&quot;;</string>
            </item>
            <item>
             <layout class="QHBoxLayout" name="action">
+             <property name="spacing">
+              <number>6</number>
+             </property>
              <property name="sizeConstraint">
               <enum>QLayout::SetDefaultConstraint</enum>
              </property>
@@ -180,14 +183,14 @@ font: 75 9pt &quot;Arial&quot;;</string>
               <widget class="QPushButton" name="refresh">
                <property name="minimumSize">
                 <size>
-                 <width>24</width>
-                 <height>24</height>
+                 <width>64</width>
+                 <height>64</height>
                 </size>
                </property>
                <property name="maximumSize">
                 <size>
-                 <width>48</width>
-                 <height>48</height>
+                 <width>64</width>
+                 <height>64</height>
                 </size>
                </property>
                <property name="text">
@@ -200,8 +203,8 @@ font: 75 9pt &quot;Arial&quot;;</string>
                </property>
                <property name="iconSize">
                 <size>
-                 <width>32</width>
-                 <height>32</height>
+                 <width>48</width>
+                 <height>48</height>
                 </size>
                </property>
               </widget>
@@ -210,14 +213,14 @@ font: 75 9pt &quot;Arial&quot;;</string>
               <widget class="QPushButton" name="pushButton_openFolder">
                <property name="minimumSize">
                 <size>
-                 <width>24</width>
-                 <height>24</height>
+                 <width>64</width>
+                 <height>64</height>
                 </size>
                </property>
                <property name="maximumSize">
                 <size>
-                 <width>48</width>
-                 <height>48</height>
+                 <width>64</width>
+                 <height>64</height>
                 </size>
                </property>
                <property name="text">
@@ -230,8 +233,8 @@ font: 75 9pt &quot;Arial&quot;;</string>
                </property>
                <property name="iconSize">
                 <size>
-                 <width>32</width>
-                 <height>32</height>
+                 <width>48</width>
+                 <height>48</height>
                 </size>
                </property>
               </widget>
@@ -240,14 +243,14 @@ font: 75 9pt &quot;Arial&quot;;</string>
               <widget class="QPushButton" name="pushButton_versionManager">
                <property name="minimumSize">
                 <size>
-                 <width>24</width>
-                 <height>24</height>
+                 <width>64</width>
+                 <height>64</height>
                 </size>
                </property>
                <property name="maximumSize">
                 <size>
-                 <width>48</width>
-                 <height>48</height>
+                 <width>64</width>
+                 <height>64</height>
                 </size>
                </property>
                <property name="text">
@@ -259,8 +262,8 @@ font: 75 9pt &quot;Arial&quot;;</string>
                </property>
                <property name="iconSize">
                 <size>
-                 <width>32</width>
-                 <height>32</height>
+                 <width>48</width>
+                 <height>48</height>
                 </size>
                </property>
               </widget>
@@ -281,7 +284,7 @@ font: 75 9pt &quot;Arial&quot;;</string>
           <property name="sizeHint" stdset="0">
            <size>
             <width>20</width>
-            <height>300</height>
+            <height>200</height>
            </size>
           </property>
          </spacer>
