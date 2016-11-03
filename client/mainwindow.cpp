@@ -21,7 +21,8 @@ MainWindow::MainWindow(QWidget *parent) :
     menu = new Menu ();
     network = new Network();
     threadNet = new QThread (this);
-    QObject::connect(network,  SIGNAL(connectServer()), this, SLOT(connectServerStat()));
+    QObject::connect(network, SIGNAL(connectServer()), this, SLOT(connectServerStat()));
+    QObject::connect(network, SIGNAL(disConnectServer()), this, SLOT(disconnectServerStat()));
     network->moveToThread(threadNet);
     QObject::connect(this, SIGNAL(destroyed(QObject*)), threadNet, SLOT(quit()));
 
@@ -57,6 +58,11 @@ MainWindow::~MainWindow()
     cfg->save();
 
     delete ui;
+}
+
+void MainWindow::disconnectServerStat()
+{
+    menu->setStatusNet(false);
 }
 
 void MainWindow::connectServerStat()

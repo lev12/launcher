@@ -9,6 +9,7 @@
 #include <QWidget>
 #include <QLabel>
 #include <QThread>
+#include <QTimer>
 
 #include "config.h"
 #include "network.h"
@@ -29,6 +30,7 @@ public:
     ~MainWindow();
 private slots:
     void connectServerStat();
+    void disconnectServerStat();
     void setWidgetApp ();
     void setFullScreanMode ();
     void setNormalMode ();

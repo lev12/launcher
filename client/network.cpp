@@ -4,14 +4,38 @@ Network::Network()
 {
     cfg = new config();
     server = new QTcpSocket();
-    server->connectToHost(cfg->get("IPServer"),cfg->get("PortServer").toInt());
+    connect();
     connectToServer();
     QObject::connect(server, SIGNAL(readyRead()), this, SLOT(readServer()), Qt::DirectConnection);
+    QObject::connect(server, SIGNAL(disconnected()), this, SLOT(disconnect()), Qt::DirectConnection);
+    QObject::connect(server, SIGNAL(error(QAbstractSocket::SocketError)),
+                       this, SLOT(netError(QAbstractSocket::SocketError)), Qt::DirectConnection);
 }
 
 Network::~Network()
 {
     delete server;
+}
+
+// Error net
+void Network::netError(QAbstractSocket::SocketError)
+{
+    qDebug () << server->errorString();
+}
+
+// Disconnect from the server
+void Network::disconnect()
+{
+    qDebug () << "disConnect";
+    disConnectServer();
+    parseDownloadFile(QByteArray ("file:stop:downloading:from:server:"), server);
+}
+
+void Network::connect()
+{
+    qDebug () << "connect";
+    server->connectToHost(cfg->get("IPServer"),cfg->get("PortServer").toInt());
+    connectToServer();
 }
 
 //  Send to server
@@ -173,6 +197,17 @@ bool Network::parseDownloadFile(QByteArray data, QTcpSocket *server)
         static bool downloadData = true;
         static QFileInfo fileDownload;
         static int fileSize;
+
+        QRegExp rxStop ("file:stop:downloading:from:server:");
+
+        if (rxStop.indexIn(data) != -1)
+        {
+            download = false;
+            downloadData = false;
+            fileDownload.~QFileInfo();
+            fileSize = 0;
+            downloadFileEnd();
+        }
 
         if (downloadData)
         {

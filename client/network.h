@@ -11,6 +11,7 @@
 #include <QStorageInfo>
 #include <QDir>
 #include <QList>
+#include <QTimer>
 
 #include "global_variable.h"
 #include "config.h"
@@ -31,6 +32,9 @@ private:
 private slots:
 
     void readServer();
+    void connect();
+    void disconnect();
+    void netError(QAbstractSocket::SocketError);
 
 public slots:
 
@@ -48,6 +52,7 @@ signals:
 public:
     Network();
 
+    QTimer *timer;
     config *cfg;
     QStringList listVersion;
     int countFiles;
