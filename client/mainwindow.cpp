@@ -17,8 +17,12 @@ MainWindow::MainWindow(QWidget *parent) :
     dir.mkdir("data");
 
     cfg = new config();
-    log = new Log(cfg->get("logPath"));
-    log->head();
+    if (cfg->get("log") == "sendToTheServer")
+    {
+        log = new Log(cfg->get("logPath"));
+        log->head();
+    }
+
     menu = new Menu ();
     network = new Network(log);
     threadNet = new QThread (this);
@@ -51,6 +55,7 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     log->end();
+    log->compression();
 
     cfg->argumet->clear();
     cfg->name->clear();

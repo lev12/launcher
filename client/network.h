@@ -24,10 +24,10 @@ class Network : public QObject
 private:
 
     bool parse              (QByteArray data, QTcpSocket *server);
-    bool parseConnectServer (QByteArray data, QTcpSocket *server);
+    bool parseConnectServer (QByteArray data);
     bool parseListVersions  (QByteArray data);
     bool parseDownloadFile  (QByteArray data, QTcpSocket *server);
-    bool parseDisconnect    (QByteArray data, QTcpSocket *server);
+    bool parseDisconnect    (QByteArray data);
 
 private slots:
 

@@ -25,8 +25,8 @@ public:
 
     enum transfer
     {
-        clientIn,
-        sreverOut,
+        clientOut,
+        sreverIn,
         null
     };
 
@@ -35,6 +35,8 @@ public:
     void head ();
     void print (QString text = "Null", type classMessages = info, transfer InOut = null);
     void end ();
+
+    bool compression();
 };
 
 #endif // LOG_H

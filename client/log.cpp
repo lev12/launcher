@@ -9,7 +9,7 @@ Log::Log(QString PathLog)
     logFileName.append(date);
     logFileName.append("_");
     logFileName.append(time);
-    logFileName.append("_sever.log");
+    logFileName.append("_client.log");
 
     QString pathFileLog = PathLog;
     pathFileLog.append(logFileName);
@@ -62,10 +62,10 @@ void Log::print(QString text, type classMessages, transfer InOut)
 
     QString InOutTransfer;
     switch (InOut) {
-    case sreverOut:
+    case sreverIn:
         InOutTransfer = "<< server";
         break;
-    case clientIn:
+    case clientOut:
         InOutTransfer = ">> client";
         break;
     case null:
@@ -77,12 +77,12 @@ void Log::print(QString text, type classMessages, transfer InOut)
     send.append(tempClassMassage);
     send.append("] ");
 
-    if (InOutTransfer != "NULL")
+    /*if (InOutTransfer != "NULL")
     {
         send.append("[");
         send.append(InOutTransfer);
         send.append("] ");
-    }
+    }*/
 
     send.append("[");
     send.append(text);
@@ -98,10 +98,10 @@ void Log::head()
 {
     QTextStream stream (logFile);
 
-    QString printHeadInLog = "[----------------------------LOG FILE SERVER----------------------------]\n";
-    printHeadInLog.append("[Date]       "); printHeadInLog.append(QDate::currentDate().toString("dd:MM:yyyy"));
+    QString printHeadInLog = "[----------------------------LOG FILE CLIENT----------------------------]\n";
+    printHeadInLog.append("[Date] "); printHeadInLog.append(QDate::currentDate().toString("dd:MM:yyyy"));
     printHeadInLog.append("\n");
-    printHeadInLog.append("[Time]       "); printHeadInLog.append(QTime::currentTime().toString());
+    printHeadInLog.append("[Time] "); printHeadInLog.append(QTime::currentTime().toString());
     printHeadInLog.append("\n");
 
     stream.operator <<(printHeadInLog);
@@ -114,13 +114,75 @@ void Log::end ()
     QTextStream stream (logFile);
 
     QString printEndInLog;
-    printEndInLog.append("[Date]       "); printEndInLog.append(QDate::currentDate().toString("dd:MM:yyyy"));
+    printEndInLog.append("[Date] "); printEndInLog.append(QDate::currentDate().toString("dd:MM:yyyy"));
     printEndInLog.append("\n");
-    printEndInLog.append("[Time]       "); printEndInLog.append(QTime::currentTime().toString());
+    printEndInLog.append("[Time] "); printEndInLog.append(QTime::currentTime().toString());
     printEndInLog.append("\n");
-    printEndInLog.append("[----------------------------END LOG FILE----------------------------");
+    printEndInLog.append("[----------------------------END LOG FILE----------------------------]");
 
     stream.operator <<(printEndInLog);
 
     return;
+}
+
+bool Log::compression()
+{
+    qDebug () << "compression start";
+
+    logFile->close();
+    logFile->open(QIODevice::ReadOnly);
+    QString path = QFileInfo(*logFile).absolutePath();
+    path.append("/file.log.compression");
+    QFile compressionFile (path);
+    compressionFile.open(QIODevice::WriteOnly);
+    QTextStream streamCompression(&compressionFile);
+
+    QTextStream stream (logFile);
+    stream.readLine();
+
+    while (true)
+    {
+        QString temp = stream.readLine();
+        qDebug () << temp;
+
+        if (temp == "[----------------------------END LOG FILE----------------------------]")
+        {
+            break;
+        }
+        if (temp.split(" ").at(0) == "[Date]")
+        {
+            QString date = "d:";
+            date.append(temp.split(" ").at(1));
+            streamCompression.operator <<(date);
+        }
+        else if (temp.split(" ").at(0) == "[Time]")
+        {
+            QString date = "t:";
+            date.append(temp.split(" ").at(1));
+            streamCompression.operator <<(date);
+        }
+        else if (temp.split(" ").length() >= 3 && temp.split("[").length() == 4 && temp.split("]").length() == 4)
+        {
+            QString cmd;
+            QString tempType = temp.split(" ").at(1);
+            tempType.remove(0,1);
+            tempType.remove(1,tempType.length()-1);
+            cmd.append(tempType);
+            cmd.append(":");
+
+            QString tempTime = temp.split(" ").at(0);
+            tempTime.remove(0,1);
+            tempTime.remove(tempTime.length()-1,1);
+            cmd.append(tempTime);
+            cmd.append(":");
+
+            QString tempCmd = temp.split(" ").at(2);
+            tempCmd.remove(0,1);
+            tempCmd.remove("]");
+            cmd.append(tempCmd);
+
+            streamCompression.operator <<(cmd);
+        }
+        streamCompression.operator <<(":");
+    }
 }

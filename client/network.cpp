@@ -118,15 +118,15 @@ void Network::readServer()
 
 bool Network::parse(QByteArray data, QTcpSocket *server)
 {
-    if (parseConnectServer(data,server)) return true;
+    if (parseConnectServer(data)) return true;
     if (parseDownloadFile (data, server)) return true;
     if (parseListVersions (data)) return true;
-    if (parseDisconnect (data, server)) return true;
+    if (parseDisconnect (data)) return true;
 
     return false;
 }
 
-bool Network::parseConnectServer(QByteArray data, QTcpSocket *server)
+bool Network::parseConnectServer(QByteArray data)
 {
     QRegExp rx (QString("connect:(\\d+):"));
 
@@ -136,7 +136,7 @@ bool Network::parseConnectServer(QByteArray data, QTcpSocket *server)
     }
     else
     {
-        log->print("connect", Log::info);
+        log->print("connect", Log::info, Log::sreverIn);
         connectServer();
         return true;
     }
@@ -153,19 +153,20 @@ bool Network::parseListVersions(QByteArray data)
         if (rx.indexIn(cmd.at(i)) != -1)
         {
             stream = true;
+            log->print("list_versions_start", Log::info);
         }
         else
         {
             if (stream)
             {
-                qDebug () << "              dwnload4";
                 QStringList dataList = cmd.at(i).split('_');
                 QString type = dataList.at(0);
                 QString number = dataList.at(1);
+                QString tempName = type; tempName.append("_"); tempName.append(number);
+                log->print(tempName, Log::info, Log::sreverIn);
                 QString name = type; name.append(" "); name.append(number);
                 qDebug () << name;
                 listVersion.operator <<(name);
-
             }
             else
             {
@@ -173,6 +174,7 @@ bool Network::parseListVersions(QByteArray data)
             }
         }
     }
+    log->print("list_versions_end", Log::info);
 
     listVersions ();
     return true;
@@ -209,6 +211,14 @@ bool Network::parseDownloadFile(QByteArray data, QTcpSocket *server)
             QRegExp rxDl ("file:(.+):(\\d+):(\\d+)");
             if (rxDl.indexIn(data) != -1)
             {
+                QString name = "file_name_";
+                name.append(rxDl.cap(1));
+                name.append("_size_");
+                name.append(rxDl.cap(2));
+                name.append("_count_block_");
+                name.append(rxDl.cap(3));
+                log->print(name, Log::info, Log::sreverIn);
+
                 QString pathNewVersion = ".\\data/";
                 pathNewVersion.append(nameApp);
                 pathNewVersion.append("/");
@@ -251,6 +261,7 @@ bool Network::parseDownloadFile(QByteArray data, QTcpSocket *server)
             QRegExp rxEnd ("file:ulEnd:");
             if (rxEnd.indexIn(data) != -1)
             {
+                log->print("download_end");
                 streamDownload = false;
                 downloadData = true;
                 download = false;
@@ -310,11 +321,13 @@ bool Network::parseDownloadFile(QByteArray data, QTcpSocket *server)
         QString send = "file:";
         if (success)
         {
+            log->print("download_start");
             send.append("ok_reception_file:");
             streamDownload = true;
         }
         else
         {
+            log->print("download_fail");
             send.append("fail:");
         }
 
@@ -325,12 +338,13 @@ bool Network::parseDownloadFile(QByteArray data, QTcpSocket *server)
     }
 }
 
-bool Network::parseDisconnect(QByteArray data, QTcpSocket *server)
+bool Network::parseDisconnect(QByteArray data)
 {
     QRegExp rxDiscon ("disconnect:ser");
 
     if (rxDiscon.indexIn(data) != -1)
     {
+        log->print("disconnect_server", Log::info, Log::sreverIn);
         disConnectServer();
         return true;
     }
