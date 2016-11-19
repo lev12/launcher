@@ -34,7 +34,7 @@ private slots:
     void readServer();
     void connect();
     void disconnect();
-    void netError(QAbstractSocket::SocketError);
+
 
 public slots:
 

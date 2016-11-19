@@ -9,8 +9,6 @@ Network::Network(Log *plog)
     connectToServer();
     QObject::connect(server, SIGNAL(readyRead()), this, SLOT(readServer()), Qt::DirectConnection);
     QObject::connect(server, SIGNAL(disconnected()), this, SLOT(disconnect()), Qt::DirectConnection);
-    QObject::connect(server, SIGNAL(error(QAbstractSocket::SocketError)),
-                       this, SLOT(netError(QAbstractSocket::SocketError)), Qt::DirectConnection);
 }
 
 Network::~Network()
@@ -18,11 +16,6 @@ Network::~Network()
     delete server;
 }
 
-// Error net
-void Network::netError(QAbstractSocket::SocketError)
-{
-    qDebug () << server->errorString();
-}
 
 // Disconnect from the server
 void Network::disconnect()

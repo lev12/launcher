@@ -24,6 +24,7 @@ MainWindow::MainWindow(QWidget *parent) :
     threadNet = new QThread (this);
     QObject::connect(network, SIGNAL(connectServer()), this, SLOT(connectServerStat()));
     QObject::connect(network, SIGNAL(disConnectServer()), this, SLOT(disconnectServerStat()));
+    QObject::connect(network->server, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(netError(QAbstractSocket::SocketError)));
     network->moveToThread(threadNet);
     QObject::connect(this, SIGNAL(destroyed(QObject*)), threadNet, SLOT(quit()));
 
@@ -81,6 +82,12 @@ void MainWindow::setFullScreanMode()
 void MainWindow::setNormalMode()
 {
     this->showNormal();
+}
+
+// Error net
+void MainWindow::netError(QAbstractSocket::SocketError)
+{
+    log->print(network->server->errorString(), Log::error);
 }
 
 void MainWindow::setWidgetApp ()

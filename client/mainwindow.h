@@ -36,6 +36,7 @@ private slots:
     void setWidgetApp ();
     void setFullScreanMode ();
     void setNormalMode ();
+    void netError(QAbstractSocket::SocketError);
 
 private:
     Ui::MainWindow *ui;
