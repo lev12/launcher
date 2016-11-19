@@ -5,7 +5,6 @@
 #include <QDesktopWidget>
 #include <QDesktopServices>
 #include <QUrl>
-#include "global_variable.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -17,9 +16,11 @@ MainWindow::MainWindow(QWidget *parent) :
     QDir dir (".//");
     dir.mkdir("data");
 
-    cfg  = new config();
+    cfg = new config();
+    log = new Log(cfg->get("logPath"));
+    log->head();
     menu = new Menu ();
-    network = new Network();
+    network = new Network(log);
     threadNet = new QThread (this);
     QObject::connect(network, SIGNAL(connectServer()), this, SLOT(connectServerStat()));
     QObject::connect(network, SIGNAL(disConnectServer()), this, SLOT(disconnectServerStat()));
@@ -48,6 +49,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
+    log->end();
+
     cfg->argumet->clear();
     cfg->name->clear();
     cfg->raedFile();

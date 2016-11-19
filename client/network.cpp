@@ -1,7 +1,8 @@
 #include "network.h"
 
-Network::Network()
+Network::Network(Log *plog)
 {
+    log = plog;
     cfg = new config();
     server = new QTcpSocket();
     connect();
@@ -142,6 +143,7 @@ bool Network::parseConnectServer(QByteArray data, QTcpSocket *server)
     }
     else
     {
+        log->print("connect", Log::info);
         connectServer();
         return true;
     }

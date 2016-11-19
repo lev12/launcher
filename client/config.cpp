@@ -33,7 +33,7 @@ void config::setDefaltParametr()
 
     QTextStream stream (&defParam);
 
-    for (int i(0); i < 14; i++)
+    for (int i(0); i < 16; i++)
     {
         if (i%2 == 0)
         {
@@ -82,7 +82,7 @@ bool config::raedFile()
 
     QTextStream stream(&cFile);
 
-    for (int i(0); i < 14; i++)
+    for (int i(0); i < 16; i++)
     {
         if (i%2 == 0)
         {
@@ -114,7 +114,7 @@ bool config::save()
 
     QTextStream stream(&cFile);
 
-    for (int i(0); i < 14; i++)
+    for (int i(0); i < 16; i++)
     {
         int tempI = 0;
         if (i%2 == 0)

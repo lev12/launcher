@@ -11,6 +11,10 @@ Connect to server
 cln     connect:'version cln':
 ser     connect:'version ser':
 
+Update version launcher
+ser 	updateVerLauncher:'number version':
+cln 	
+
 List version
 cln     glv:'application':                  //get list versions
 ser		ver:rlv:'count versions':			//count versions
@@ -24,7 +28,7 @@ ser     ver:alpha_1: 						//return list version
 Download
 cln	file:get:'application':'version':
 
-ser	file:ul:'version':exe:'start file':'count file':'size version':
+ser	file:ul:'application':'version':exe:'start file':'count file':'size version':
         else
 	file:error:'number error':
 
@@ -71,9 +75,18 @@ beta 3
 relese 4
 
 ------------------------------------------------------------------------
+pages
+
+0 - general
+1 - electrical simulator
+
+------------------------------------------------------------------------
 settings
 
 width		= 800
 height		= 600
 fullScrean 	= false
 lenguage	= EN || RU
+page 		= 0
+IPServer 	= 192.168.1.17
+PortServer 	= 1234

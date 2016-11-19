@@ -5,3 +5,4 @@ lenguage EN
 page 0
 IPServer 192.168.1.13
 PortServer 1234
+logPath .//log

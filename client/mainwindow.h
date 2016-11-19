@@ -3,6 +3,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "global_variable.h"
 #include <QMainWindow>
 #include <QApplication>
 #include <QObject>
@@ -11,6 +12,7 @@
 #include <QThread>
 #include <QTimer>
 
+#include "log.h"
 #include "config.h"
 #include "network.h"
 #include "menu.h"
@@ -37,10 +39,11 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
+    config *cfg;
+    Log *log;
     Network *network;
     QThread *threadNet;
     Menu *menu;
-    config *cfg;
     ElectricalSimulator *electricalsimulator;
     General *general;
 

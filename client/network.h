@@ -14,6 +14,7 @@
 #include <QTimer>
 
 #include "global_variable.h"
+#include "log.h"
 #include "config.h"
 
 class Network : public QObject
@@ -21,7 +22,6 @@ class Network : public QObject
     Q_OBJECT
 
 private:
-    QTcpSocket *server;
 
     bool parse              (QByteArray data, QTcpSocket *server);
     bool parseConnectServer (QByteArray data, QTcpSocket *server);
@@ -50,10 +50,11 @@ signals:
     void downloadFileEnd ();
     void disConnectServer ();
 public:
-    Network();
-
+    Network(Log *plog);
+    QTcpSocket *server;
     QTimer *timer;
     config *cfg;
+    Log *log;
     QStringList listVersion;
     int countFiles;
     int numberFiles;
