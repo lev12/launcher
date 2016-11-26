@@ -1,6 +1,7 @@
 #ifndef LOG_H
 #define LOG_H
 
+#include <QObject>
 #include <QFile>
 #include <QDir>
 #include <QTime>
@@ -9,8 +10,13 @@
 #include <QHostAddress>
 #include <QRegExp>
 
-class Log
+class Log : public QObject
 {
+    Q_OBJECT
+
+signals:
+    void comressionEnd(QString path);
+
 private:
     QFile *logFile;
 
@@ -37,6 +43,13 @@ public:
     void end ();
 
     bool compression();
+    bool compressionHaffman(QString pathInputFile, QString pathOutputFile);
+};
+
+class Node
+{
+public:
+
 };
 
 #endif // LOG_H

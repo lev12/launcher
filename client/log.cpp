@@ -63,10 +63,10 @@ void Log::print(QString text, type classMessages, transfer InOut)
     QString InOutTransfer;
     switch (InOut) {
     case sreverIn:
-        InOutTransfer = "<< server";
+        InOutTransfer = ">>server";
         break;
     case clientOut:
-        InOutTransfer = ">> client";
+        InOutTransfer = "<<client";
         break;
     case null:
         InOutTransfer = "NULL";
@@ -77,12 +77,12 @@ void Log::print(QString text, type classMessages, transfer InOut)
     send.append(tempClassMassage);
     send.append("] ");
 
-    /*if (InOutTransfer != "NULL")
+    if (InOutTransfer != "NULL")
     {
         send.append("[");
         send.append(InOutTransfer);
         send.append("] ");
-    }*/
+    }
 
     send.append("[");
     send.append(text);
@@ -129,12 +129,13 @@ bool Log::compression()
 {
     qDebug () << "compression start";
 
+    QTime timelast;
     logFile->close();
     logFile->open(QIODevice::ReadOnly);
     QString path = QFileInfo(*logFile).absolutePath();
     path.append("/file.log.compression");
     QFile compressionFile (path);
-    compressionFile.open(QIODevice::WriteOnly);
+    compressionFile.open(QIODevice::WriteOnly | QIODevice::Text);
     QTextStream streamCompression(&compressionFile);
 
     QTextStream stream (logFile);
@@ -160,8 +161,13 @@ bool Log::compression()
             QString date = "t:";
             date.append(temp.split(" ").at(1));
             streamCompression.operator <<(date);
+
+            QStringList timestart = QString(temp.split(" ").at(1)).split(":");
+            timelast.setHMS(QString(timestart.at(0)).toInt(),
+                            QString(timestart.at(1)).toInt(),
+                            QString(timestart.at(2)).toInt());
         }
-        else if (temp.split(" ").length() >= 3 && temp.split("[").length() == 4 && temp.split("]").length() == 4)
+        else if (temp.split(" ").length() >= 3 && temp.split("[").length() >= 4 && temp.split("]").length() >= 4)
         {
             QString cmd;
             QString tempType = temp.split(" ").at(1);
@@ -173,16 +179,69 @@ bool Log::compression()
             QString tempTime = temp.split(" ").at(0);
             tempTime.remove(0,1);
             tempTime.remove(tempTime.length()-1,1);
-            cmd.append(tempTime);
+            QStringList tempTimeSrt = tempTime.split(":");
+            QTime time(QString(tempTimeSrt.at(0)).toInt(),
+                       QString(tempTimeSrt.at(1)).toInt(),
+                       QString(tempTimeSrt.at(2)).toInt());
+            cmd.append(QString::number(timelast.secsTo(time)));
             cmd.append(":");
+            timelast = time;
 
-            QString tempCmd = temp.split(" ").at(2);
-            tempCmd.remove(0,1);
-            tempCmd.remove("]");
-            cmd.append(tempCmd);
+            qDebug () << temp.split(" ").at(2);
+            if (temp.split(" ").at(2) == "[>>server]" || temp.split(" ").at(2) == "[<<client]")
+            {
+                QString tempTransfer = temp.split(" ").at(2);
+                tempTransfer.remove(0,1);
+                tempTransfer.remove(1,tempTransfer.length()-1);
+                cmd.append(tempTransfer);
+                cmd.append(":");
 
+                QString tempCmd = temp.split(" ").at(3);
+                tempCmd.remove(0,1);
+                tempCmd.remove("]");
+                cmd.append(tempCmd);
+
+            }
+            else
+            {
+                QString tempCmd = temp.split(" ").at(2);
+                tempCmd.remove(0,1);
+                tempCmd.remove("]");
+                cmd.append(tempCmd);
+
+            }
+            qDebug () << cmd;
             streamCompression.operator <<(cmd);
         }
-        streamCompression.operator <<(":");
+        streamCompression.operator <<(";");
     }
+
+    if (!compressionHaffman(path,".//log/compression.bin"))
+    {
+        return false;
+    }
+
+    comressionEnd(path);
+    return true;
+}
+
+bool Log::compressionHaffman (QString pathInputFile,QString pathOutputFile)
+{
+    QFile inputFile (pathInputFile);
+    if (!inputFile.open(QIODevice::ReadOnly))
+    {
+        return false;
+    }
+
+    QFile outputFile (pathOutputFile);
+    if(!outputFile.open(QIODevice::WriteOnly))
+    {
+        return false;
+    }
+
+    qDebug () << "compression hafman";
+
+
+
+    return true;
 }
