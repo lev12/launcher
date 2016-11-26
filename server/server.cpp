@@ -47,7 +47,7 @@ void Server::ReadClient()
 {
     QTcpSocket* clientSocket = (QTcpSocket*)sender();
     //int idusersocs=clientSocket->socketDescriptor();
-    QString out;
+    QByteArray out;
     out = clientSocket->readAll();
     if (WrongCmd(out))
     {
@@ -62,23 +62,17 @@ void Server::ReadClient()
 
 //parse
 
-bool Server::parse (QString data,QTcpSocket* client)
+bool Server::parse (QByteArray data, QTcpSocket* client)
 {
-    if (parseConnectClient(data,client))
-    {
-        return true;
-    }else if (parseGetListVersions(data,client))
-    {
-        return true;
-    }else if (parseGetVersions(data,client))
-    {
-        return true;
-    }
+    if (parseConnectClient(data,client))   return true;
+    if (parseGetListVersions(data,client)) return true;
+    if (parseGetVersions(data,client))     return true;
+    if (parseDownloadLog(data,client))     return true;
 
     return false;
 }
 
-bool Server::parseConnectClient (QString data,QTcpSocket* client)
+bool Server::parseConnectClient (QByteArray data,QTcpSocket* client)
 {
     int versionClient;
     int pos = 0;
@@ -99,7 +93,7 @@ bool Server::parseConnectClient (QString data,QTcpSocket* client)
     return true;
 }
 
-bool Server::parseGetListVersions (QString data,QTcpSocket* client)
+bool Server::parseGetListVersions (QByteArray data, QTcpSocket* client)
 {
     int pos = 0;
     QRegExp rx ("glv:");
@@ -128,7 +122,7 @@ bool Server::parseGetListVersions (QString data,QTcpSocket* client)
     return true;
 }
 
-bool Server::parseGetVersions (QString data, QTcpSocket *client)
+bool Server::parseGetVersions (QByteArray data, QTcpSocket *client)
 {
     static bool stream;
     static bool streamTransfer;
@@ -285,7 +279,22 @@ bool Server::parseGetVersions (QString data, QTcpSocket *client)
     return false;
 }
 
-bool Server::parseDisconnect (QString data, QTcpSocket *client)
+bool Server::parseDownloadLog(QByteArray data, QTcpSocket *client)
+{
+    logPrint->print (data, Log::info, Log::sreverOut);
+    int pos = 0;
+    QRegExp rxData ("log:(.+):(\\d+):(\\d+)");
+
+    if ((pos = rxData.indexIn(data)) != -1)
+    {
+        logPrint->print (data, Log::info, Log::clientIn);
+        client->write("log:accepted:");
+    }
+
+    return false;
+}
+
+bool Server::parseDisconnect (QByteArray data, QTcpSocket *client)
 {
     QRegExp rxDiscon ("disconnect:cln");
     if (rxDiscon.indexIn(data) != -1)

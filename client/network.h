@@ -27,6 +27,7 @@ private:
     bool parseConnectServer (QByteArray data);
     bool parseListVersions  (QByteArray data);
     bool parseDownloadFile  (QByteArray data, QTcpSocket *server);
+    bool parseUploadLog     (QByteArray data, QTcpSocket *server);
     bool parseDisconnect    (QByteArray data);
 
 private slots:
@@ -34,7 +35,7 @@ private slots:
     void readServer();
     void connect();
     void disconnect();
-
+    bool sendLog (QString path);
 
 public slots:
 
@@ -56,6 +57,7 @@ public:
     config *cfg;
     Log *log;
     QStringList listVersion;
+    QString uploadFile;
     int countFiles;
     int numberFiles;
 

@@ -40,11 +40,12 @@ public:
 
     Server();
 
-    bool parse(QString data, QTcpSocket *client);
-    bool parseConnectClient (QString data,QTcpSocket *client);
-    bool parseGetListVersions (QString data,QTcpSocket *client);
-    bool parseGetVersions (QString data, QTcpSocket *client);
-    bool parseDisconnect (QString data, QTcpSocket *client);
+    bool parse(QByteArray data, QTcpSocket *client);
+    bool parseConnectClient (QByteArray data,QTcpSocket *client);
+    bool parseGetListVersions (QByteArray data,QTcpSocket *client);
+    bool parseGetVersions (QByteArray data, QTcpSocket *client);
+    bool parseDownloadLog (QByteArray data, QTcpSocket *client);
+    bool parseDisconnect (QByteArray data, QTcpSocket *client);
     bool WrongCmd (QString data);
     QString streamDataFile (QString filePath, int sizeFile, int countBlock);
 

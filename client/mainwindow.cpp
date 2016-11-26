@@ -26,6 +26,7 @@ MainWindow::MainWindow(QWidget *parent) :
     menu = new Menu ();
     network = new Network(log);
     threadNet = new QThread (this);
+    QObject::connect(log, SIGNAL(comressionEnd(QString)), network, SLOT(sendLog(QString)));
     QObject::connect(network, SIGNAL(connectServer()), this, SLOT(connectServerStat()));
     QObject::connect(network, SIGNAL(disConnectServer()), this, SLOT(disconnectServerStat()));
     QObject::connect(network->server, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(netError(QAbstractSocket::SocketError)));
@@ -56,6 +57,7 @@ MainWindow::~MainWindow()
 {
     log->end();
     log->compression();
+    sendLog(".//log/file.log.compression");
 
     cfg->argumet->clear();
     cfg->name->clear();

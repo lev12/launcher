@@ -45,6 +45,13 @@ Number error
 1 - no application
 2 - no version
 
+Upload Log
+cln 	log:'file name':'file size':'count block'
+ser 	log:accepted:  else  file:error:
+cln 	...
+ser 	log:reception:
+cln 	log:upload:end:
+
 Disconnect server << client
 cln	disconnect:cln
 ser	disconnect:ser else error:disconnect
@@ -90,3 +97,15 @@ lenguage	= EN || RU
 page 		= 0
 IPServer 	= 192.168.1.17
 PortServer 	= 1234
+logPath .//log
+
+
+------------------------------------------------------------------------
+log compress
+
+info = i
+warning = w
+error = e
+critical_error = c
+date = d
+time = t

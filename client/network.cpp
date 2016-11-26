@@ -100,6 +100,31 @@ bool Network::disconnectServer()
     return true;
 }
 
+bool Network::sendLog(QString path)
+{
+    qDebug () << "send log";
+    QFileInfo file (path);
+    if (!file.exists())
+    {
+        return false;
+    }
+
+    uploadFile = path;
+    QString send = "log:";
+    send.append(file.baseName());
+    send.append(":");
+    send.append(QString::number(file.size()));
+    send.append(":");
+    send.append(qFloor(file.size()/8192));
+    send.append(":");
+
+    server->write(send.toLocal8Bit());
+    server->waitForBytesWritten();
+    server->waitForReadyRead(300);
+
+    return true;
+}
+
 //  reception server
 
 void Network::readServer()
@@ -336,6 +361,48 @@ bool Network::parseDownloadFile(QByteArray data, QTcpSocket *server)
 
         return true;
     }
+}
+
+bool Network::parseUploadLog(QByteArray data, QTcpSocket *server)
+{
+    if (data == "file:error:")
+    {
+        return true;
+    }
+
+    static bool isEnd = false;
+
+    if (!isEnd)
+    {
+        //
+    }
+
+    QFile file (uploadFile);
+    if (file.open(QIODevice::ReadOnly))
+    {
+        qDebug () << "not open file upload";
+    }
+
+    if (data == "log:accepted:" || data == "log:reception:")
+    {
+        static int countBlock = qFloor(file.size()/8192);
+        static int numberBlock;
+
+        if (countBlock == numberBlock)
+        {
+            QByteArray buffer;
+            buffer = file.read(8192);
+            numberBlock++;
+            return true;
+        }
+        else
+        {
+            server->write("log:upload:end:");
+            file.close();
+            return true;
+        }
+     }
+    return false;
 }
 
 bool Network::parseDisconnect(QByteArray data)
