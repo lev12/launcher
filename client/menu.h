@@ -37,6 +37,8 @@ private slots:
     void on_pushButtonElectricalSimulator_clicked();
     void on_LaunherPushButton_clicked();
     void on_pushButton_2_clicked();
+    void on_pushButton_3_clicked();
+    void on_pushButton_4_clicked();
 };
 
 #endif // MENU_H

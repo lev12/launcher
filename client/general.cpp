@@ -12,6 +12,9 @@ General::General(QWidget *parent, Menu *menuGen) :
     appinfo.page = 0;
     appinfo.nameApp = "general";
     appinfo.widget = this;
+    appinfo.webSite = "";
+    appinfo.vk = "";
+    appinfo.youtube = "";
 
     QString fullScreanStr = cfg->get("fullScrean");
     if (fullScreanStr == "false")

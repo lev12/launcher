@@ -8,6 +8,9 @@ ElectricalSimulator::ElectricalSimulator(Network *net) :
     init(net, "Electrical Simulator", ui->comboBox, ui->start, ui->horizontalLayout_for_progressBar);
     appinfo.page = 1;
     appinfo.nameApp = "Electrical Simulator";
+    appinfo.vk = "http://vk.com";
+    appinfo.youtube = "http://youtude.com";
+    appinfo.webSite = "http://electrical-simulator.ru/";
     appinfo.widget = this;
 }
 

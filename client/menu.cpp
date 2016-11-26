@@ -56,5 +56,15 @@ void Menu::on_LaunherPushButton_clicked()
 
 void Menu::on_pushButton_2_clicked()
 {
-    QDesktopServices::openUrl(QUrl("http://www.cyberforum.ru/beta-testing/thread617608.html"));
+    QDesktopServices::openUrl(QUrl(appinfo.at(showIndex).webSite));
+}
+
+void Menu::on_pushButton_3_clicked()
+{
+    QDesktopServices::openUrl(QUrl(appinfo.at(showIndex).vk));
+}
+
+void Menu::on_pushButton_4_clicked()
+{
+    QDesktopServices::openUrl(QUrl(appinfo.at(showIndex).youtube));
 }

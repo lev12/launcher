@@ -182,8 +182,8 @@ background-color: rgb(3, 4, 30, 60);</string>
        <widget class="QPushButton" name="pushButton_2">
         <property name="minimumSize">
          <size>
-          <width>32</width>
-          <height>32</height>
+          <width>24</width>
+          <height>24</height>
          </size>
         </property>
         <property name="maximumSize">
@@ -201,8 +201,8 @@ background-color: rgb(3, 4, 30, 60);</string>
         </property>
         <property name="iconSize">
          <size>
-          <width>32</width>
-          <height>32</height>
+          <width>24</width>
+          <height>24</height>
          </size>
         </property>
        </widget>
@@ -224,6 +224,12 @@ background-color: rgb(3, 4, 30, 60);</string>
         <property name="text">
          <string/>
         </property>
+        <property name="iconSize">
+         <size>
+          <width>24</width>
+          <height>24</height>
+         </size>
+        </property>
        </widget>
       </item>
       <item>
@@ -242,6 +248,12 @@ background-color: rgb(3, 4, 30, 60);</string>
         </property>
         <property name="text">
          <string/>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>24</width>
+          <height>24</height>
+         </size>
         </property>
        </widget>
       </item>
