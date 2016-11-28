@@ -144,7 +144,6 @@ bool Log::compression()
     while (true)
     {
         QString temp = stream.readLine();
-        qDebug () << temp;
 
         if (temp == "[----------------------------END LOG FILE----------------------------]")
         {
@@ -187,7 +186,6 @@ bool Log::compression()
             cmd.append(":");
             timelast = time;
 
-            qDebug () << temp.split(" ").at(2);
             if (temp.split(" ").at(2) == "[>>server]" || temp.split(" ").at(2) == "[<<client]")
             {
                 QString tempTransfer = temp.split(" ").at(2);
@@ -216,7 +214,10 @@ bool Log::compression()
         streamCompression.operator <<(";");
     }
 
-    if (!compressionHaffman(path,".//log/compression.bin"))
+    compressionFile.flush();
+    compressionFile.close();
+
+    if (!compressionHaffman(".//log/file.log.compression",".//log/compression.bin"))
     {
         return false;
     }
@@ -241,7 +242,155 @@ bool Log::compressionHaffman (QString pathInputFile,QString pathOutputFile)
 
     qDebug () << "compression hafman";
 
+    QByteArray data = inputFile.readAll();
 
+    QMap<char,int> mass;
+    for(int i(0); i<data.length(); i++)
+    {
+        char ch = data.at(i);
+        mass[ch]++;
+    }
+
+    QMap<char, int>::iterator i;
+    for (i=mass.begin(); i != mass.end(); i++)
+    {
+        qDebug () << i.key() << " : " << i.value();
+    }
+    QList <Node*> tree;
+    for (i=mass.begin(); i != mass.end(); i++)
+    {
+        Node *node = new Node();
+        node->c = i.key();
+
+        node->n = i.value();
+        tree.operator <<(node);
+    }
+
+    while (tree.size() !=1)
+    {
+        for (int i = tree.length()-1; i >= 1; i--)
+        {
+            for (int j(0); j <i; ++j)
+            {
+                if (tree.at(j)->n > tree.at(j+1)->n)
+                {
+                    int foo = tree.at(j)->n;
+                    tree.at(j)->n = tree.at(j+1)->n;
+                    tree.at(j+1)->n = foo;
+                }
+            }
+        }
+        Node *sonL = tree.front();;
+        tree.pop_front();
+        Node *sonR = tree.front();;
+        tree.pop_front();
+
+        Node *parent = new Node(sonL,sonR);
+        tree.push_back(parent);
+    }
+
+    Node *root = tree.front();
+
+    table = new QMap< char,QVector<bool> >;
+    code = new QVector<bool>;
+    buildTable(root);
+
+    qDebug () << "dddfff";
+
+    for (int i(0); i < data.length(); i++)
+    {
+        //qDebug () << "dddfff";
+        char c = data.at(i);
+        QVector <bool> x = table->value(c);
+        for (int i(0); i < x.size(); i++)
+        {
+            qDebug () << x.at(i);
+        }
+    }
+    qDebug () << "dddfff";
 
     return true;
+}
+
+void Log::buildTable(Node *root)
+{
+    Node *temp = root->right;
+    code->push_back(1);
+    while (true)
+    {
+        char c;
+        if (temp->left)
+        {
+            code->push_back(0);
+            qDebug() << "ri";
+            table->insert(table->end(),temp->left->c,*code);
+        }
+        else if(temp->right)
+        {
+            code->push_back(1);
+            table->insert(table->end(),temp->right->c,*code);
+            qDebug () << "left";
+        }
+
+        if (temp->right)
+        {
+            qDebug () << "ri ri";
+            code->push_back(1);
+            temp= temp->right;
+        }
+        else if (temp->left)
+        {
+            qDebug () << "le le";
+            code->push_back(0);
+            temp = temp->left;
+        } else
+        {
+            break;
+        }
+    }
+    temp = root->left;
+    code->push_back(1);
+    while (true)
+    {
+        if (temp->left->c != NULL)
+        {
+            code->push_back(0);
+            qDebug() << "ri";
+            table->insert(table->end(),temp->left->c,*code);
+        }
+        else if(temp->right->c != NULL)
+        {
+            code->push_back(1);
+            table->insert(table->end(),temp->right->c,*code);
+            qDebug () << "left";
+        }
+
+        if (temp->right->n != NULL)
+        {
+            qDebug () << "ri ri";
+            code->push_back(1);
+            temp= temp->right;
+        }
+        else        if (temp->left->n != NULL)
+        {
+            qDebug () << "le le";
+            code->push_back(0);
+            temp = temp->left;
+        } else
+        {
+            break;
+        }
+    }
+}
+
+Node::Node(Node *l, Node *r)
+{
+    left = l;
+    right = r;
+    n = l->n + r->n;
+}
+
+Node::Node ()
+{
+
 }

@@ -7,8 +7,22 @@
 #include <QTime>
 #include <QDate>
 #include <QTextStream>
+#include <QMap>
+#include <QVector>
+#include <QtAlgorithms>
 #include <QHostAddress>
 #include <QRegExp>
+
+class Node
+{
+public:
+    int n;
+    char c;
+    Node *left, *right;
+
+    Node ();
+    Node (Node *l, Node *r);
+};
 
 class Log : public QObject
 {
@@ -20,6 +34,9 @@ signals:
 private:
     QFile *logFile;
 
+    void buildTable(Node *root);
+    QVector<bool> *code;
+    QMap < char,QVector<bool> > *table;
 public:
     enum type
     {
@@ -44,12 +61,6 @@ public:
 
     bool compression();
     bool compressionHaffman(QString pathInputFile, QString pathOutputFile);
-};
-
-class Node
-{
-public:
-
 };
 
 #endif // LOG_H
