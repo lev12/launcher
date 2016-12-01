@@ -295,91 +295,47 @@ bool Log::compressionHaffman (QString pathInputFile,QString pathOutputFile)
     code = new QVector<bool>;
     buildTable(root);
 
-    qDebug () << "dddfff";
-
+    int count = 0;
+    char buf = 0;
+    QTextStream strem (&outputFile);
     for (int i(0); i < data.length(); i++)
     {
-        //qDebug () << "dddfff";
         char c = data.at(i);
         QVector <bool> x = table->value(c);
-        for (int i(0); i < x.size(); i++)
+        for (int n(0); n < x.size(); n++)
         {
-            qDebug () << x.at(i);
+            buf = buf | x.at(n)<<(7-count);
+            count++;
+            if (count == 8)
+            {
+                count = 0;
+                strem.operator <<(QString(buf));
+                buf = 0;
+            }
         }
     }
-    qDebug () << "dddfff";
+    qDebug () << "end compression haffman";
 
     return true;
 }
 
 void Log::buildTable(Node *root)
 {
-    Node *temp = root->right;
-    code->push_back(1);
-    while (true)
-    {
-        char c;
-        if (temp->left)
-        {
-            code->push_back(0);
-            qDebug() << "ri";
-            table->insert(table->end(),temp->left->c,*code);
-        }
-        else if(temp->right)
-        {
-            code->push_back(1);
-            table->insert(table->end(),temp->right->c,*code);
-            qDebug () << "left";
-        }
+    qDebug () << "left " << QString (root->left!=NULL);
+    if (root->left!=NULL)
+                      { code->push_back(0);
+                      buildTable(root->left);}
 
-        if (temp->right)
-        {
-            qDebug () << "ri ri";
-            code->push_back(1);
-            temp= temp->right;
-        }
-        else if (temp->left)
-        {
-            qDebug () << "le le";
-            code->push_back(0);
-            temp = temp->left;
-        } else
-        {
-            break;
-        }
-    }
-    temp = root->left;
-    code->push_back(1);
-    while (true)
-    {
-        if (temp->left->c != NULL)
-        {
-            code->push_back(0);
-            qDebug() << "ri";
-            table->insert(table->end(),temp->left->c,*code);
-        }
-        else if(temp->right->c != NULL)
-        {
-            code->push_back(1);
-            table->insert(table->end(),temp->right->c,*code);
-            qDebug () << "left";
-        }
+    qDebug () << "right " << QString (root->right!=NULL);
+    if (root->right!=NULL)
+                       { code->push_back(1);
+                       buildTable(root->right);}
 
-        if (temp->right->n != NULL)
-        {
-            qDebug () << "ri ri";
-            code->push_back(1);
-            temp= temp->right;
-        }
-        else        if (temp->left->n != NULL)
-        {
-            qDebug () << "le le";
-            code->push_back(0);
-            temp = temp->left;
-        } else
-        {
-            break;
-        }
+    if (root->left==NULL && root->right==NULL) table->insert(root->c, *code);
+
+    if (code->length() != 0)
+    {
+        code->pop_back();
     }
 }
 
@@ -392,5 +348,5 @@ Node::Node(Node *l, Node *r)
 
 Node::Node ()
 {
-
+    left=right=NULL;
 }
