@@ -283,12 +283,14 @@ bool Server::parseDownloadLog(QByteArray data, QTcpSocket *client)
 {
     logPrint->print (data, Log::info, Log::sreverOut);
     int pos = 0;
-    QRegExp rxData ("log:(.+):(\\d+):(\\d+)");
 
+
+    QRegExp rxData ("log:(.+):(\\d+):(\\d+)");
     if ((pos = rxData.indexIn(data)) != -1)
     {
         logPrint->print (data, Log::info, Log::clientIn);
         client->write("log:accepted:");
+        logPrint->print("log:accepted:", Log::info, Log::sreverOut);
     }
 
     return false;

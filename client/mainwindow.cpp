@@ -57,7 +57,6 @@ MainWindow::~MainWindow()
 {
     log->end();
     log->compression();
-    sendLog(".//log/file.log.compression");
 
     cfg->argumet->clear();
     cfg->name->clear();

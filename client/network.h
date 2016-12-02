@@ -35,13 +35,13 @@ private slots:
     void readServer();
     void connect();
     void disconnect();
-    bool sendLog (QString path);
 
 public slots:
 
     bool downloadVersion        (QString appName, versionType type,
                                  int number);
     bool getVersionListOnServer (QString appName);
+    bool sendLog (QString path);
 
 signals:
     void updateListVersion ();

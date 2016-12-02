@@ -111,12 +111,14 @@ bool Network::sendLog(QString path)
 
     uploadFile = path;
     QString send = "log:";
-    send.append(file.baseName());
+    send.append(file.fileName());
     send.append(":");
     send.append(QString::number(file.size()));
     send.append(":");
-    send.append(qFloor(file.size()/8192));
+    send.append(QString::number(qFloor(file.size()/8192)));
     send.append(":");
+
+    qDebug () << send;
 
     server->write(send.toLocal8Bit());
     server->waitForBytesWritten();
