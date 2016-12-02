@@ -298,6 +298,26 @@ bool Log::compressionHaffman (QString pathInputFile,QString pathOutputFile)
     int count = 0;
     char buf = 0;
     QTextStream strem (&outputFile);
+
+    QMap < char,QVector<bool> >::iterator itable;
+    for (itable=table->begin(); itable != table->end(); itable++)
+    {
+        char c = itable.key();
+        strem.operator <<(c);
+        QVector <bool> x = table->value(c);
+        for (int n(0); n < x.size(); n++)
+        {
+            buf = buf | x.at(n)<<(7-count);
+            count++;
+            if (count == 8)
+            {
+                count = 0;
+                strem.operator <<(QString(buf));
+                buf = 0;
+            }
+        }
+    }
+
     for (int i(0); i < data.length(); i++)
     {
         char c = data.at(i);
