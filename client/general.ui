@@ -91,7 +91,7 @@
           </property>
           <property name="icon">
            <iconset>
-            <normalon>:/icon/electrical simulator (menu).png</normalon>
+            <normalon>:/icon/electrical simulator icon.png</normalon>
            </iconset>
           </property>
           <property name="iconSize">
