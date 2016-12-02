@@ -51,6 +51,7 @@ ser 	log:accepted:  else  file:error:
 cln 	...
 ser 	log:reception:
 cln 	log:upload:end:
+ser 	log:accepted:  else  file:error:
 
 Disconnect server << client
 cln	disconnect:cln
@@ -97,8 +98,8 @@ lenguage	= EN || RU
 page 		= 0
 IPServer 	= 192.168.1.17
 PortServer 	= 1234
-logPath .//log
-
+logPath		= .//log
+countFileLog= 10
 
 ------------------------------------------------------------------------
 log compress

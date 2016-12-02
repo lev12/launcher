@@ -35,6 +35,11 @@ Log::Log(QString PathLog)
     }
 }
 
+Log::~Log()
+{
+
+}
+
 void Log::print(QString text, type classMessages, transfer InOut)
 {
     QString send = "[";
@@ -125,6 +130,36 @@ void Log::end ()
     return;
 }
 
+void Log::grabber(int countFileDelete)
+{
+    if (countFileDelete != 0)
+    {
+        QString path = QFileInfo (*logFile).absolutePath();
+        QDir dir (path);
+        QList <QFileInfo> fileList = dir.entryInfoList();
+
+        int index = 0;
+        for (int i(0); i < fileList.length(); i++)
+        {
+            QString fileName = fileList.at(i).fileName();
+            QStringList fileNameList = fileName.split("_");
+            if (fileNameList.length() == 3)
+            {
+                if (fileNameList.at(2) == "client.log")
+                {
+                    index++;
+                    if (index >= countFileDelete)
+                    {
+                        QFile::remove(fileList.at(i).absoluteFilePath());
+                    }
+                }
+
+            }
+        }
+    }
+
+}
+
 bool Log::compression()
 {
     qDebug () << "compression start";
@@ -144,7 +179,6 @@ bool Log::compression()
     while (true)
     {
         QString temp = stream.readLine();
-        qDebug () << temp;
 
         if (temp == "[----------------------------END LOG FILE----------------------------]")
         {
@@ -187,7 +221,6 @@ bool Log::compression()
             cmd.append(":");
             timelast = time;
 
-            qDebug () << temp.split(" ").at(2);
             if (temp.split(" ").at(2) == "[>>server]" || temp.split(" ").at(2) == "[<<client]")
             {
                 QString tempTransfer = temp.split(" ").at(2);
@@ -216,7 +249,10 @@ bool Log::compression()
         streamCompression.operator <<(";");
     }
 
-    if (!compressionHaffman(path,".//log/compression.bin"))
+    compressionFile.flush();
+    compressionFile.close();
+
+    if (!compressionHaffman(".//log/file.log.compression",".//log/compression.bin"))
     {
         return false;
     }
@@ -241,7 +277,131 @@ bool Log::compressionHaffman (QString pathInputFile,QString pathOutputFile)
 
     qDebug () << "compression hafman";
 
+    QByteArray data = inputFile.readAll();
 
+    QMap<char,int> mass;
+    for(int i(0); i<data.length(); i++)
+    {
+        char ch = data.at(i);
+        mass[ch]++;
+    }
+
+    QMap<char, int>::iterator i;
+    for (i=mass.begin(); i != mass.end(); i++)
+    {
+        qDebug () << i.key() << " : " << i.value();
+    }
+    QList <Node*> tree;
+    for (i=mass.begin(); i != mass.end(); i++)
+    {
+        Node *node = new Node();
+        node->c = i.key();
+
+        node->n = i.value();
+        tree.operator <<(node);
+    }
+
+    while (tree.size() !=1)
+    {
+        for (int i = tree.length()-1; i >= 1; i--)
+        {
+            for (int j(0); j <i; ++j)
+            {
+                if (tree.at(j)->n > tree.at(j+1)->n)
+                {
+                    int foo = tree.at(j)->n;
+                    tree.at(j)->n = tree.at(j+1)->n;
+                    tree.at(j+1)->n = foo;
+                }
+            }
+        }
+        Node *sonL = tree.front();;
+        tree.pop_front();
+        Node *sonR = tree.front();;
+        tree.pop_front();
+
+        Node *parent = new Node(sonL,sonR);
+        tree.push_back(parent);
+    }
+
+    Node *root = tree.front();
+
+    table = new QMap< char,QVector<bool> >;
+    code = new QVector<bool>;
+    buildTable(root);
+
+    int count = 0;
+    char buf = 0;
+    QTextStream strem (&outputFile);
+
+    QMap < char,QVector<bool> >::iterator itable;
+    for (itable=table->begin(); itable != table->end(); itable++)
+    {
+        char c = itable.key();
+        strem.operator <<(c);
+        QVector <bool> x = table->value(c);
+        for (int n(0); n < x.size(); n++)
+        {
+            buf = buf | x.at(n)<<(7-count);
+            count++;
+            if (count == 8)
+            {
+                count = 0;
+                strem.operator <<(QString(buf));
+                buf = 0;
+            }
+        }
+    }
+
+    for (int i(0); i < data.length(); i++)
+    {
+        char c = data.at(i);
+        QVector <bool> x = table->value(c);
+        for (int n(0); n < x.size(); n++)
+        {
+            buf = buf | x.at(n)<<(7-count);
+            count++;
+            if (count == 8)
+            {
+                count = 0;
+                strem.operator <<(QString(buf));
+                buf = 0;
+            }
+        }
+    }
+    qDebug () << "end compression haffman";
 
     return true;
+}
+
+void Log::buildTable(Node *root)
+{
+    qDebug () << "left " << QString (root->left!=NULL);
+    if (root->left!=NULL)
+                      { code->push_back(0);
+                      buildTable(root->left);}
+
+    qDebug () << "right " << QString (root->right!=NULL);
+    if (root->right!=NULL)
+                       { code->push_back(1);
+                       buildTable(root->right);}
+
+    if (root->left==NULL && root->right==NULL) table->insert(root->c, *code);
+
+    if (code->length() != 0)
+    {
+        code->pop_back();
+    }
+}
+
+Node::Node(Node *l, Node *r)
+{
+    left = l;
+    right = r;
+    n = l->n + r->n;
+}
+
+Node::Node ()
+{
+    left=right=NULL;
 }
