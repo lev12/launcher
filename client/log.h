@@ -57,10 +57,13 @@ public:
 
     void head ();
     void print (QString text = "Null", type classMessages = info, transfer InOut = null);
+    void grabber (int countFileDelete);
     void end ();
 
     bool compression();
     bool compressionHaffman(QString pathInputFile, QString pathOutputFile);
+
+    ~Log();
 };
 
 #endif // LOG_H

@@ -57,7 +57,7 @@ MainWindow::~MainWindow()
 {
     log->end();
     log->compression();
-    sendLog(".//log/file.log.compression");
+    log->grabber(cfg->get("countFileLog").toInt());
 
     cfg->argumet->clear();
     cfg->name->clear();

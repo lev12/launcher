@@ -9,6 +9,7 @@
 class config
 {
 private:
+    int countLine = 10;
     void setDefaltParametr();
 public:
 

@@ -35,6 +35,11 @@ Log::Log(QString PathLog)
     }
 }
 
+Log::~Log()
+{
+
+}
+
 void Log::print(QString text, type classMessages, transfer InOut)
 {
     QString send = "[";
@@ -123,6 +128,36 @@ void Log::end ()
     stream.operator <<(printEndInLog);
 
     return;
+}
+
+void Log::grabber(int countFileDelete)
+{
+    if (countFileDelete != 0)
+    {
+        QString path = QFileInfo (*logFile).absolutePath();
+        QDir dir (path);
+        QList <QFileInfo> fileList = dir.entryInfoList();
+
+        int index = 0;
+        for (int i(0); i < fileList.length(); i++)
+        {
+            QString fileName = fileList.at(i).fileName();
+            QStringList fileNameList = fileName.split("_");
+            if (fileNameList.length() == 3)
+            {
+                if (fileNameList.at(2) == "client.log")
+                {
+                    index++;
+                    if (index >= countFileDelete)
+                    {
+                        QFile::remove(fileList.at(i).absoluteFilePath());
+                    }
+                }
+
+            }
+        }
+    }
+
 }
 
 bool Log::compression()
