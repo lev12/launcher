@@ -56,8 +56,8 @@ MainWindow::~MainWindow()
 {
     log->end();
     log->compression();
-    log->grabber(cfg->get("countFileLog").toInt());
     log->comressionEnd(QString(".//log/compression.bin"));
+    log->grabber(cfg->get("countFileLog").toInt());
 
     cfg->argumet->clear();
     cfg->name->clear();

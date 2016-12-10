@@ -13,7 +13,7 @@ Network::Network(Log *plog)
 
 Network::~Network()
 {
-    //delete server;
+    delete server;
 }
 
 
@@ -132,7 +132,6 @@ bool Network::sendLog(QString path)
 void Network::readServer()
 {
     QByteArray data = server->readAll();
-    qDebug () << data;
     if(!parse (data, server))
     {
         QString send = "wrongCmd(";
@@ -147,8 +146,8 @@ void Network::readServer()
 bool Network::parse(QByteArray data, QTcpSocket *server)
 {
     if (parseConnectServer(data)) return true;
-    if (parseUploadLog(data, server)) return true;
     if (parseDownloadFile (data, server)) return true;
+    if (parseUploadLog(data, server)) return true;
     if (parseListVersions (data)) return true;
     if (parseDisconnect (data)) return true;
 
@@ -374,49 +373,30 @@ bool Network::parseUploadLog(QByteArray data, QTcpSocket *server)
         return true;
     }
 
-    static bool isEnd = false;
-
-    if (!isEnd)
-    {
-        qDebug() << "ddddddddfffgg";
-    }
-
     QFile file (uploadFile);
     if (!file.open(QIODevice::ReadOnly))
     {
         qDebug () << "not open file upload";
     }
-    qDebug () << data;
+
     if (data == "log:accepted:" || data == "log:reception:")
     {
-        qDebug () << "hhhfhhfhhfhfhfhhhhhhhfhhf";
         static int countBlock = qFloor(file.size()/8192)+1;
         static int numberBlock;
 
         if (countBlock != numberBlock)
         {
-            qDebug () << "sdddsddsdadsd";
             QByteArray buffer;
             buffer = file.read(8192);
             server->write(buffer);
             server->waitForBytesWritten();
-            server->waitForReadyRead();
-            qDebug () << buffer;
+            server->flush();
             numberBlock++;
-            if (countBlock == numberBlock)
-            {
-                server->write("log:upload:end:");
-                server->waitForBytesWritten();
-                server->waitForReadyRead();
-                qDebug () << "ddddd";
-                file.close();
-            }
             return true;
         }
         else
         {
             server->write("log:upload:end:");
-            qDebug () << "ddddd";
             file.close();
             return true;
         }

@@ -49,7 +49,6 @@ void Server::ReadClient()
     //int idusersocs=clientSocket->socketDescriptor();
     QByteArray out;
     out = clientSocket->readAll();
-    qDebug () << out;
     if (WrongCmd(out))
     {
         logPrint->print(out, Log::error, Log::clientIn);
@@ -288,18 +287,17 @@ bool Server::parseDownloadLog(QByteArray data, QTcpSocket *client)
     if ("log:upload:end:" == data)
     {
         stream = false;
-
+        logPrint->print("log upload end", Log::info, Log::clientIn);
     }
     if (stream)
     {
         QString send = "log:reception:";
-        client->write(send.toLocal8Bit());
-        client->waitForBytesWritten();
-        client->waitForReadyRead();
         file.open(QFile::WriteOnly);
         file.write(data);
-        qDebug () << data;
+        file.flush();
         logPrint->print("log:reception:");
+        QTextStream stream (client);
+        stream.operator <<(send);
     }
 
     int pos = 0;
