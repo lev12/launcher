@@ -12,6 +12,7 @@
 #include <QDir>
 #include <QList>
 #include <QTimer>
+#include <QThread>
 
 #include "global_variable.h"
 #include "log.h"

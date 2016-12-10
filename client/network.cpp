@@ -7,13 +7,13 @@ Network::Network(Log *plog)
     server = new QTcpSocket();
     connect();
     connectToServer();
-    QObject::connect(server, SIGNAL(readyRead()), this, SLOT(readServer()), Qt::DirectConnection);
-    QObject::connect(server, SIGNAL(disconnected()), this, SLOT(disconnect()), Qt::DirectConnection);
+    QObject::connect(server, SIGNAL(readyRead()), this, SLOT(readServer()));
+    QObject::connect(server, SIGNAL(disconnected()), this, SLOT(disconnect()));
 }
 
 Network::~Network()
 {
-    delete server;
+    //delete server;
 }
 
 
@@ -115,14 +115,14 @@ bool Network::sendLog(QString path)
     send.append(":");
     send.append(QString::number(file.size()));
     send.append(":");
-    send.append(QString::number(qFloor(file.size()/8192)));
+    send.append(QString::number(qFloor(file.size()/8192)+1));
     send.append(":");
 
     qDebug () << send;
 
     server->write(send.toLocal8Bit());
     server->waitForBytesWritten();
-    server->waitForReadyRead(300);
+    server->waitForReadyRead();
 
     return true;
 }
@@ -132,6 +132,7 @@ bool Network::sendLog(QString path)
 void Network::readServer()
 {
     QByteArray data = server->readAll();
+    qDebug () << data;
     if(!parse (data, server))
     {
         QString send = "wrongCmd(";
@@ -146,6 +147,7 @@ void Network::readServer()
 bool Network::parse(QByteArray data, QTcpSocket *server)
 {
     if (parseConnectServer(data)) return true;
+    if (parseUploadLog(data, server)) return true;
     if (parseDownloadFile (data, server)) return true;
     if (parseListVersions (data)) return true;
     if (parseDisconnect (data)) return true;
@@ -376,30 +378,45 @@ bool Network::parseUploadLog(QByteArray data, QTcpSocket *server)
 
     if (!isEnd)
     {
-        //
+        qDebug() << "ddddddddfffgg";
     }
 
     QFile file (uploadFile);
-    if (file.open(QIODevice::ReadOnly))
+    if (!file.open(QIODevice::ReadOnly))
     {
         qDebug () << "not open file upload";
     }
-
+    qDebug () << data;
     if (data == "log:accepted:" || data == "log:reception:")
     {
-        static int countBlock = qFloor(file.size()/8192);
+        qDebug () << "hhhfhhfhhfhfhfhhhhhhhfhhf";
+        static int countBlock = qFloor(file.size()/8192)+1;
         static int numberBlock;
 
-        if (countBlock == numberBlock)
+        if (countBlock != numberBlock)
         {
+            qDebug () << "sdddsddsdadsd";
             QByteArray buffer;
             buffer = file.read(8192);
+            server->write(buffer);
+            server->waitForBytesWritten();
+            server->waitForReadyRead();
+            qDebug () << buffer;
             numberBlock++;
+            if (countBlock == numberBlock)
+            {
+                server->write("log:upload:end:");
+                server->waitForBytesWritten();
+                server->waitForReadyRead();
+                qDebug () << "ddddd";
+                file.close();
+            }
             return true;
         }
         else
         {
             server->write("log:upload:end:");
+            qDebug () << "ddddd";
             file.close();
             return true;
         }

@@ -257,7 +257,6 @@ bool Log::compression()
         return false;
     }
 
-    comressionEnd(path);
     return true;
 }
 
@@ -369,6 +368,9 @@ bool Log::compressionHaffman (QString pathInputFile,QString pathOutputFile)
             }
         }
     }
+    outputFile.flush();
+    outputFile.close();
+
     qDebug () << "end compression haffman";
 
     return true;

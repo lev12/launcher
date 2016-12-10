@@ -49,6 +49,7 @@ void Server::ReadClient()
     //int idusersocs=clientSocket->socketDescriptor();
     QByteArray out;
     out = clientSocket->readAll();
+    qDebug () << out;
     if (WrongCmd(out))
     {
         logPrint->print(out, Log::error, Log::clientIn);
@@ -66,8 +67,8 @@ bool Server::parse (QByteArray data, QTcpSocket* client)
 {
     if (parseConnectClient(data,client))   return true;
     if (parseGetListVersions(data,client)) return true;
-    if (parseGetVersions(data,client))     return true;
     if (parseDownloadLog(data,client))     return true;
+    if (parseGetVersions(data,client))     return true;
 
     return false;
 }
@@ -281,16 +282,33 @@ bool Server::parseGetVersions (QByteArray data, QTcpSocket *client)
 
 bool Server::parseDownloadLog(QByteArray data, QTcpSocket *client)
 {
-    logPrint->print (data, Log::info, Log::sreverOut);
+    QFile file (".//log/12.log");
+    static bool stream;
+
+    if ("log:upload:end:" == data)
+    {
+        stream = false;
+
+    }
+    if (stream)
+    {
+        QString send = "log:reception:";
+        client->write(send.toLocal8Bit());
+        client->waitForBytesWritten();
+        client->waitForReadyRead();
+        file.open(QFile::WriteOnly);
+        file.write(data);
+        qDebug () << data;
+        logPrint->print("log:reception:");
+    }
+
     int pos = 0;
-
-
     QRegExp rxData ("log:(.+):(\\d+):(\\d+)");
     if ((pos = rxData.indexIn(data)) != -1)
     {
-        logPrint->print (data, Log::info, Log::clientIn);
         client->write("log:accepted:");
         logPrint->print("log:accepted:", Log::info, Log::sreverOut);
+        stream = true;
     }
 
     return false;

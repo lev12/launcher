@@ -17,21 +17,20 @@ MainWindow::MainWindow(QWidget *parent) :
     dir.mkdir("data");
 
     cfg = new config();
+    menu = new Menu ();
+    //threadNet = new QThread (this);
     if (cfg->get("log") == "sendToTheServer")
     {
         log = new Log(cfg->get("logPath"));
         log->head();
     }
-
-    menu = new Menu ();
     network = new Network(log);
-    threadNet = new QThread (this);
     QObject::connect(log, SIGNAL(comressionEnd(QString)), network, SLOT(sendLog(QString)));
     QObject::connect(network, SIGNAL(connectServer()), this, SLOT(connectServerStat()));
     QObject::connect(network, SIGNAL(disConnectServer()), this, SLOT(disconnectServerStat()));
     QObject::connect(network->server, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(netError(QAbstractSocket::SocketError)));
-    network->moveToThread(threadNet);
-    QObject::connect(this, SIGNAL(destroyed(QObject*)), threadNet, SLOT(quit()));
+    //network->moveToThread(threadNet);
+    //QObject::connect(this, SIGNAL(destroyed(QObject*)), threadNet, SLOT(quit()));
 
     electricalsimulator = new ElectricalSimulator (network);
     general = new General (NULL,menu);
@@ -50,7 +49,7 @@ MainWindow::MainWindow(QWidget *parent) :
         this->showMaximized();
     }
 
-    threadNet->start();
+    //threadNet->start();
 }
 
 MainWindow::~MainWindow()
@@ -58,6 +57,7 @@ MainWindow::~MainWindow()
     log->end();
     log->compression();
     log->grabber(cfg->get("countFileLog").toInt());
+    log->comressionEnd(QString(".//log/compression.bin"));
 
     cfg->argumet->clear();
     cfg->name->clear();
@@ -68,6 +68,10 @@ MainWindow::~MainWindow()
     cfg->set("fullScrean", cfg->get("fullScrean"));
     cfg->save();
 
+    delete cfg;
+    delete electricalsimulator;
+    delete menu;
+    //delete network;
     delete ui;
 }
 

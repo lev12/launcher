@@ -68,5 +68,10 @@ void General::on_pushButton_clicked()
 
 void General::on_pushButton_2_clicked()
 {
+
+}
+
+void General::on_pushButton_4_clicked()
+{
     menu->setShowWidget(1);
 }
