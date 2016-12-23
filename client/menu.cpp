@@ -21,6 +21,14 @@ void Menu::on_pushButtonElectricalSimulator_clicked()
     swithWidget();
 }
 
+void Menu::on_pushButtonElectricalAssistant_clicked()
+{
+    showApp = appinfo.at(2).widget;
+    showIndex = 2;
+    swithWidget();
+}
+
+
 void Menu::addAppInfo (appInfo info)
 {
     appinfo << info;

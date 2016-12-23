@@ -29,7 +29,8 @@ SOURCES += main.cpp\
     versionmanager.cpp \
     log.cpp \
     settingsmenu.cpp \
-    sendmassage.cpp
+    sendmassage.cpp \
+    electricalassistant.cpp
 
 HEADERS  += mainwindow.h \
     config.h \
@@ -46,7 +47,8 @@ HEADERS  += mainwindow.h \
     versionmanager.h \
     log.h \
     settingsmenu.h \
-    sendmassage.h
+    sendmassage.h \
+    electricalassistant.h
 
 
 FORMS    += mainwindow.ui \
@@ -56,6 +58,7 @@ FORMS    += mainwindow.ui \
     electricalsimulator.ui \
     versionmanager.ui \
     settingsmenu.ui \
-    sendmassage.ui
+    sendmassage.ui \
+    electricalassistant.ui
 
 RESOURCES += rec.qrc \

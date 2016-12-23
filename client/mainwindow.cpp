@@ -32,11 +32,14 @@ MainWindow::MainWindow(QWidget *parent) :
     //network->moveToThread(threadNet);
     //QObject::connect(this, SIGNAL(destroyed(QObject*)), threadNet, SLOT(quit()));
 
+    electricalassistant = new ElectricalAssistant (network);
     electricalsimulator = new ElectricalSimulator (network);
     general = new General (NULL,menu);
 
     menu->addAppInfo(general->getAppInfo());
     menu->addAppInfo(electricalsimulator->getAppInfo());
+    menu->addAppInfo(electricalassistant->getAppInfo());
+
     QObject::connect(menu, SIGNAL (swithWidget()), this, SLOT(setWidgetApp()));
     QObject::connect(general, SIGNAL(fullScreenMode()), this, SLOT(setFullScreanMode()));
     QObject::connect(general, SIGNAL(normalMode()), this, SLOT(setNormalMode()));

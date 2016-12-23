@@ -87,7 +87,7 @@ void General::closeSettingsMenu()
 
 void General::on_pushButton_2_clicked()
 {
-
+    menu->setShowWidget(2);
 }
 
 void General::on_pushButton_4_clicked()

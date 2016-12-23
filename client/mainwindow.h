@@ -16,6 +16,7 @@
 #include "config.h"
 #include "network.h"
 #include "menu.h"
+#include "electricalassistant.h"
 #include "electricalsimulator.h"
 #include "general.h"
 
@@ -45,6 +46,7 @@ private:
     Network *network;
     QThread *threadNet;
     Menu *menu;
+    ElectricalAssistant *electricalassistant;
     ElectricalSimulator *electricalsimulator;
     General *general;
 
