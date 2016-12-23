@@ -24,7 +24,7 @@ private slots:
     void on_lenguageComboBox_currentIndexChanged(int index);
 
 signals:
-    void close();
+    void closeSettings();
 
 private:
     Ui::settings *ui;

@@ -2,7 +2,7 @@
 #define GENERAL_H
 
 #include <QFrame>
-#include "settings.h"
+#include "settingsmenu.h"
 #include "global_variable.h"
 #include "background.h"
 #include "menu.h"
@@ -25,15 +25,16 @@ public:
     Menu *menu;
     config *cfg;
     bool showSettings = false;
-    settings *setting;
+    SettingsMenu *settingMenu;
 
 private slots:
-    void on_pushButton_clicked();
-
     void on_pushButton_2_clicked();
 
     void on_pushButton_4_clicked();
 
+public slots:
+    void on_pushButton_clicked();
+    void closeSettingsMenu();
 signals:
     void fullScreenMode();
     void normalMode();

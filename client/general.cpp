@@ -41,15 +41,15 @@ void General::on_pushButton_clicked()
 {
     if (!showSettings)
     {
-        setting = new settings (ui->settingsLayout->widget(),cfg);
-        connect(setting,SIGNAL(close()),
-                this,SLOT(on_pushButton_clicked()));
-        ui->settingsLayout->insertWidget(1,setting);
+        settingMenu = new SettingsMenu (ui->settingsLayout->widget(), cfg);
+        connect(settingMenu, SIGNAL(close()), this, SLOT(closeSettingsMenu()));
+        ui->settingsLayout->insertWidget(1,settingMenu);
         showSettings = true;
     }
     else
     {
-        ui->settingsLayout->removeWidget(setting);
+        qDebug () << "remove widget";
+        ui->settingsLayout->removeWidget(settingMenu);
 
         QString fullScreanStr = cfg->get("fullScrean");
         if (fullScreanStr == "false")
@@ -61,9 +61,28 @@ void General::on_pushButton_clicked()
             fullScreenMode();
         }
 
-        delete setting;
+        delete settingMenu;
         showSettings = false;
     }
+}
+
+void General::closeSettingsMenu()
+{
+    qDebug () << "remove widget";
+    ui->settingsLayout->removeWidget(settingMenu);
+
+    QString fullScreanStr = cfg->get("fullScrean");
+    if (fullScreanStr == "false")
+    {
+        normalMode();
+    }
+    else if (fullScreanStr == "true")
+    {
+        fullScreenMode();
+    }
+
+    delete settingMenu;
+    showSettings = false;
 }
 
 void General::on_pushButton_2_clicked()
