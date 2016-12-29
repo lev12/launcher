@@ -13,7 +13,7 @@ SendMassage::~SendMassage()
     delete ui;
 }
 
-void SendMassage::on_pushButton_close_clicked()
+QString SendMassage::getMessage()
 {
-    close();
+    return ui->textEdit->toPlainText();
 }

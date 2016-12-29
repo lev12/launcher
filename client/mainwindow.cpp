@@ -34,7 +34,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     electricalassistant = new ElectricalAssistant (network);
     electricalsimulator = new ElectricalSimulator (network);
-    general = new General (NULL,menu);
+    qDebug () << log;
+    general = new General (NULL,menu,log);
 
     menu->addAppInfo(general->getAppInfo());
     menu->addAppInfo(electricalsimulator->getAppInfo());

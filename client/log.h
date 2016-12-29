@@ -58,6 +58,7 @@ public:
     void head ();
     void print (QString text = "Null", type classMessages = info, transfer InOut = null);
     void grabber (int countFileDelete);
+    void addMessage (QString message);
     void end ();
 
     bool compression();

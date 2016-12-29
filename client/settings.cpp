@@ -59,8 +59,9 @@ void settings::on_pushButton_clicked()
     }
 }
 
-void settings::on_saveButton_clicked()
+void settings::save()
 {
+    qDebug () << "save";
     //fullScrean
     QString fullScreanStr;
     if (fullScrean)
@@ -85,11 +86,6 @@ void settings::on_saveButton_clicked()
     conf->set("lenguage", lenguageStr);
 
     conf->save();
-    close();
-}
-
-void settings::on_cancelButton_clicked()
-{
     close();
 }
 

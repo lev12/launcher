@@ -5,6 +5,7 @@
 #include <QDebug>
 
 #include "config.h"
+#include "log.h"
 #include "settings.h"
 #include "sendmassage.h"
 
@@ -19,19 +20,24 @@ class SettingsMenu : public QFrame
 public:
 
     config *cfg;
+    Log *log;
     settings *setting;
     SendMassage *sendmessage;
 
-    explicit SettingsMenu(QWidget *parent, config *conf);
+    explicit SettingsMenu(QWidget *parent, config *conf, Log *logfile);
     ~SettingsMenu();
+    void closef();
 
 private slots:
     void on_pushButton_2_clicked();
 
     void on_pushButton_clicked();
 
+    void on_pushButton_3_clicked();
+
+    void on_pushButton_close_clicked();
+
 public slots:
-    void closePressButton();
 
 signals:
     void close();

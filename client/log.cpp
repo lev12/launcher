@@ -130,6 +130,14 @@ void Log::end ()
     return;
 }
 
+void Log::addMessage(QString message)
+{
+    logFile->write("<message>\n");
+    logFile->write(message.toLocal8Bit());
+    logFile->write("\n</message>\n");
+    qDebug () << message;
+}
+
 void Log::grabber(int countFileDelete)
 {
     if (countFileDelete != 0)

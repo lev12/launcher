@@ -1,13 +1,20 @@
 #include "general.h"
 #include "ui_general.h"
 
-General::General(QWidget *parent, Menu *menuGen) :
+General::General(QWidget *parent, Menu *menuGen, Log *logfile) :
     QFrame(parent),
     ui(new Ui::General)
 {
     ui->setupUi(this);
     cfg  = new config();
     menu = menuGen;
+    if (logfile != NULL)
+    {
+        log = logfile;
+        qDebug () << logfile << " general";
+
+    }
+
 
     appinfo.page = 0;
     appinfo.nameApp = "general";
@@ -41,8 +48,9 @@ void General::on_pushButton_clicked()
 {
     if (!showSettings)
     {
-        settingMenu = new SettingsMenu (ui->settingsLayout->widget(), cfg);
-        connect(settingMenu, SIGNAL(close()), this, SLOT(closeSettingsMenu()));
+        qDebug () << log;
+        settingMenu = new SettingsMenu (ui->settingsLayout->widget(), cfg, log);
+        QObject::connect(settingMenu, SIGNAL(close()), this, SLOT(closeSettingsMenu()));
         ui->settingsLayout->insertWidget(1,settingMenu);
         showSettings = true;
     }

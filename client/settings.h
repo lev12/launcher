@@ -2,6 +2,7 @@
 #define SETTINGS_H
 
 #include <QFrame>
+#include <QDebug>
 #include "config.h"
 
 namespace Ui {
@@ -18,13 +19,11 @@ public:
 
 private slots:
     void on_pushButton_clicked();
-    void on_saveButton_clicked();
-    void on_cancelButton_clicked();
 
     void on_lenguageComboBox_currentIndexChanged(int index);
 
-signals:
-    void closeSettings();
+public slots:
+    void save();
 
 private:
     Ui::settings *ui;

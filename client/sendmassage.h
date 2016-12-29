@@ -15,11 +15,7 @@ public:
     explicit SendMassage(QWidget *parent = 0);
     ~SendMassage();
 
-signals:
-    void closeSendMassage();
-
-private slots:
-    void on_pushButton_close_clicked();
+    QString getMessage ();
 
 private:
     Ui::SendMassage *ui;

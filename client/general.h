@@ -16,7 +16,7 @@ class General : public QFrame
     Q_OBJECT
 
 public:
-    explicit General(QWidget *parent = 0,Menu *menuGen = 0);
+    General(QWidget *parent = 0, Menu *menuGen = 0, Log *logfile = 0);
 
     virtual appInfo getAppInfo ();
 
@@ -24,6 +24,7 @@ public:
 
     Menu *menu;
     config *cfg;
+    Log *log;
     bool showSettings = false;
     SettingsMenu *settingMenu;
 
@@ -35,6 +36,7 @@ private slots:
 public slots:
     void on_pushButton_clicked();
     void closeSettingsMenu();
+
 signals:
     void fullScreenMode();
     void normalMode();
