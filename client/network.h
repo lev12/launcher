@@ -61,6 +61,7 @@ public:
     QString uploadFile;
     int countFiles;
     int numberFiles;
+    bool isDownload = false;
 
     bool connectToServer    ();
     bool disconnectServer   ();

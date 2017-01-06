@@ -28,6 +28,8 @@ private slots:
 
     void on_pushButton_versionManager_clicked();
 
+    void deactiveButton();
+    void activeButton();
 private:
     Ui::ElectricalSimulator *ui;
     appInfo appinfo;

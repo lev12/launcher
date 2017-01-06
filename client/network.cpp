@@ -49,13 +49,16 @@ bool Network::connectToServer()
 
 bool Network::getVersionListOnServer(QString appName)
 {
-    QTextStream stream (server);
-    stream << "glv:";
-    stream << appName;
-    stream << ":";
+    if (!isDownload)
+    {
+        QTextStream stream (server);
+        stream << "glv:";
+        stream << appName;
+        stream << ":";
 
-    server->waitForReadyRead(100);
+        server->waitForReadyRead(100);
 
+    }
     return true;
 }
 
@@ -227,6 +230,7 @@ bool Network::parseDownloadFile(QByteArray data, QTcpSocket *server)
 
         if (rxStop.indexIn(data) != -1)
         {
+            isDownload = false;
             download = false;
             downloadData = false;
             fileDownload.~QFileInfo();
@@ -295,6 +299,7 @@ bool Network::parseDownloadFile(QByteArray data, QTcpSocket *server)
                 download = false;
                 fileDownload.~QFileInfo();
                 downloadFileEnd ();
+                isDownload = false;
                 return true;
             }
         }
@@ -352,6 +357,7 @@ bool Network::parseDownloadFile(QByteArray data, QTcpSocket *server)
             log->print("download_start");
             send.append("ok_reception_file:");
             streamDownload = true;
+            isDownload = true;
         }
         else
         {

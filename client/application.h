@@ -52,12 +52,15 @@ signals:
     void getListVersions ();
     void downloadVersion ();
 
+    void activeButton();
+    void deactiveButton();
+
 public:
     Application();
     void init (Network *netWork, QString AppName, QComboBox *cb, QPushButton *StartButton, QHBoxLayout *pb);
     void getlistversion ();
-    void downloadversion (QString typeString, QString number);
-    void refresh ();
+    void downloadversion (QString typeString, QString number, bool uiOnly);
+    void refresh (bool updateListVersion);
     void openFolder();
     void openVersionManager(QHBoxLayout *widget);
 

@@ -8,7 +8,10 @@ Application::Application()
 
 void Application::connectServer()
 {
-    getlistversion ();
+    if (network->isDownload == false)
+    {
+        getlistversion ();
+    }
     return;
 }
 
@@ -18,22 +21,26 @@ void Application::getlistversion()
     QObject::connect(network, SIGNAL(listVersions()), this, SLOT(listVersion()));
 }
 
-void Application::downloadversion(QString typeString, QString number)
+void Application::downloadversion(QString typeString, QString number, bool uiOnly)
 {
     progressBar = new QProgressBar ();
     pbHb->addWidget(progressBar);
     progressBar->setTextDirection(QProgressBar::BottomToTop);
     progressBar->setStyleSheet("background-color: rgb(255, 164, 37);");
-    downloadVersion();
-    versionType type;
-    QString typeStr = typeString;
+    if (!uiOnly)
+    {
+        downloadVersion();
+        versionType type;
+        QString typeStr = typeString;
 
-    if      (typeStr == "pre-alpha") type = pre_alpha;
-    else if (typeStr == "alpha")     type = alpha;
-    else if (typeStr == "beta")      type = beta;
-    else if (typeStr == "release")   type = release;
+        if      (typeStr == "pre-alpha") type = pre_alpha;
+        else if (typeStr == "alpha")     type = alpha;
+        else if (typeStr == "beta")      type = beta;
+        else if (typeStr == "release")   type = release;
 
-    network->downloadVersion(appName,type,number.toInt());
+        network->downloadVersion(appName,type,number.toInt());
+        deactiveButton();
+    }
 }
 
 void Application::endDownloadFile()
@@ -41,7 +48,7 @@ void Application::endDownloadFile()
     qDebug () << "upDwlo1";
     pbHb->removeWidget(progressBar);
     delete progressBar;
-    refresh();
+    refresh(true);
 }
 
 void Application::listVersion()
@@ -86,7 +93,6 @@ void Application::init(Network *netWork, QString AppName, QComboBox *cb, QPushBu
     network = netWork;
 
     initFiles(appName);
-    refresh();
 
     QObject::connect(network, SIGNAL (connectServer()), this, SLOT (connectServer()));
     QObject::connect(this, SIGNAL (getListVersions ()), network, SLOT (getVersionListOnServer (QString)));
@@ -96,6 +102,18 @@ void Application::init(Network *netWork, QString AppName, QComboBox *cb, QPushBu
     QObject::connect(this, SIGNAL (downloadVersion ()), network, SLOT(downloadVersion(QString,versionType,int)));
     QObject::connect(network, SIGNAL(downloadFileEnd()), this, SLOT(endDownloadFile()));
     QObject::connect(network, SIGNAL(downloadFile()), this, SLOT(updateDownload()));
+
+    if (network->isDownload == true)
+    {
+        deactiveButton();
+        downloadversion(NULL,NULL,true);
+        updateDownload();
+        refresh(false);
+    }
+    else
+    {
+        refresh(true);
+    }
 
     return;
 }
@@ -109,10 +127,14 @@ void Application::openFolder()
     QDesktopServices::openUrl(QUrl::fromLocalFile(file.absoluteFilePath()));
 }
 
-void Application::refresh()
+void Application::refresh(bool updateListVersion)
 {
-    QObject::connect(network, SIGNAL(listVersions()), this, SLOT(listVersion()));
-    network->getVersionListOnServer(appName);
+    if (updateListVersion == true)
+    {
+        QObject::connect(network, SIGNAL(listVersions()), this, SLOT(listVersion()));
+        network->getVersionListOnServer(appName);
+    }
+
     refreshFiles();
     fillingComboBox();
     updateButton();
@@ -209,7 +231,7 @@ void Application::deleteVersionVersionManager ()
 void Application::downloadVersionVersionManager()
 {
     QStringList name = versionmanager->currentVersion.split(" ");
-    downloadversion(name.at(0), name.at(1));
+    downloadversion(name.at(0), name.at(1), false);
 }
 
 QStringList Application::sortVersions (QStringList versions)
@@ -338,6 +360,6 @@ void Application::open()
     }
     else
     {
-        downloadversion(tempItem.at(0), tempItem.at(1));
+        downloadversion(tempItem.at(0), tempItem.at(1), false);
     }
 }

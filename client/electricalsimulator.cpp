@@ -5,6 +5,10 @@ ElectricalSimulator::ElectricalSimulator(Network *net) :
     ui(new Ui::ElectricalSimulator)
 {
     ui->setupUi(this);
+
+    QObject::connect(this, SIGNAL(deactiveButton()), this, SLOT(deactiveButton()));
+    QObject::connect(net, SIGNAL(downloadFileEnd()), this, SLOT(activeButton()));
+
     init(net, "Electrical Simulator", ui->comboBox, ui->start, ui->horizontalLayout_for_progressBar);
     appinfo.page = 1;
     appinfo.nameApp = "Electrical Simulator";
@@ -26,7 +30,7 @@ appInfo ElectricalSimulator::getAppInfo ()
 
 void ElectricalSimulator::on_refresh_clicked()
 {
-    refresh();
+    refresh(true);
 }
 
 void ElectricalSimulator::on_pushButton_openFolder_clicked()
@@ -37,4 +41,18 @@ void ElectricalSimulator::on_pushButton_openFolder_clicked()
 void ElectricalSimulator::on_pushButton_versionManager_clicked()
 {
     openVersionManager(ui->horizontalLayout_versionManager);
+}
+
+void ElectricalSimulator::deactiveButton()
+{
+    ui->refresh->setEnabled(false);
+    ui->pushButton_versionManager->setEnabled(false);
+    ui->start->setEnabled(false);
+}
+
+void ElectricalSimulator::activeButton()
+{
+    ui->refresh->setEnabled(true);
+    ui->pushButton_versionManager->setEnabled(true);
+    ui->start->setEnabled(true);
 }
