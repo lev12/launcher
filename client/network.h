@@ -13,6 +13,7 @@
 #include <QList>
 #include <QTimer>
 #include <QThread>
+#include <QMap>
 
 #include "global_variable.h"
 #include "log.h"
@@ -41,7 +42,7 @@ public slots:
 
     bool downloadVersion        (QString appName, versionType type,
                                  int number);
-    bool getVersionListOnServer (QString appName);
+    bool getVersionListOnServer (int appName);
     bool sendLog (QString path);
 
 signals:
@@ -62,6 +63,7 @@ public:
     int countFiles;
     int numberFiles;
     bool isDownload = false;
+    QMap <int,QString> *cacheListVersion;
 
     bool connectToServer    ();
     bool disconnectServer   ();

@@ -15,6 +15,7 @@
 #include <QDesktopServices>
 
 #include "files.h"
+#include "global_variable.h"
 #include "network.h"
 #include "versionmanager.h"
 
@@ -23,7 +24,7 @@ class Application : public Files
     Q_OBJECT
 private:
 
-    QString appName;
+    appInfo app;
     QComboBox *comboBox;
     QPushButton *startButton;
     QHBoxLayout *pbHb;
@@ -57,7 +58,7 @@ signals:
 
 public:
     Application();
-    void init (Network *netWork, QString AppName, QComboBox *cb, QPushButton *StartButton, QHBoxLayout *pb);
+    void init (Network *netWork, appInfo App, QComboBox *cb, QPushButton *StartButton, QHBoxLayout *pb);
     void getlistversion ();
     void downloadversion (QString typeString, QString number, bool uiOnly);
     void refresh (bool updateListVersion);

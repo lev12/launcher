@@ -16,8 +16,8 @@ ser 	updateVerLauncher:'number version':
 cln 	
 
 List version
-cln     glv:'application':                  //get list versions
-ser		ver:rlv:'count versions':			//count versions
+cln     glv:'application':                  	//get list versions
+ser		ver:rlv:'count versions':'application':	//count versions
 		else
 		ver:error:'number error':
 ser     ver:alpha_1: 						//return list version
@@ -46,7 +46,7 @@ Number error
 2 - no version
 
 Upload Log
-cln 	log:'file name':'file size':'count block'
+cln 	log:'file name':'file size':'count block':
 ser 	log:accepted:  else  file:error:
 cln 	...
 ser 	log:reception:
@@ -87,6 +87,7 @@ pages
 
 0 - general
 1 - electrical simulator
+2 - electrical assistant
 
 ------------------------------------------------------------------------
 settings
@@ -99,7 +100,7 @@ page 		= 0
 IPServer 	= 192.168.1.17
 PortServer 	= 1234
 logPath		= .//log
-countFileLog= 10
+countFileLog= 10               //if 0 then unlimetet
 
 ------------------------------------------------------------------------
 log compress

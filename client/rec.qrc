@@ -12,6 +12,8 @@
         <file>trash.png</file>
         <file>versions manager.png</file>
         <file>electrical simulator icon.png</file>
+        <file>vk icon.png</file>
+        <file>youtube icon.png</file>
     </qresource>
     <qresource prefix="/other">
         <file>configDefaltParametr.txt</file>

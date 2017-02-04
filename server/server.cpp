@@ -31,7 +31,7 @@ Server::~Server()
 void Server::Connect ()
 {
     logPrint->print ("connct new user", Log::info);
-    QTcpSocket* clientSocket=server_tcp->nextPendingConnection();
+    QTcpSocket* clientSocket = server_tcp->nextPendingConnection();
     int idusersocs=clientSocket->socketDescriptor();
     SClients[idusersocs]=clientSocket;
     connect(SClients[idusersocs],SIGNAL(readyRead()),this, SLOT(ReadClient()));
@@ -96,7 +96,7 @@ bool Server::parseConnectClient (QByteArray data,QTcpSocket* client)
 bool Server::parseGetListVersions (QByteArray data, QTcpSocket* client)
 {
     int pos = 0;
-    QRegExp rx ("glv:");
+    QRegExp rx ("glv:(.+):");
 
     if ((pos = rx.indexIn(data, pos)) == -1)
     {
@@ -106,7 +106,8 @@ bool Server::parseGetListVersions (QByteArray data, QTcpSocket* client)
     QString send = "ver:rlv:";
     send.append(QString::number(verCon.versions.length()));
     send.append(":");
-
+    send.append(rx.cap(1));
+    send.append(":");
 
     for (QFileInfo temp : verCon.getVersonsList())
     {

@@ -9,13 +9,14 @@ ElectricalSimulator::ElectricalSimulator(Network *net) :
     QObject::connect(this, SIGNAL(deactiveButton()), this, SLOT(deactiveButton()));
     QObject::connect(net, SIGNAL(downloadFileEnd()), this, SLOT(activeButton()));
 
-    init(net, "Electrical Simulator", ui->comboBox, ui->start, ui->horizontalLayout_for_progressBar);
     appinfo.page = 1;
     appinfo.nameApp = "Electrical Simulator";
     appinfo.vk = "http://vk.com";
     appinfo.youtube = "http://youtude.com";
     appinfo.webSite = "http://electrical-simulator.ru/";
     appinfo.widget = this;
+
+    init(net, appinfo, ui->comboBox, ui->start, ui->horizontalLayout_for_progressBar);
 }
 
 ElectricalSimulator::~ElectricalSimulator()

@@ -250,6 +250,11 @@ background-color: rgb(3, 4, 30, 60);</string>
         <property name="text">
          <string/>
         </property>
+        <property name="icon">
+         <iconset>
+          <normalon>:/icon/youtube icon.png</normalon>
+         </iconset>
+        </property>
         <property name="iconSize">
          <size>
           <width>24</width>
@@ -274,6 +279,11 @@ background-color: rgb(3, 4, 30, 60);</string>
         </property>
         <property name="text">
          <string/>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normalon>:/icon/vk icon.png</normalon>
+         </iconset>
         </property>
         <property name="iconSize">
          <size>

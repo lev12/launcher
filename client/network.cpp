@@ -5,6 +5,7 @@ Network::Network(Log *plog)
     log = plog;
     cfg = new config();
     server = new QTcpSocket();
+    cacheListVersion = new QMap<int,QString>;
     connect();
     connectToServer();
     QObject::connect(server, SIGNAL(readyRead()), this, SLOT(readServer()));
@@ -47,17 +48,22 @@ bool Network::connectToServer()
     return true;
 }
 
-bool Network::getVersionListOnServer(QString appName)
+bool Network::getVersionListOnServer(int appName)
 {
-    if (!isDownload)
+    if (QString(cacheListVersion->value(appName)) != NULL)
     {
+        listVersions ();
+        return true;
+    }
+    else if (!isDownload)
+    {
+        qDebug () << cacheListVersion->value(appName);
         QTextStream stream (server);
         stream << "glv:";
         stream << appName;
         stream << ":";
 
         server->waitForReadyRead(100);
-
     }
     return true;
 }
@@ -179,12 +185,14 @@ bool Network::parseListVersions(QByteArray data)
     bool stream;
     for (int i(0); i<cmd.count(); i++)
     {
-        QRegExp rx ("ver:rlv:(\\d+):");
+        QRegExp rx ("ver:rlv:(\\d+):(\\d+):");
 
+        int numberVersion;
         if (rx.indexIn(cmd.at(i)) != -1)
         {
             stream = true;
             log->print("list_versions_start", Log::info);
+            numberVersion = QString(rx.cap(2)).toInt();
         }
         else
         {
@@ -198,6 +206,8 @@ bool Network::parseListVersions(QByteArray data)
                 QString name = type; name.append(" "); name.append(number);
                 qDebug () << name;
                 listVersion.operator <<(name);
+
+                cacheListVersion->insert(numberVersion,name);
             }
             else
             {

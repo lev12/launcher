@@ -30,8 +30,16 @@ VersionManager::VersionManager(QString AppName,QStringList instVersions, QString
 
     for (int i(0); i < versions.length(); i++)
     {
-        QListWidgetItem *item = new QListWidgetItem(QString(versions.at(i)));
-        item->setBackground(QBrush(QColor(11, 58, 120),Qt::SolidPattern));
+        QString verStr = versions.at(i);
+        QListWidgetItem *item = new QListWidgetItem(verStr);
+        if(Files::isInstall(verStr.split(" ").at(0),verStr.split(" ").at(1)))
+        {
+            item->setBackground(QBrush(QColor(0, 160, 200),Qt::SolidPattern));
+        }
+        else
+        {
+            item->setBackground(QBrush(QColor(0, 142, 200),Qt::SolidPattern));
+        }
         item->setTextColor(QColor (255,255,255));
         ui->listWidget->addItem(item);
     }
@@ -45,8 +53,18 @@ void VersionManager::refreshVersionManager(QStringList Versions)
     ui->listWidget->clear();
     for (int i(0); i < Versions.length(); i++)
     {
-        QListWidgetItem *item = new QListWidgetItem(QString(Versions.at(i)));
-        item->setBackground(QBrush(QColor(11, 58, 120),Qt::SolidPattern));
+        QString verStr = Versions.at(i);
+        QListWidgetItem *item = new QListWidgetItem(verStr);
+
+        if(Files::isInstall(verStr.split(" ").at(0),verStr.split(" ").at(1)))
+        {
+            item->setBackground(QBrush(QColor(0, 160, 200),Qt::SolidPattern));
+        }
+        else
+        {
+            item->setBackground(QBrush(QColor(0, 142, 200),Qt::SolidPattern));
+        }
+
         item->setTextColor(QColor (255,255,255));
         ui->listWidget->addItem(item);
     }
