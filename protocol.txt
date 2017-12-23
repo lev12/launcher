@@ -11,9 +11,9 @@ Connect to server
 cln     connect:'version cln':
 ser     connect:'version ser':
 
-Update version launcher
-ser 	updateVerLauncher:'number version':
-cln 	
+Сurrent version of the launcher
+cln clv:getcurrentversion:
+ser clv:'current version of the launcher':
 
 List version
 cln     glv:'application':                  	//get list versions

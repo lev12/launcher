@@ -1,6 +1,7 @@
 #ifndef FILE_H
 #define FILE_H
 
+#include <QDebug>
 #include <QFile>
 #include <QDir>
 #include <QList>
@@ -9,11 +10,14 @@
 class File
 {
 private:
+    QString nameApp;
 
 public:
     QList<QFileInfo> versions;
+    QDir *dirVer;
 
-    File();
+
+    File(QString AppName = NULL);
     void FillingVersionList ();
     bool checkVersion(QFileInfo path);
     bool checkVersion(QString type, QString number);
@@ -21,6 +25,7 @@ public:
     QList<QFileInfo> getVersonsList();
     QString getVersionName (QFileInfo path);
     QString getExeFile (QFileInfo path);
+    QString getAppName () const;
 };
 
 #endif // FILE_H

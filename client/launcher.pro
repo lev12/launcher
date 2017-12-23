@@ -30,7 +30,9 @@ SOURCES += main.cpp\
     log.cpp \
     settingsmenu.cpp \
     sendmassage.cpp \
-    electricalassistant.cpp
+    electricalassistant.cpp \
+    updatelauncher.cpp \
+    dialogupdatelauncher.cpp
 
 HEADERS  += mainwindow.h \
     config.h \
@@ -48,7 +50,9 @@ HEADERS  += mainwindow.h \
     log.h \
     settingsmenu.h \
     sendmassage.h \
-    electricalassistant.h
+    electricalassistant.h \
+    updatelauncher.h \
+    dialogupdatelauncher.h
 
 
 FORMS    += mainwindow.ui \
@@ -59,6 +63,8 @@ FORMS    += mainwindow.ui \
     versionmanager.ui \
     settingsmenu.ui \
     sendmassage.ui \
-    electricalassistant.ui
+    electricalassistant.ui \
+    updatelauncher.ui \
+    dialogupdatelauncher.ui
 
 RESOURCES += rec.qrc \

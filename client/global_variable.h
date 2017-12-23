@@ -6,7 +6,7 @@
 #include "config.h"
 #include "log.h"
 
-const unsigned short number_version_launcher = 5;
+const float number_version_launcher = 1.0;
 const QString IPServer = "192.168.1.15";
 const unsigned short PortServer = 1234;
 
@@ -16,6 +16,7 @@ enum versionType
     alpha,
     beta,
     release,
+    Null
 };
 
 struct appInfo

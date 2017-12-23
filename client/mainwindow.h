@@ -11,6 +11,7 @@
 #include <QLabel>
 #include <QThread>
 #include <QTimer>
+#include <QDialog>
 
 #include "log.h"
 #include "config.h"
@@ -19,6 +20,7 @@
 #include "electricalassistant.h"
 #include "electricalsimulator.h"
 #include "general.h"
+#include "dialogupdatelauncher.h"
 
 namespace Ui {
 class MainWindow;
@@ -37,6 +39,7 @@ private slots:
     void setWidgetApp ();
     void setFullScreanMode ();
     void setNormalMode ();
+    void currentLauncherVer(float ver);
     void netError(QAbstractSocket::SocketError);
 
 private:
@@ -49,6 +52,7 @@ private:
     ElectricalAssistant *electricalassistant;
     ElectricalSimulator *electricalsimulator;
     General *general;
+    DialogUpdateLauncher *updatelauncher;
 
     QBrush *brush;
     QPalette *palette;

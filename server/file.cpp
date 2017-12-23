@@ -1,17 +1,20 @@
 #include "file.h"
 
-File::File()
+File::File(QString AppName)
 {
-    QDir dir;
-    dir.mkdir(".//data");
+    nameApp = AppName;
+    QString path = ".//data/";
+    path.append(AppName);
+    dirVer = new QDir(path);
+    dirVer->mkdir(path);
     FillingVersionList();
 }
 
 void File::FillingVersionList ()
 {
-    QDir dir(".//data");
+    //QDir dir(".//data");
     QList<QFileInfo> temp;
-    temp = dir.entryInfoList();
+    temp = dirVer->entryInfoList();
 
 
     temp.takeAt(0);
@@ -139,8 +142,12 @@ bool File::checkVersion(QFileInfo path)
 
 bool File::checkVersion(QString type, QString number)
 {
-    QString nameVesion = type;
-    nameVesion.append(" ");
+    QString nameVesion;
+    if (type != "null")
+    {
+        nameVesion = type;
+        nameVesion.append(" ");
+    }
     nameVesion.append(number);
 
     for (int i(0);i < versions.length();i++)
@@ -157,9 +164,14 @@ bool File::checkVersion(QString type, QString number)
 QFileInfo File::getFile (QString type, QString number)
 {
     QFileInfo temp;
-    QString name = type;
-    name.append(" ");
+    QString name;
+    if (type != "null")
+    {
+        name = type;
+        name.append(" ");
+    }
     name.append(number);
+    qDebug () << name;
 
     for (int i(0);i < versions.length();i++)
     {
@@ -212,4 +224,9 @@ QString File::getExeFile (QFileInfo path)
     stream.operator >>(result);
 
     return result;
+}
+
+QString File::getAppName() const
+{
+    return QString(nameApp);
 }

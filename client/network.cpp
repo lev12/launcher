@@ -60,7 +60,7 @@ bool Network::getVersionListOnServer(int appName)
         qDebug () << cacheListVersion->value(appName);
         QTextStream stream (server);
         stream << "glv:";
-        stream << appName;
+        stream << "Electrical Simulator";
         stream << ":";
 
         server->waitForReadyRead(100);
@@ -87,6 +87,9 @@ bool Network::downloadVersion(QString appName, versionType type, int number)
         break;
     case release:
         tempType = "relase";
+        break;
+    case Null:
+        tempType = "null";
         break;
     default:
         tempType = "error";
@@ -136,6 +139,15 @@ bool Network::sendLog(QString path)
     return true;
 }
 
+bool Network::getClv()
+{
+    QString send = "clv:getcurrentversion:";
+    QTextStream stream (server);
+    stream.operator <<(send);
+
+    return true;
+}
+
 //  reception server
 
 void Network::readServer()
@@ -158,6 +170,7 @@ bool Network::parse(QByteArray data, QTcpSocket *server)
     if (parseDownloadFile (data, server)) return true;
     if (parseUploadLog(data, server)) return true;
     if (parseListVersions (data)) return true;
+    if (parseClv (data)) return true;
     if (parseDisconnect (data)) return true;
 
     return false;
@@ -185,7 +198,7 @@ bool Network::parseListVersions(QByteArray data)
     bool stream;
     for (int i(0); i<cmd.count(); i++)
     {
-        QRegExp rx ("ver:rlv:(\\d+):(\\d+):");
+        QRegExp rx ("ver:rlv:(\\d+):(.+):");
 
         int numberVersion;
         if (rx.indexIn(cmd.at(i)) != -1)
@@ -428,6 +441,24 @@ bool Network::parseDisconnect(QByteArray data)
     {
         log->print("disconnect_server", Log::info, Log::sreverIn);
         disConnectServer();
+        return true;
+    }
+    return false;
+}
+
+bool Network::parseClv(QByteArray data)
+{
+    QRegExp rxClv ("clv:(.+):");
+
+    if (rxClv.indexIn(data) != -1)
+    {
+        float clvOnServer = QString (rxClv.cap(1)).toFloat();
+
+        QString send = "current version of the launcher ";
+        send.append(QString::number(clvOnServer));
+        log->print(send, Log::info, Log::sreverIn);
+
+        clv(clvOnServer);
         return true;
     }
     return false;

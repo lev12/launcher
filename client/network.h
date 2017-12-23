@@ -31,6 +31,7 @@ private:
     bool parseDownloadFile  (QByteArray data, QTcpSocket *server);
     bool parseUploadLog     (QByteArray data, QTcpSocket *server);
     bool parseDisconnect    (QByteArray data);
+    bool parseClv           (QByteArray data);
 
 private slots:
 
@@ -40,10 +41,11 @@ private slots:
 
 public slots:
 
+    bool getClv                 ();
     bool downloadVersion        (QString appName, versionType type,
                                  int number);
     bool getVersionListOnServer (int appName);
-    bool sendLog (QString path);
+    bool sendLog                (QString path);
 
 signals:
     void updateListVersion ();
@@ -52,6 +54,7 @@ signals:
     void downloadFile ();
     void downloadFileEnd ();
     void disConnectServer ();
+    void clv (float);
 public:
     Network(Log *plog);
     QTcpSocket *server;

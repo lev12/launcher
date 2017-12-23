@@ -27,6 +27,8 @@ MainWindow::MainWindow(QWidget *parent) :
     network = new Network(log);
     QObject::connect(log, SIGNAL(comressionEnd(QString)), network, SLOT(sendLog(QString)));
     QObject::connect(network, SIGNAL(connectServer()), this, SLOT(connectServerStat()));
+    QObject::connect(network, SIGNAL(listVersions()), network, SLOT(getClv()));
+    QObject::connect(network, SIGNAL(clv(float)), this, SLOT(currentLauncherVer(float)));
     QObject::connect(network, SIGNAL(disConnectServer()), this, SLOT(disconnectServerStat()));
     QObject::connect(network->server, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(netError(QAbstractSocket::SocketError)));
     //network->moveToThread(threadNet);
@@ -126,4 +128,24 @@ void MainWindow::setWidgetApp ()
     removeWidget = menu->showApp;
     ui->general->addWidget(removeWidget);
     removeIndex = menu->showIndex;
+}
+
+void MainWindow::currentLauncherVer(float ver)
+{
+    bool isNewVer = false;
+
+    if (ver > number_version_launcher)
+    {
+        isNewVer = true;
+
+    }
+
+    if (isNewVer)
+    {
+        qDebug () << "dfdfdsdsfdffggf>";
+        updatelauncher = new DialogUpdateLauncher(this, QString::number(ver));
+        QObject::connect(updatelauncher, SIGNAL(download(QString,versionType,int)), network, SLOT(downloadVersion(QString,versionType,int)));
+        updatelauncher->show();
+    }
+
 }
