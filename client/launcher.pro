@@ -17,7 +17,6 @@ CONFIG += c++11
 SOURCES += main.cpp\
         mainwindow.cpp \
     config.cpp \
-    versions.cpp \
     settings.cpp \
     background.cpp \
     files.cpp \
@@ -36,7 +35,6 @@ SOURCES += main.cpp\
 
 HEADERS  += mainwindow.h \
     config.h \
-    versions.h \
     global_variable.h \
     settings.h \
     background.h \

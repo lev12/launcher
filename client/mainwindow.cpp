@@ -25,12 +25,13 @@ MainWindow::MainWindow(QWidget *parent) :
         log->head();
     }
     network = new Network(log);
+    network->getVersion("Electrical_Simulator", "alpha_45");
     QObject::connect(log, SIGNAL(comressionEnd(QString)), network, SLOT(sendLog(QString)));
     QObject::connect(network, SIGNAL(connectServer()), this, SLOT(connectServerStat()));
     QObject::connect(network, SIGNAL(listVersions()), network, SLOT(getClv()));
     QObject::connect(network, SIGNAL(clv(float)), this, SLOT(currentLauncherVer(float)));
     QObject::connect(network, SIGNAL(disConnectServer()), this, SLOT(disconnectServerStat()));
-    QObject::connect(network->server, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(netError(QAbstractSocket::SocketError)));
+    //QObject::connect(network->server, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(netError(QAbstractSocket::SocketError)));
     //network->moveToThread(threadNet);
     //QObject::connect(this, SIGNAL(destroyed(QObject*)), threadNet, SLOT(quit()));
 

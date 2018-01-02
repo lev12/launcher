@@ -4,12 +4,10 @@ Network::Network(Log *plog)
 {
     log = plog;
     cfg = new config();
-    server = new QTcpSocket();
-    cacheListVersion = new QMap<int,QString>;
-    connect();
-    connectToServer();
-    QObject::connect(server, SIGNAL(readyRead()), this, SLOT(readServer()));
-    QObject::connect(server, SIGNAL(disconnected()), this, SLOT(disconnect()));
+
+    manager = new QNetworkAccessManager();
+    connect(manager, &QNetworkAccessManager::finished, this, &Network::readServer);
+    //connect(reply, &QIODevice::readyRead, this, &Network::readServer);
 }
 
 Network::~Network()
@@ -17,100 +15,63 @@ Network::~Network()
     delete server;
 }
 
-
-// Disconnect from the server
-void Network::disconnect()
+QString Network::_toSpace(QString str)
 {
-    qDebug () << "disConnect";
-    disConnectServer();
-    parseDownloadFile(QByteArray ("file:stop:downloading:from:server:"), server);
-}
-
-void Network::connect()
-{
-    qDebug () << "connect";
-    server->connectToHost(cfg->get("IPServer"),cfg->get("PortServer").toInt());
-    connectToServer();
-}
-
-//  Send to server
-bool Network::connectToServer()
-{
-    QString send = "connect:";
-    send.append(QString::number(number_version_launcher));
-    send.append(":");
-
-    QTextStream stream (server);
-    stream << send;
-
-    server->waitForBytesWritten();
-    server->waitForReadyRead(300);
-    return true;
-}
-
-bool Network::getVersionListOnServer(int appName)
-{
-    if (QString(cacheListVersion->value(appName)) != NULL)
-    {
-        listVersions ();
-        return true;
+    QStringList list = str.split('_');
+    QString ret = list.at(0);
+    list.takeAt(0);
+    foreach (QString tempItem, list) {
+        ret.append(" ");
+        ret.append(tempItem);
     }
-    else if (!isDownload)
-    {
-        qDebug () << cacheListVersion->value(appName);
-        QTextStream stream (server);
-        stream << "glv:";
-        stream << "Electrical Simulator";
-        stream << ":";
-
-        server->waitForReadyRead(100);
-    }
-    return true;
+    return ret;
 }
 
-
-bool Network::downloadVersion(QString appName, versionType type, int number)
+QString Network::spaceTo_(QString str)
 {
-    QString send = "file:get:";
-    send.append(appName); send.append(":");
+    QStringList list = str.split(' ');
+    QString ret = list.at(0);
+    list.takeAt(0);
+    foreach (QString tempItem, list) {
+        ret.append("_");
+        ret.append(tempItem);
+    }
+    return ret;
+}
 
-    QString tempType;
-    switch (type) {
-    case pre_alpha:
-        tempType = "pre-alpha";
-        break;
-    case alpha:
-        tempType = "alpha";
-        break;
-    case beta:
-        tempType = "beta";
-        break;
-    case release:
-        tempType = "relase";
-        break;
-    case Null:
-        tempType = "null";
-        break;
-    default:
-        tempType = "error";
-        break;
+QString Network::deleteForRx (QString data)
+{
+    QString data_str = data;
+    data_str.remove(data_str.size()-2,2);
+    QStringList data_list = data_str.split("\"");
+    data_str.clear();
+    foreach (QString temp, data_list) {
+        data_str.append(temp);
     }
 
-    send.append(tempType); send.append(":");
-    send.append(QString::number(number)); send.append(":");
-    QTextStream stream (server);
-    stream.operator <<(send);
-    return true;
+    data_list = data_str.split("}");
+    data_str.clear();
+    foreach (QString temp, data_list) {
+        data_str.append(temp);
+    }
+    data_list = data_str.split("{");
+    data_str.clear();
+    foreach (QString temp, data_list) {
+        data_str.append(temp);
+    }
+    data_list = data_str.split("[");
+    data_str.clear();
+    foreach (QString temp, data_list) {
+        data_str.append(temp);
+    }
+    data_list = data_str.split("]");
+    data_str.clear();
+    foreach (QString temp, data_list) {
+        data_str.append(temp);
+    }
+    return data_str;
 }
 
-bool Network::disconnectServer()
-{
-    QString send = "glv:";
-    QTextStream stream (server);
-    stream.operator <<(send);
-
-    return true;
-}
 
 bool Network::sendLog(QString path)
 {
@@ -139,260 +100,368 @@ bool Network::sendLog(QString path)
     return true;
 }
 
-bool Network::getClv()
+//  reception server
+
+void Network::readServer(QNetworkReply *reply)
 {
-    QString send = "clv:getcurrentversion:";
-    QTextStream stream (server);
-    stream.operator <<(send);
+    QByteArray data = reply->readAll();
+    if(!parse (data, server))
+    {
+        /*QString send = "wrongCmd(";
+        send.append(QString (data)); send.append(")");
+        QTextStream stream (server);
+        stream.operator <<(send);*/
+    }
+}
+//slots get request
+bool Network::getVersionList (QString appName)
+{
+    QString str_url = _Host;
+    str_url.append("api/method/app.getVersionList?app=");
+    str_url.append(spaceTo_(appName));
+    qDebug () << str_url;
+    QUrl url(str_url);
+    QNetworkRequest request;
+    request.setUrl(url);
+    manager->get(request);
 
     return true;
 }
 
-//  reception server
-
-void Network::readServer()
+bool Network::getActualVersion (QString appName)
 {
-    QByteArray data = server->readAll();
-    if(!parse (data, server))
-    {
-        QString send = "wrongCmd(";
-        send.append(QString (data)); send.append(")");
-        QTextStream stream (server);
-        stream.operator <<(send);
+    QString str_url = _Host;
+    str_url.append("api/method/app.getActualVersion?app=");
+    str_url.append(appName);
+    qDebug () << str_url;
+    QUrl url(str_url);
+    QNetworkRequest request;
+    request.setUrl(url);
+    manager->get(request);
+
+    return true;
+}
+
+bool Network::getExeFile(QString appName, QString verName)
+{
+    QString str_url = _Host;
+    str_url.append("api/method/app.getExeFile?app=");
+    str_url.append(appName);
+    str_url.append("&version=");
+    str_url.append(verName);
+    qDebug () << str_url;
+    QUrl url(str_url);
+    QNetworkRequest request;
+    request.setUrl(url);
+    manager->get(request);
+
+    return true;
+}
+
+bool Network::getSizeVersion(QString appName, QString verName)
+{
+    QString str_url = _Host;
+    str_url.append("api/method/app.getSizeVersion?app=");
+    str_url.append(appName);
+    str_url.append("&version=");
+    str_url.append(verName);
+    qDebug () << str_url;
+    QUrl url(str_url);
+    QNetworkRequest request;
+    request.setUrl(url);
+    manager->get(request);
+
+    return true;
+}
+
+bool Network::getFileList(QString appName, QString verName)
+{
+    QString str_url = _Host;
+    str_url.append("api/method/app.getFileList?app=");
+    str_url.append(appName);
+    str_url.append("&version=");
+    str_url.append(verName);
+    qDebug () << str_url;
+    QUrl url(str_url);
+    QNetworkRequest request;
+    request.setUrl(url);
+    manager->get(request);
+
+    return true;
+}
+
+bool Network::checkVersion(QString appName, QString verName)
+{
+    QString str_url = _Host;
+    str_url.append("api/method/app.checkVersion?app=");
+    str_url.append(appName);
+    str_url.append("&version=");
+    str_url.append(verName);
+
+    qDebug () << str_url;
+    QUrl url(str_url);
+    QNetworkRequest request;
+    request.setUrl(url);
+    manager->get(request);
+
+    return true;
+}
+
+bool Network::getVersion(QString appName, QString verName)
+{
+    downloadApp = "Electrical_Simulator";
+    downloadVersion = "alpha_45";
+    checkVersion(appName, verName);
+}
+
+bool Network::getFile(QString appName, QString verName, QString file)
+{
+    QString str_url = _Host;
+    str_url.append("app/");
+    str_url.append(appName);
+    str_url.append("/");
+    str_url.append(verName);
+    file.remove(0,1);
+    str_url.append(file);
+
+    QStringList data_list = str_url.split("\\/");
+    str_url.clear();
+    foreach (QString temp, data_list) {
+        str_url.append(temp);
+        str_url.append("/");
     }
+    str_url.remove(str_url.length()-1,1);
+    qDebug () << str_url;
+    QUrl url(str_url);
+    QNetworkRequest request;
+    request.setUrl(url);
+    reply = manager->get(request);
+    connect(reply, &QIODevice::readyRead, this, Network::downloadFileRS);
+    //connect(reply, &QNetworkReply::finished, this, Network::downloadFileRS);
+
+    QString pathNewVersion = ".//data/";
+    pathNewVersion.append(appName);
+    pathNewVersion.append("/");
+    pathNewVersion.append(verName);
+    pathNewVersion.append("/");
+    QFileInfo info (pathNewVersion);
+    QDir dir (info.absolutePath());
+    pathNewVersion.append(QString(files[filesNum]).remove(0,2));
+    QFileInfo infoi (pathNewVersion);
+    dir.mkpath(infoi.absolutePath());
+
+
+    createFile = new QFile (infoi.absoluteFilePath());
+    createFile->open(QIODevice::WriteOnly);
+    qDebug () << infoi.absolutePath();
+}
+
+bool Network::getFileSize (QString appName, QString verName, QString file)
+{
+    QString str_url = _Host;
+    str_url.append("api/method/app.getFileSize?app=");
+    str_url.append(appName);
+    str_url.append("&version=");
+    str_url.append(verName);
+    str_url.append("&file=");
+
+    QString fileTemp;
+    QStringList data_list = file.split("\\/");
+    fileTemp.clear();
+    foreach (QString temp, data_list) {
+        fileTemp.append(temp);
+        fileTemp.append("/");
+    }
+    fileTemp.remove(fileTemp.length()-1,1);
+    str_url.append(fileTemp);
+
+    qDebug () << str_url;
+    QUrl url(str_url);
+    QNetworkRequest request;
+    request.setUrl(url);
+    reply = manager->get(request);
 }
 
 //  parse
 
 bool Network::parse(QByteArray data, QTcpSocket *server)
 {
-    if (parseConnectServer(data)) return true;
-    if (parseDownloadFile (data, server)) return true;
-    if (parseUploadLog(data, server)) return true;
+    if (download)
+    {
+        if (parseFileSize(data)) return true;
+        if (parseDownloadFile (data, server)) return true;
+    }
     if (parseListVersions (data)) return true;
-    if (parseClv (data)) return true;
-    if (parseDisconnect (data)) return true;
+    if (parseAcualVersion (data)) return true;
+    if (parseDownloadFile (data, server)) return true;
+    //if (parseUploadLog(data, server)) return true;
 
     return false;
 }
 
-bool Network::parseConnectServer(QByteArray data)
-{
-    QRegExp rx (QString("connect:(\\d+):"));
-
-    if (rx.indexIn(data) == -1)
-    {
-        return false;
-    }
-    else
-    {
-        log->print("connect", Log::info, Log::sreverIn);
-        connectServer();
-        return true;
-    }
-}
-
 bool Network::parseListVersions(QByteArray data)
 {
-    QStringList cmd = QString(data).split(" ");
-    bool stream;
-    for (int i(0); i<cmd.count(); i++)
+    QString data_str = data;
+    data_str = deleteForRx (data_str);
+    QRegExp rx ("response:versionList:(.+)");
+    bool s = rx.indexIn(data_str) != -1;
+    qDebug () << s << rx.errorString();
+    if (rx.indexIn(data_str) != -1)
     {
-        QRegExp rx ("ver:rlv:(\\d+):(.+):");
-
-        int numberVersion;
-        if (rx.indexIn(cmd.at(i)) != -1)
-        {
-            stream = true;
-            log->print("list_versions_start", Log::info);
-            numberVersion = QString(rx.cap(2)).toInt();
+        qDebug () << rx.cap(1);
+        QString str = rx.cap(1);
+        QStringList listVerTemp = str.split(",");
+        QStringList verList;
+        foreach (QString temp, listVerTemp) {
+            verList << _toSpace(temp);
         }
-        else
-        {
-            if (stream)
-            {
-                QStringList dataList = cmd.at(i).split('_');
-                QString type = dataList.at(0);
-                QString number = dataList.at(1);
-                QString tempName = type; tempName.append("_"); tempName.append(number);
-                log->print(tempName, Log::info, Log::sreverIn);
-                QString name = type; name.append(" "); name.append(number);
-                qDebug () << name;
-                listVersion.operator <<(name);
+        listVersion = verList;
+        listVersions ();
 
-                cacheListVersion->insert(numberVersion,name);
-            }
-            else
-            {
-                return false;
-            }
-        }
+        return true;
     }
-    log->print("list_versions_end", Log::info);
 
-    listVersions ();
-    return true;
+
+    return false;
 }
 
 bool Network::parseDownloadFile(QByteArray data, QTcpSocket *server)
 {
-    static bool streamDownload;
-    static QString nameApp;
-    static QString nameVersion;
+    static int action = 0;
+    static bool success = false;
+    QString data_str = data;
+    data_str = deleteForRx (data_str);
 
-    int pos = 0;
 
-    if (streamDownload)
+    if (action == 0)
     {
-        static bool download;
-        static bool downloadData = true;
-        static QFileInfo fileDownload;
-        static int fileSize;
-
-        QRegExp rxStop ("file:stop:downloading:from:server:");
-
-        if (rxStop.indexIn(data) != -1)
+        QRegExp rx ("response:version:(.+)");
+        if (rx.indexIn(data_str) != -1)
         {
-            isDownload = false;
-            download = false;
-            downloadData = false;
-            fileDownload.~QFileInfo();
-            fileSize = 0;
-            downloadFileEnd();
+            download = true;
+            action = 1;
+            qDebug () << download << action;
+            getSizeVersion ("Electrical_Simulator", "alpha_45");
+            return true;
         }
+        return false;
+    }
 
-        if (downloadData)
+    static int sizeVsrion;
+    if (action == 1)
+    {
+        QRegExp rx ("response:versionSize:(\\d+)");
+        if (rx.indexIn(data_str) != -1)
         {
-            QRegExp rxDl ("file:(.+):(\\d+):(\\d+)");
-            if (rxDl.indexIn(data) != -1)
+            sizeVsrion = rx.cap(1).toInt();
+            qDebug () << sizeVsrion;
+            QDir dir (".\\");
+            QString diskName = dir.absolutePath();
+            QStringList diskNameList = diskName.split(":/");
+            QStorageInfo storage;
+            storage.setPath(diskNameList.at(0));
+            if (storage.bytesFree() > sizeVsrion)
             {
-                QString name = "file_name_";
-                name.append(rxDl.cap(1));
-                name.append("_size_");
-                name.append(rxDl.cap(2));
-                name.append("_count_block_");
-                name.append(rxDl.cap(3));
-                log->print(name, Log::info, Log::sreverIn);
-
-                QString pathNewVersion = ".\\data/";
-                pathNewVersion.append(nameApp);
-                pathNewVersion.append("/");
-                QStringList tempVersionName = nameVersion.split("_");
-                pathNewVersion.append(tempVersionName.at(0));
-                pathNewVersion.append(" ");
-                pathNewVersion.append(tempVersionName.at(1));
-                pathNewVersion.append("/");
-                pathNewVersion.append(rxDl.cap(1));
-
-                QString versionFilePath (".//data");
-                versionFilePath.append(nameVersion);
-                QFileInfo versionFile (versionFilePath);
-                QFileInfo pathRem(pathNewVersion);
-                QString pathCreate (pathRem.absolutePath());
-                pathCreate.remove(versionFilePath);
-                QDir dir (versionFile.absoluteFilePath());
-                dir.mkpath(pathCreate);
-
-                QFile createFile (pathNewVersion);
-                createFile.open(QIODevice::WriteOnly);
-                createFile.close();
-                fileDownload = createFile;
-
-                fileSize = rxDl.cap(2).toInt();
-                server->write("file:reception:");
-
-                if(fileSize == 0)
-                {
-                    server->write("file:accepted");
-                    numberFiles++;
-                    downloadFile();
-                    return true;
-                }
-
-                downloadData = false;
-                download = true;
-                return true;
+                success = false;
             }
-            QRegExp rxEnd ("file:ulEnd:");
-            if (rxEnd.indexIn(data) != -1)
+            else
             {
-                log->print("download_end");
-                streamDownload = false;
-                downloadData = true;
-                download = false;
-                fileDownload.~QFileInfo();
-                downloadFileEnd ();
-                isDownload = false;
-                return true;
+                success = true;
+
             }
+            qDebug () << data_str;
+            getExeFile ("Electrical_Simulator", "alpha_45");
+            action = 2;
+            return true;
         }
-        if (download)
+        return false;
+    }
+
+    static QString exe;
+    if (action == 2)
+    {
+        QRegExp rx ("response:exeFile:(.+)");
+        if (rx.indexIn(data_str) != -1)
         {
-            QString path = fileDownload.absoluteFilePath();
-            QFile file(path);
-            if (!file.open(QIODevice::WriteOnly | QIODevice::Append))
-            {
-                qDebug ()  << "Not file";
-            }
-            file.write(data);
-            file.flush();
+            exe = rx.cap(1);
+            action = 3;
+            qDebug () << data_str;
+            getFileList ("Electrical_Simulator", "alpha_45");
+            return true;
+        }
+        return false;
+    }
 
-            if (file.size() == fileSize)
-            {
-                numberFiles++;
-                downloadFile();
-                server->write("file:accepted");
-                download = false;
-                downloadData = true;
-            }
+    if (action == 3)
+    {
+        QRegExp rx ("response:filesList:(.+)");
+        if (rx.indexIn(data_str) != -1)
+        {
+            QString str = rx.cap(1);
+            files = str.split(",");
+            action = 4;
+            filesNum = 0;
+            getFileSize(downloadApp, downloadVersion, files[filesNum]);
+            return true;
+        }
+        return false;
+    }
 
+    if (action == 4)
+    {
+        if (files.length()-1 == filesNum)
+        {
+            qDebug () << "download complit";
+        }
+        else if (createFile->size() == fileSize)
+        {
+            qDebug () << files.length() << filesNum;
+            if (files.length()-1 > filesNum)
+            {
+                createFile->close();
+                filesNum++;
+                getFileSize(downloadApp, downloadVersion, files[filesNum]);
+            }
             return true;
         }
     }
+}
 
-    QRegExp rx (QString("file:ul:(.+):(.+):exe:(.+):(\\d+):(\\d+)"));
+bool Network::downloadFileRS()
+{
 
-    if ((pos = rx.indexIn(data)) == -1)
+    static int numl = 0;
+    if (filesNum == 733)
     {
-        return false;
+        qDebug () << "jdfjdhfdhid";
     }
-    else
+    qDebug () << numl << createFile->fileName() << createFile->size();
+    createFile->write(reply->readAll());
+    numl++;
+
+    qDebug () << fileSize;
+    qDebug () << files.length() << filesNum;
+
+
+    return true;
+}
+
+bool Network::parseFileSize(QByteArray data)
+{
+    QString data_str = data;
+    data_str = deleteForRx (data_str);
+
+    QRegExp rx ("response:fileSize:(\\d+)");
+
+    if (rx.indexIn(data_str) != -1)
     {
-        countFiles = rx.cap(4).toInt();
-        bool success = true;
-        nameVersion = rx.cap(2);
-        nameApp = rx.cap(1);
+        fileSize = rx.cap(1).toInt();
 
-        QDir dir (".\\");
-        QString diskName = dir.absolutePath();
-        QStringList diskNameList = diskName.split(":/");
-        QStorageInfo storage;
-        storage.setPath(diskNameList.at(0));
-        if (storage.bytesFree() > rx.cap(5).toInt())
-        {
-            success = false;
-        }
-
-
-        QString send = "file:";
-        if (success)
-        {
-            log->print("download_start");
-            send.append("ok_reception_file:");
-            streamDownload = true;
-            isDownload = true;
-        }
-        else
-        {
-            log->print("download_fail");
-            send.append("fail:");
-        }
-
-        QTextStream streamTxt (server);
-        streamTxt.operator <<(send);
-
+        getFile("Electrical_Simulator", "alpha_45", files[filesNum]);
         return true;
     }
+
+    return false;
 }
 
 bool Network::parseUploadLog(QByteArray data, QTcpSocket *server)
@@ -430,35 +499,28 @@ bool Network::parseUploadLog(QByteArray data, QTcpSocket *server)
             return true;
         }
      }
+
     return false;
 }
 
-bool Network::parseDisconnect(QByteArray data)
+bool Network::parseAcualVersion(QByteArray data)
 {
-    QRegExp rxDiscon ("disconnect:ser");
+    QString data_str = data;
+    data_str = deleteForRx (data_str);
+    qDebug () << data_str;
+    QRegExp rxClv ("response:actualVersion:(.+)");
 
-    if (rxDiscon.indexIn(data) != -1)
+    if (rxClv.indexIn(data_str) != -1)
     {
-        log->print("disconnect_server", Log::info, Log::sreverIn);
-        disConnectServer();
-        return true;
-    }
-    return false;
-}
-
-bool Network::parseClv(QByteArray data)
-{
-    QRegExp rxClv ("clv:(.+):");
-
-    if (rxClv.indexIn(data) != -1)
-    {
-        float clvOnServer = QString (rxClv.cap(1)).toFloat();
+        QString actualVersionOnServer = QString (rxClv.cap(1));
+        QStringList actualVersionList = actualVersionOnServer.split("_");
 
         QString send = "current version of the launcher ";
-        send.append(QString::number(clvOnServer));
+        send.append(actualVersionOnServer);
         log->print(send, Log::info, Log::sreverIn);
 
-        clv(clvOnServer);
+        clv(actualVersionList.at(0), actualVersionList.at(1));
+        qDebug () << actualVersionList.at(0) << actualVersionList.at(1);
         return true;
     }
     return false;

@@ -9,6 +9,7 @@
 const float number_version_launcher = 1.0;
 const QString IPServer = "192.168.1.15";
 const unsigned short PortServer = 1234;
+const QString _Host = "http://electrical-simulator.ru/";
 
 enum versionType
 {

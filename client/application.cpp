@@ -38,7 +38,7 @@ void Application::downloadversion(QString typeString, QString number, bool uiOnl
         else if (typeStr == "beta")      type = beta;
         else if (typeStr == "release")   type = release;
 
-        network->downloadVersion(app.nameApp,type,number.toInt());
+        //network->downloadVersion(app.nameApp,type,number.toInt());
         deactiveButton();
     }
 }
@@ -95,9 +95,9 @@ void Application::init(Network *netWork, appInfo App, QComboBox *cb, QPushButton
     initFiles(app.nameApp);
 
     QObject::connect(network, SIGNAL (connectServer()), this, SLOT (connectServer()));
-    QObject::connect(this, SIGNAL (getListVersions ()), network, SLOT (getVersionListOnServer (QString)));
+    QObject::connect(this, SIGNAL (getListVersions ), network, SLOT (getVersionList (QString)));
     QObject::connect(network, SIGNAL(listVersions()), this, SLOT(listVersion()));
-    network->getVersionListOnServer(app.page);
+    network->getVersionList(app.nameApp);
     QObject::connect(startButton, SIGNAL(clicked()), this, SLOT(open()));
     QObject::connect(this, SIGNAL (downloadVersion ()), network, SLOT(downloadVersion(QString,versionType,int)));
     QObject::connect(network, SIGNAL(downloadFileEnd()), this, SLOT(endDownloadFile()));
@@ -132,7 +132,7 @@ void Application::refresh(bool updateListVersion)
     if (updateListVersion == true)
     {
         QObject::connect(network, SIGNAL(listVersions()), this, SLOT(listVersion()));
-        network->getVersionListOnServer(app.page);
+        network->getVersionList(app.nameApp);
     }
 
     refreshFiles();
