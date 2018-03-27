@@ -23,6 +23,7 @@
 #include <QUrl>
 #include <QNetworkRequest>
 #include <QNetworkReply>
+#include <QNetworkConfigurationManager>
 
 #include "globalVariable.h"
 #include "log.h"
@@ -37,10 +38,10 @@ class Network : public QObject
     Q_OBJECT
 public:
     Network(Log *plog);
-    ~Network();
 
-    Config *cfg;
-    Log *log;
+    bool isConnected ();
+
+    ~Network();
 
     //verName type_num
     //appName all space _
@@ -56,8 +57,13 @@ public:
 
 
 private:
+    Config *cfg;
+    Log *log;
+    QNetworkConfigurationManager *netConfig;
+    bool *isConnect;
 
-
+private slots:
+    void setConnectState (bool state);
 };
 
 #endif // NETWORK_H

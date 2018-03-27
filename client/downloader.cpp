@@ -84,7 +84,6 @@ bool Downloader::sendRequest(QString url_str)
     QNetworkRequest request;
     request.setUrl(url);
     manager->get(request);
-    //QObject::connect(reply, &QNetworkReply::finished, this, &Downloader::readServer);
     return true;
 }
 
@@ -193,6 +192,20 @@ bool Downloader::requestFileSize()
     return true;
 }
 
+bool Downloader::requestApplicationInfo()
+{
+    QString requestUrl = apiHost;
+    requestUrl.append("app.getAppInfo?");
+    requestUrl.append("app=");
+    requestUrl.append(appName);
+    downloaderType = ApplicationInfo;
+
+    if (!sendRequest(requestUrl))
+    {
+        return false;
+    }
+    return true;
+}
 
 void Downloader::readServer(QNetworkReply *reply)
 {
@@ -220,6 +233,9 @@ void Downloader::readServer(QNetworkReply *reply)
         break;
     case FileSize:
         parseFileSize (data);
+        break;
+    case ApplicationInfo:
+        parseApplicationInfo(data);
         break;
     default:
         QString send = "wrongCmd(";
@@ -364,6 +380,24 @@ bool Downloader::parseFileSize(QByteArray data)
     if (rx.indexIn(data_str) != -1)
     {
         response = new QStringList (QString(rx.cap(1)));
+
+        qDebug () << response;
+        replyServer(response);
+        return true;
+    }
+    return false;
+}
+
+bool Downloader::parseApplicationInfo(QByteArray data)
+{
+    QString data_str = data;
+    data_str = deleteForRx (data_str);
+
+    QRegExp rx ("response:appInfo:(.+)");
+    if (rx.indexIn(data_str) != -1)
+    {
+        QStringList resp = QString(rx.cap(1)).split(",");
+        response = new QStringList ();
 
         qDebug () << response;
         replyServer(response);

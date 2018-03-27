@@ -23,6 +23,7 @@ public:
     bool requestFileListVersion();
     bool requestSizeVersion();
     bool requestFileSize();
+    bool requestApplicationInfo();
 
 private:
     enum DownloadType
@@ -33,7 +34,8 @@ private:
         ExeFileVersion,
         FileListVersion,
         SizeVersion,
-        FileSize
+        FileSize,
+        ApplicationInfo
     };
 
     QNetworkAccessManager *manager;
@@ -41,7 +43,6 @@ private:
     const QString apiHost = "http://electrical-simulator.ru/api/method/";
     QString appName;
     DownloadType downloaderType;
-    //QNetworkReply *reply;
 
     QString _toSpace (QString str);
     QString spaceTo_ (QString str);
@@ -55,6 +56,7 @@ private:
     bool parseFileListVersion (QByteArray data);
     bool parseSizeVersion     (QByteArray data);
     bool parseFileSize        (QByteArray data);
+    bool parseApplicationInfo (QByteArray data);
 private slots:
     void readServer(QNetworkReply *reply);
 signals:
