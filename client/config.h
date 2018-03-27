@@ -3,26 +3,32 @@
 
 #include <QTextStream>
 #include <QFile>
+#include <QFileInfo>
 #include <QList>
+#include <QString>
+#include <QDebug>
 #include <qmath.h>
 
-class config
+class Config
 {
 private:
+    bool empty;
     int countLine = 10;
-    void setDefaltParametr();
+    QFile *configFile;
+
 public:
 
-    QStringList *name;
-    QStringList *argumet;
+    QStringList *configKeyName;
+    QStringList *configKeyValue;
 
-    config();
-    ~config();
-    bool create();
+    Config(QString path = ".\\conf.cfg");
+    ~Config();
+    bool create(QString path);
     bool raedFile();
     bool save ();
-    QString get(QString parametr);
+    QStringList get(QString parametr);
     bool set(QString parametr, QString value);
+    bool isEmpty ();
 };
 
 #endif // CONFIG_H

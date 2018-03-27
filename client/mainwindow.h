@@ -3,7 +3,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include "global_variable.h"
+#include "globalVariable.h"
 #include <QMainWindow>
 #include <QApplication>
 #include <QObject>
@@ -17,10 +17,12 @@
 #include "config.h"
 #include "network.h"
 #include "menu.h"
-#include "electricalassistant.h"
-#include "electricalsimulator.h"
+#include "electricalAssistant.h"
+#include "electricalSimulator.h"
 #include "general.h"
 #include "dialogupdatelauncher.h"
+#include "menuGeneral.h"
+#include "applicationcontroller.h"
 
 namespace Ui {
 class MainWindow;
@@ -40,11 +42,10 @@ private slots:
     void setFullScreanMode ();
     void setNormalMode ();
     void currentLauncherVer(float ver);
-    void netError(QAbstractSocket::SocketError);
 
 private:
     Ui::MainWindow *ui;
-    config *cfg;
+    Config *cfg;
     Log *log;
     Network *network;
     QThread *threadNet;
@@ -53,7 +54,8 @@ private:
     ElectricalSimulator *electricalsimulator;
     General *general;
     DialogUpdateLauncher *updatelauncher;
-
+    MenuGeneral *menugeneral;
+    ApplicationController *appCon;
     QBrush *brush;
     QPalette *palette;
     QDesktopWidget *d;

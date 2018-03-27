@@ -5,7 +5,7 @@
 #include <QString>
 #include <QDesktopServices>
 #include <QUrl>
-#include "global_variable.h"
+#include "globalVariable.h"
 
 namespace Ui {
 class Menu;

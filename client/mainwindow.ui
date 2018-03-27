@@ -25,9 +25,15 @@
      <rect>
       <x>10</x>
       <y>10</y>
-      <width>461</width>
-      <height>301</height>
+      <width>371</width>
+      <height>231</height>
      </rect>
+    </property>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
     </property>
     <property name="autoFillBackground">
      <bool>false</bool>
@@ -39,6 +45,9 @@
     <layout class="QVBoxLayout" name="verticalLayout_3">
      <property name="spacing">
       <number>0</number>
+     </property>
+     <property name="sizeConstraint">
+      <enum>QLayout::SetMaximumSize</enum>
      </property>
      <property name="leftMargin">
       <number>0</number>
@@ -53,9 +62,12 @@
       <number>0</number>
      </property>
      <item>
-      <layout class="QHBoxLayout" name="general">
+      <layout class="QVBoxLayout" name="general">
        <property name="spacing">
         <number>0</number>
+       </property>
+       <property name="sizeConstraint">
+        <enum>QLayout::SetMaximumSize</enum>
        </property>
       </layout>
      </item>

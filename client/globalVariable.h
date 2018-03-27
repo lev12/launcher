@@ -10,14 +10,45 @@ const float number_version_launcher = 1.0;
 const QString IPServer = "192.168.1.15";
 const unsigned short PortServer = 1234;
 const QString _Host = "http://electrical-simulator.ru/";
+const QString _Data = "data/";
 
-enum versionType
+enum VersionType
 {
     pre_alpha,
     alpha,
     beta,
     release,
-    Null
+    null
+};
+
+enum Language
+{
+    Chinese,
+    Spanish,
+    English,
+    Arab,
+    Portuguese,
+    Bengal,
+    Russian,
+    Japanese,
+    German,
+    Korean,
+    French,
+    Turkish,
+    Italian,
+    Malay,
+    Persian,
+    Dutch
+};
+
+enum Platform
+{
+    PC,
+    MAC,
+    Android,
+    IOS,
+    XBox,
+    PlayStation
 };
 
 struct appInfo

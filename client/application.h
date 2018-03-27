@@ -14,23 +14,58 @@
 #include <QUrl>
 #include <QDesktopServices>
 
-#include "files.h"
-#include "global_variable.h"
+#include "globalVariable.h"
 #include "network.h"
-#include "versionmanager.h"
+#include "versionController.h"
+#include "uiapplication.h"
+#include "config.h"
 
-class Application : public Files
+class Application : public QObject
 {
     Q_OBJECT
+public:
+    Application(QString path, Network *network);
+
+    UiApplication* getUiApplication();
+
 private:
 
-    appInfo app;
+    VersionController *verCon;
+    UiApplication *uiApp;
+    Network *net;
+    Config *cfgApp;
+
+    QString *appName;
+    QIcon *appIcon;
+    QString *appPath;
+    QStringList *appSupportLanguage;
+    QList <Platform> *appSupportPlatform;
+    QString *appRecommendedSystemRequirements;
+    QString *appMinimumSystemRequirements;
+    QString *actualVersion;
+
+    bool initAppPath (QString path);
+    bool initVerCon ();
+    bool initNet (Network *network);
+    bool initAppName ();
+    bool initAppIcon ();
+    bool initUiApp ();
+    bool initConfig ();
+    bool initSupportLanguage ();
+    bool initSupportPlatform ();
+    bool initSystemRequirements ();
+    bool initActualVersion ();
+
+    bool fillingConfigApp();
+    QList<Platform> strToPlatform (QStringList platformStrList);
+    /*appInfo app;
     QComboBox *comboBox;
     QPushButton *startButton;
     QHBoxLayout *pbHb;
     QProgressBar *progressBar;
     Network *network;
     VersionManager *versionmanager;
+    VersionController *verContaoller;
 
     bool showVersionManager;
     QHBoxLayout *VMHB;
@@ -54,19 +89,7 @@ signals:
     void downloadVersion ();
 
     void activeButton();
-    void deactiveButton();
-
-public:
-    Application();
-    void init (Network *netWork, appInfo App, QComboBox *cb, QPushButton *StartButton, QHBoxLayout *pb);
-    void getlistversion ();
-    void downloadversion (QString typeString, QString number, bool uiOnly);
-    void refresh (bool updateListVersion);
-    void openFolder();
-    void openVersionManager(QHBoxLayout *widget);
-
-    QString getItemComboBox  ();
-    void fillingComboBox     ();
+    void deactiveButton();*/
 };
 
 #endif // APPLICATION_H

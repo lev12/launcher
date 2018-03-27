@@ -24,84 +24,40 @@
 #include <QNetworkRequest>
 #include <QNetworkReply>
 
-#include "global_variable.h"
+#include "globalVariable.h"
 #include "log.h"
 #include "config.h"
+#include "version.h"
+#include "downloader.h"
+#include "downloaderForFile.h"
+#include "downloaderForVersion.h"
 
 class Network : public QObject
 {
     Q_OBJECT
+public:
+    Network(Log *plog);
+    ~Network();
 
-private:
-    QString _toSpace (QString str);
-    QString spaceTo_ (QString str);
-    QString deleteForRx (QString data);
-
-    bool parse              (QByteArray data, QTcpSocket *server);
-    bool parseListVersions  (QByteArray data);
-    bool parseDownloadFile  (QByteArray data, QTcpSocket *server);
-    bool parseUploadLog     (QByteArray data, QTcpSocket *server);
-    bool parseAcualVersion  (QByteArray data);
-    bool parseFileSize      (QByteArray data);
-
-    bool download = false;
-    int filesNum;
-    QString downloadApp;
-    QString downloadVersion;
-    qint64 fileSize;
-    QFile *createFile;
-    QStringList files;
-    QNetworkAccessManager *manager;
-    QNetworkReply *reply;
-
-private slots:
-
-    void readServer(QNetworkReply *reply);
-
-public slots:
-
-    bool sendLog                (QString path);
-
+    Config *cfg;
+    Log *log;
 
     //verName type_num
     //appName all space _
-    bool getVersionList     (QString appName);
-    bool getActualVersion   (QString appName);
-    bool getExeFile         (QString appName, QString verName);
-    bool getSizeVersion     (QString appName, QString verName);
-    bool getFileList        (QString appName, QString verName);
-    bool checkVersion       (QString appName, QString verName);
-    bool getVersion         (QString appName, QString verName);
-    bool getFile            (QString appName, QString verName, QString file);
-    bool downloadFileRS     ();
-    bool getFileSize        (QString appName, QString verName, QString file);
+    Downloader* getActualVersion     (QString appName);
+    Downloader* getVersionList       (QString appName);
+    Downloader* getExeFile           (QString appName, QString verName);
+    Downloader* getSizeVersion       (QString appName, QString verName);
+    Downloader* getFileList          (QString appName, QString verName);
+    Downloader* getCheckVersion      (QString appName, QString verName);
+    DownloaderForVersion* getVersion (QString appName, QString verName);
+    DownloaderForFile* getFile       (QUrl url, QFileInfo file);
+    Downloader* getFileSize          (QString appName, QString verName, QString file);
 
 
-signals:
-    void updateListVersion ();
-    void connectServer();
-    void listVersions ();
-    void downloadFile ();
-    void downloadFileEnd ();
-    void disConnectServer ();
-    void clv (QString, QString);
+private:
 
-public:
-    Network(Log *plog);
-    QTcpSocket *server;
-    QTimer *timer;
-    config *cfg;
-    Log *log;
-    QStringList listVersion;
-    QString uploadFile;
-    int countFiles;
-    int numberFiles;
-    bool isDownload = false;
-    QMap <int,QString> *cacheListVersion;
 
-    bool disconnectServer   ();
-
-    ~Network();
 };
 
 #endif // NETWORK_H

@@ -16,53 +16,79 @@ CONFIG += c++11
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    config.cpp \
     settings.cpp \
     background.cpp \
-    files.cpp \
-    application.cpp \
-    network.cpp \
     menu.cpp \
     general.cpp \
-    electricalsimulator.cpp \
     versionmanager.cpp \
-    log.cpp \
     settingsmenu.cpp \
     sendmassage.cpp \
-    electricalassistant.cpp \
     updatelauncher.cpp \
-    dialogupdatelauncher.cpp
+    dialogupdatelauncher.cpp \
+    uploader.cpp \
+    menuGeneral.cpp \
+    application.cpp \
+    config.cpp \
+    downloader.cpp \
+    downloaderForFile.cpp \
+    downloaderForVersion.cpp \
+    electricalAssistant.cpp \
+    log.cpp \
+    network.cpp \
+    version.cpp \
+    versionController.cpp \
+    electricalsimulator.cpp \
+    uielectricalsimulator.cpp \
+    uiapplication.cpp \
+    menuvertical.cpp \
+    uigeneralapplication.cpp \
+    applicationcontroller.cpp
 
 HEADERS  += mainwindow.h \
-    config.h \
-    global_variable.h \
     settings.h \
     background.h \
-    files.h \
-    application.h \
-    network.h \
     menu.h \
     general.h \
-    electricalsimulator.h \
     versionmanager.h \
-    log.h \
     settingsmenu.h \
     sendmassage.h \
-    electricalassistant.h \
     updatelauncher.h \
-    dialogupdatelauncher.h
+    dialogupdatelauncher.h \
+    uploader.h \
+    menuGeneral.h \
+    globalVariable.h \
+    log.h \
+    network.h \
+    application.h \
+    config.h \
+    downloader.h \
+    downloaderForFile.h \
+    downloaderForVersion.h \
+    electricalAssistant.h \
+    version.h \
+    versionController.h \
+    electricalsimulator.h \
+    uielectricalsimulator.h \
+    uiapplication.h \
+    menuvertical.h \
+    uigeneralapplication.h \
+    applicationcontroller.h
 
 
 FORMS    += mainwindow.ui \
     settings.ui \
     menu.ui \
     general.ui \
-    electricalsimulator.ui \
     versionmanager.ui \
     settingsmenu.ui \
     sendmassage.ui \
-    electricalassistant.ui \
     updatelauncher.ui \
-    dialogupdatelauncher.ui
+    dialogupdatelauncher.ui \
+    menuGeneral.ui \
+    electricalAssistant.ui \
+    uielectricalsimulator.ui \
+    uiapplication.ui \
+    menuvertical.ui \
+    uigeneralapplication.ui
 
 RESOURCES += rec.qrc \

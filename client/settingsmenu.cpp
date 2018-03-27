@@ -1,7 +1,7 @@
 #include "settingsmenu.h"
 #include "ui_settingsmenu.h"
 
-SettingsMenu::SettingsMenu(QWidget *parent, config *conf, Log *logfile) :
+SettingsMenu::SettingsMenu(QWidget *parent, Config *conf, Log *logfile) :
     QFrame(parent),
     ui(new Ui::SettingsMenu)
 {

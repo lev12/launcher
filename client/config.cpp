@@ -1,118 +1,104 @@
 #include "config.h"
 
-#include <QMessageBox>
-#include <QTextStream>
-
-config::config()
+Config::Config(QString path)
 {
-   name = new QStringList();
-   argumet = new QStringList();
+   configKeyName = new QStringList();
+   configKeyValue = new QStringList();
 
-   if (!QFile::exists(".\\conf.cfg"))
+   if (!QFile::exists(path))
    {
-       create();
+       create(path);
+       empty = true;
    }
    else
    {
+       configFile = new QFile (path);
        raedFile();
+       empty = false;
    }
 }
 
-config::~config()
+Config::~Config()
 {
     save();
 }
 
-void config::setDefaltParametr()
+bool Config::create(QString path)
 {
-    QFile defParam(":/other/configDefaltParametr.txt");
-    if(!(defParam.open(QFile::ReadOnly | QFile::Text)))
-    {
-        return;
-    }
-
-    QTextStream stream (&defParam);
-
-    for (int i(0); i < countLine*2; i++)
-    {
-        if (i%2 == 0)
-        {
-            QString temp;
-            stream >> temp;
-            name->operator <<(temp);
-        }
-        else
-        {
-            QString temp;
-            stream >> temp;
-            argumet->operator <<(temp);
-        }
-    }
-}
-
-bool config::create()
-{
-    setDefaltParametr();
-
-    QFile cFile(".//conf.cfg");
+    QFile cFile(path);
     if (!(cFile.open(QFile::WriteOnly | QFile::Text))) {
         return false;
     }
-
-    QTextStream stream(&cFile);
-
-    for (int i(0); i < name->count(); i++)
-    {
-        stream << name->at(i) << " " << argumet->at(i) << "\n";
-    }
-
-    cFile.flush();
+    configFile = &cFile;
     cFile.close();
     return true;
 }
 
-bool config::raedFile()
+bool Config::raedFile()
 {
-    QFile cFile(".//conf.cfg");
-
-    if (!cFile.open(QFile::ReadOnly | QFile::Text))
+    if (!configFile->open(QFile::ReadOnly | QFile::Text))
     {
         return false;
     }
 
-    QTextStream stream(&cFile);
+    QStringList configLines = QString(configFile->readAll()).split("\n");
 
-    for (int i(0); i < countLine*2; i++)
+    //if (configLines.length() > 1)
     {
-        if (i%2 == 0)
+        qDebug () << "545454564asssddddddd";
+        for (int i=0; i < configLines.length(); i++)
         {
-            QString temp;
-            stream >> temp;
-            name->operator <<(temp);
-        }
-        else
-        {
-            QString temp;
-            stream >> temp;
-            argumet->operator <<(temp);
+            if (QString(configLines.at(i)).length() > 2)
+            {
+                qDebug () << "asssddddddd";
+                QStringList tempConfigLine = QString(configLines.at(i)).split("=");
+
+                if (tempConfigLine.length() == 2)
+                {
+                    QString cfgKey = tempConfigLine.at(0);
+                    QString cfgValue = tempConfigLine.at(1);
+                    if (cfgKey.contains(" "))
+                    {
+                        cfgKey.remove(" ");
+                    }
+                    if (cfgValue.contains(" "))
+                    {
+                        cfgValue.remove(" ");
+                    }
+
+                    qDebug () << cfgKey;
+                    configKeyName->operator <<(cfgKey);
+                    configKeyValue->operator <<(cfgValue);
+                }
+            }
         }
     }
 
-    cFile.flush();
-    cFile.close();
+    configFile->flush();
+    configFile->close();
     return true;
 }
 
-bool config::save()
+bool Config::save()
 {
-    QFile cFile(".//conf.cfg");
-    cFile.remove();
-    if (!cFile.open(QFile::WriteOnly | QFile::Text))
+    empty = false;
+    configFile->remove();
+    if (!configFile->open(QFile::WriteOnly | QFile::Text))
     {
         return false;
     }
+    qDebug () << configKeyName->length();
+    for (int i=0; i < configKeyName->length();i++)
+    {
+        QString line = QString(configKeyName->at(i));
+        line.append(" = ");
+        line.append(QString(configKeyValue->at(i)));
+        line.append("\n");
+        qDebug () << line;
+        configFile->write(line.toLocal8Bit());
+    }
 
-    QTextStream stream(&cFile);
+    /*QTextStream stream(&cFile);
 
     for (int i(0); i < countLine*2; i++)
     {
@@ -135,38 +121,39 @@ bool config::save()
             QString temp = argumet->at(tempI);
             stream << temp << "\n";
         }
-    }
+    }*/
 
-    cFile.flush();
-    cFile.close();
+    configFile->flush();
+    configFile->close();
     return true;
 }
 
-QString config::get(QString parametr)
+QStringList Config::get(QString parametr)
 {
     int number = -1;
 
-    for (int i(0); i < name->count(); i++)
+    for (int i(0); i < configKeyName->count(); i++)
     {
-        if (parametr == name->at(i))
+        if (parametr == configKeyName->at(i))
         {
             number = i;
             break;
         }
     }
 
-    if (number == -1) return false;
+    if (number == -1) return QStringList("false");
 
-    QString result = argumet->at(number);
-    return result;
+    QString result = configKeyValue->at(number);
+    QStringList resultList = result.split(", ");
+    return resultList;
 }
 
-bool config::set(QString parametr, QString value)
+bool Config::set(QString parametr, QString value)
 {
     int number = -1;
-    for (int i(0); i < name->count(); i++)
+    for (int i(0); i < configKeyName->count(); i++)
     {
-        if (parametr == name->at(i))
+        if (parametr == configKeyName->at(i))
         {
             number = i;
             break;
@@ -174,7 +161,12 @@ bool config::set(QString parametr, QString value)
     }
     if (number == -1) return false;
 
-    argumet->replace(number, value);
+    configKeyValue->replace(number, value);
 
     return true;
+}
+
+bool Config::isEmpty()
+{
+    return empty;
 }

@@ -8,13 +8,12 @@
 #include <QFileInfo>
 #include <QPushButton>
 
-#include "files.h"
 
 namespace Ui {
 class VersionManager;
 }
 
-class VersionManager : public Files
+class VersionManager : public QObject
 {
     Q_OBJECT
 

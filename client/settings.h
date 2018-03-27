@@ -14,7 +14,7 @@ class settings : public QFrame
     Q_OBJECT
 
 public:
-    settings(QWidget *parent = 0, config *cfg = NULL);
+    settings(QWidget *parent = 0, Config *cfg = NULL);
     ~settings();
 
 private slots:
@@ -27,7 +27,7 @@ public slots:
 
 private:
     Ui::settings *ui;
-    config *conf;
+    Config *conf;
     bool fullScrean = false;
     int lenguage = 0;
 };

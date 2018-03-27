@@ -19,12 +19,12 @@ class SettingsMenu : public QFrame
 
 public:
 
-    config *cfg;
+    Config *cfg;
     Log *log;
     settings *setting;
     SendMassage *sendmessage;
 
-    explicit SettingsMenu(QWidget *parent, config *conf, Log *logfile);
+    explicit SettingsMenu(QWidget *parent, Config *conf, Log *logfile);
     ~SettingsMenu();
     void closef();
 

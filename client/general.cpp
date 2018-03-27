@@ -6,7 +6,7 @@ General::General(QWidget *parent, Menu *menuGen, Log *logfile) :
     ui(new Ui::General)
 {
     ui->setupUi(this);
-    cfg  = new config();
+    cfg  = new Config();
     menu = menuGen;
     if (logfile != NULL)
     {
@@ -23,7 +23,7 @@ General::General(QWidget *parent, Menu *menuGen, Log *logfile) :
     appinfo.vk = "";
     appinfo.youtube = "";
 
-    QString fullScreanStr = cfg->get("fullScrean");
+    QString fullScreanStr = cfg->get("fullScrean").at(0);
     if (fullScreanStr == "false")
     {
         normalMode();
@@ -59,7 +59,7 @@ void General::on_pushButton_clicked()
         qDebug () << "remove widget";
         ui->settingsLayout->removeWidget(settingMenu);
 
-        QString fullScreanStr = cfg->get("fullScrean");
+        QString fullScreanStr = cfg->get("fullScrean").at(0);
         if (fullScreanStr == "false")
         {
             normalMode();
@@ -79,7 +79,7 @@ void General::closeSettingsMenu()
     qDebug () << "remove widget";
     ui->settingsLayout->removeWidget(settingMenu);
 
-    QString fullScreanStr = cfg->get("fullScrean");
+    QString fullScreanStr = cfg->get("fullScrean").at(0);
     if (fullScreanStr == "false")
     {
         normalMode();

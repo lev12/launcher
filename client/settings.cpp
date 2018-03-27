@@ -1,14 +1,14 @@
 #include "settings.h"
 #include "ui_settings.h"
 
-settings::settings(QWidget *parent, config *cfg) :
+settings::settings(QWidget *parent, Config *cfg) :
     QFrame(parent),
     ui(new Ui::settings)
 {
     ui->setupUi(this);
     conf = cfg;
 
-    QString fullScreanStr = cfg->get("fullScrean");
+    QString fullScreanStr = cfg->get("fullScrean").at(0);
     if (fullScreanStr == "false")
     {
         ui->pushButton->setIcon(QIcon (":/icon/off.png"));
@@ -24,7 +24,7 @@ settings::settings(QWidget *parent, config *cfg) :
         //TODO
     }
 
-    QString lenguageStr = cfg->get("lenguage");
+    QString lenguageStr = cfg->get("lenguage").at(0);
     if (lenguageStr == "EN")
     {
         lenguage = 0;

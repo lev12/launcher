@@ -26,5 +26,5 @@ void DialogUpdateLauncher::on_pushButton_Cancel_clicked()
 
 void DialogUpdateLauncher::on_pushButton_Download_clicked()
 {
-    download("Launcher", versionType::Null, version);
+    download("Launcher", VersionType::null, version);
 }

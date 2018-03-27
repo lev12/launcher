@@ -1,7 +1,7 @@
-#include "electricalassistant.h"
+#include "electricalAssistant.h"
 #include "ui_electricalassistant.h"
 
-ElectricalAssistant::ElectricalAssistant(Network *net):
+/*ElectricalAssistant::ElectricalAssistant(Network *net):
     ui(new Ui::ElectricalAssistant)
 {
     ui->setupUi(this);
@@ -25,4 +25,4 @@ appInfo ElectricalAssistant::getAppInfo()
 ElectricalAssistant::~ElectricalAssistant()
 {
     delete ui;
-}
+}*/

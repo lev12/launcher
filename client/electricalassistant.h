@@ -13,13 +13,13 @@ class ElectricalAssistant : public Application
     Q_OBJECT
 
 public:
-    explicit ElectricalAssistant(Network *net = 0);
-    appInfo getAppInfo();
-    ~ElectricalAssistant();
+    //explicit ElectricalAssistant(Network *net = 0);
+    //appInfo getAppInfo();
+    //~ElectricalAssistant();
 
 private:
-    Ui::ElectricalAssistant *ui;
-    appInfo appinfo;
+    //Ui::ElectricalAssistant *ui;
+    //appInfo appinfo;
 };
 
 #endif // ELECTRICALASSISTANT_H

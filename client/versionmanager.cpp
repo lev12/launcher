@@ -4,8 +4,8 @@
 VersionManager::VersionManager(QString AppName,QStringList instVersions, QStringList netVersions) :
     ui(new Ui::VersionManager)
 {
-    ui->setupUi(this);
-    initFiles (AppName);
+    //ui->setupUi(this);
+    //initFiles (AppName);
 
     versions = instVersions;
 
@@ -32,14 +32,14 @@ VersionManager::VersionManager(QString AppName,QStringList instVersions, QString
     {
         QString verStr = versions.at(i);
         QListWidgetItem *item = new QListWidgetItem(verStr);
-        if(Files::isInstall(verStr.split(" ").at(0),verStr.split(" ").at(1)))
+        /*if(Files::isInstall(verStr.split(" ").at(0),verStr.split(" ").at(1)))
         {
             item->setBackground(QBrush(QColor(0, 160, 200),Qt::SolidPattern));
         }
         else
         {
             item->setBackground(QBrush(QColor(0, 142, 200),Qt::SolidPattern));
-        }
+        }*/
         item->setTextColor(QColor (255,255,255));
         ui->listWidget->addItem(item);
     }
@@ -56,14 +56,14 @@ void VersionManager::refreshVersionManager(QStringList Versions)
         QString verStr = Versions.at(i);
         QListWidgetItem *item = new QListWidgetItem(verStr);
 
-        if(Files::isInstall(verStr.split(" ").at(0),verStr.split(" ").at(1)))
+        /*if(Files::isInstall(verStr.split(" ").at(0),verStr.split(" ").at(1)))
         {
             item->setBackground(QBrush(QColor(0, 160, 200),Qt::SolidPattern));
         }
         else
         {
             item->setBackground(QBrush(QColor(0, 142, 200),Qt::SolidPattern));
-        }
+        }*/
 
         item->setTextColor(QColor (255,255,255));
         ui->listWidget->addItem(item);
@@ -84,16 +84,16 @@ void VersionManager::on_pushButton_action_clicked()
 {
     currentVersion = ui->listWidget->currentItem()->text();
     QStringList name = ui->listWidget->currentItem()->text().split(" ");
-    bool statVer = isInstall(name.at(0),name.at(1));
+    //bool statVer = isInstall(name.at(0),name.at(1));
 
-    if (statVer)
+    /*if (statVer)
     {
         deleteVersion();
     }
     else
     {
         downloadVersion();
-    }
+    }*/
 }
 
 void VersionManager::on_listWidget_clicked(const QModelIndex &index)
@@ -105,15 +105,15 @@ void VersionManager::refreshActionButton()
 {
     currentVersion = ui->listWidget->currentItem()->text();
     QStringList name = ui->listWidget->currentItem()->text().split(" ");
-    bool statVer = isInstall(name.at(0),name.at(1));
+    //bool statVer = isInstall(name.at(0),name.at(1));
 
-    if (statVer)
+    /*if (statVer)
     {
-        qDebug () << name.at(0);
+        //qDebug () << name.at(0);
         ui->pushButton_action->setIcon(QIcon(":/icon/trash.png"));
     }
     else
     {
         ui->pushButton_action->setIcon(QIcon(":/icon/download.png"));
-    }
+    }*/
 }

@@ -4,7 +4,7 @@
 #include <QDialog>
 #include <QString>
 
-#include "global_variable.h"
+#include "globalVariable.h"
 
 namespace Ui {
 class DialogUpdateLauncher;
@@ -19,7 +19,7 @@ public:
     ~DialogUpdateLauncher();
 
 signals:
-    void download (QString,versionType,int);
+    void download (QString,VersionType,int);
 
 private slots:
     void on_pushButton_Cancel_clicked();

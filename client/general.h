@@ -3,7 +3,7 @@
 
 #include <QFrame>
 #include "settingsmenu.h"
-#include "global_variable.h"
+#include "globalVariable.h"
 #include "background.h"
 #include "menu.h"
 
@@ -23,7 +23,7 @@ public:
     ~General();
 
     Menu *menu;
-    config *cfg;
+    Config *cfg;
     Log *log;
     bool showSettings = false;
     SettingsMenu *settingMenu;
