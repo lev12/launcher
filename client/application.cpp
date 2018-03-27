@@ -159,8 +159,20 @@ UiApplication* Application::getUiApplication()
     return uiApp;
 }
 
+bool Application::deleteAllVersion()
+{
+    if (verCon == NULL) return false;
+
+    verCon->deleteAllVersion();
+
+    return true;
+}
+
 bool Application::fillingConfigApp()
 {
+    if (net == NULL) return false;
+    if (!(net->isConnected())) return false;
+
     //TODO
     return true;
 }
@@ -179,3 +191,4 @@ QList<Platform> Application::strToPlatform (QStringList platformStrList)
     }
     return resault;
 }
+

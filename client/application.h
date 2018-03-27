@@ -28,6 +28,8 @@ public:
 
     UiApplication* getUiApplication();
 
+    bool deleteAllVersion ();
+
 private:
 
     VersionController *verCon;
