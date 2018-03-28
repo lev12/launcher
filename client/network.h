@@ -54,7 +54,7 @@ public:
     DownloaderForVersion* getVersion (QString appName, QString verName);
     DownloaderForFile* getFile       (QUrl url, QFileInfo file);
     Downloader* getFileSize          (QString appName, QString verName, QString file);
-
+    Downloader* getAppInfo           (QString appName);
 
 private:
     Config *cfg;

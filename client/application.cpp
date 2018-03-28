@@ -172,7 +172,7 @@ bool Application::fillingConfigApp()
 {
     if (net == NULL) return false;
     if (!(net->isConnected())) return false;
-
+    net->getAppInfo(*appName);
     //TODO
     return true;
 }
