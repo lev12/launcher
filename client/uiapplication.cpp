@@ -1,7 +1,7 @@
 #include "uiapplication.h"
 #include "ui_uiapplication.h"
 
-UiApplication::UiApplication(QWidget *parent) :
+UiApplication::UiApplication(QWidget *parent, QString *AppName) :
     QFrame(parent),
     ui(new Ui::UiApplication)
 {
@@ -18,7 +18,9 @@ UiApplication::UiApplication(QWidget *parent) :
     recommendedSysRequiremets = NULL;
     currentVersion = NULL;
     activePage = NULL;
+    versions = NULL;
 
+    initName (AppName);
 }
 
 UiApplication::~UiApplication()
@@ -26,60 +28,118 @@ UiApplication::~UiApplication()
     delete ui;
 }
 
+QString *UiApplication::getCurrentVersion()
+{
+    return currentVersion;
+}
+
+
+//init
+
 bool UiApplication::initName(QString *name)
 {
     appName = name;
     return true;
 }
 
-bool UiApplication::initIcon(QIcon *icon)
+bool UiApplication::initIcon()
 {
-    //TODO
-    return true;
-}
-
-bool UiApplication::initSupportLanguage(QStringList *Language)
-{
-    language = Language;
+    appIcon = new QIcon ();
 
     return true;
 }
 
-bool UiApplication::initPlatforms(QList<Platform> *Platforms)
+bool UiApplication::initSupportLanguage()
 {
-    platforms = Platforms;
+    language = new QStringList;
 
     return true;
 }
 
-bool UiApplication::initMinimumSystemRequirements(QString *text)
+bool UiApplication::initPlatforms()
 {
-    minSysRequiremets = text;
+    platforms = new QList<Platform>;
+
+    return true;
+}
+
+bool UiApplication::initMinimumSystemRequirements()
+{
+    minSysRequiremets = new QString;
     
     return true;
 }
-bool UiApplication::initRecommendedSystemRequirements(QString *text)
+bool UiApplication::initRecommendedSystemRequirements()
 {
-    recommendedSysRequiremets = text;
+    recommendedSysRequiremets = new QString;
     
     return true;
 }
 
-bool UiApplication::initVersionList(QStringList *versionsList)
+bool UiApplication::initVersionList()
 {
-    versions = versionsList;
+    versions = new QStringList;
+
+    return true;
+}
+
+//set
+bool UiApplication::setIcon(QIcon *icon)
+{
+    if (appIcon == NULL) initIcon();
+    *appIcon = *icon;
+
+    return true;
+}
+
+bool UiApplication::setSupportLanguage(QStringList *Language)
+{
+    if (language == NULL) initSupportLanguage();
+    *language = *Language;
+
+    return true;
+}
+
+bool UiApplication::setPlatforms(QList<Platform> *Platforms)
+{
+    if (platforms == NULL) initPlatforms();
+    *platforms = *Platforms;
+
+    return true;
+}
+
+bool UiApplication::setMinimumSystemRequirements(QString *text)
+{
+    if (minSysRequiremets == NULL) initMinimumSystemRequirements();
+    *minSysRequiremets = *text;
+
+    return true;
+}
+
+bool UiApplication::setRecommendedSystemRequirements(QString *text)
+{
+    if (recommendedSysRequiremets == NULL) initRecommendedSystemRequirements();
+    *recommendedSysRequiremets = *text;
+
+    return true;
+}
+
+bool UiApplication::setVersionList(QStringList *versionsList)
+{
+    if (versions == NULL) initVersionList();
+    *versions = *versionsList;
 
     return true;
 }
 
 void UiApplication::setCurrentVersion(QString *version)
 {
-    currentVersion = version;
+    *currentVersion = *version;
     
     return;
 }
 
-bool UiApplication::setActivePage(int i)
+bool UiApplication::setActivePage(int i) //TODO rename
 {
     renderFrame(i);
     return true;
@@ -124,12 +184,16 @@ bool UiApplication::removeActiveFrame()
 QFrame* UiApplication::createGeneralPage()
 {
     generalApplication = new UiGeneralApplication(this, appName, appIcon);
-    generalApplication->setVerListComboBox(versions);
-    generalApplication->setCurrentVersion(currentVersion);
-    generalApplication->setPlatforms(platforms);
-    generalApplication->setSupportLanguage(language);
-    generalApplication->setMinimumSystemRequirements(minSysRequiremets);
-    generalApplication->setRecommendedSystemRequirements(recommendedSysRequiremets);
+    if (versions != NULL)
+    {
+        generalApplication->setVerListComboBox(versions);
+        generalApplication->setCurrentVersion(currentVersion);
+        generalApplication->setPlatforms(platforms);
+        generalApplication->setSupportLanguage(language);
+        generalApplication->setMinimumSystemRequirements(minSysRequiremets);
+        generalApplication->setRecommendedSystemRequirements(recommendedSysRequiremets);
+    }
+
     return generalApplication;
 }
 

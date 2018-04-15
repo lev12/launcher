@@ -12,7 +12,6 @@
 class Config
 {
 private:
-    bool empty;
     int countLine = 10;
     QFile *configFile;
 

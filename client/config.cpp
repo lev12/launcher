@@ -8,13 +8,11 @@ Config::Config(QString path)
    if (!QFile::exists(path))
    {
        create(path);
-       empty = true;
    }
    else
    {
        configFile = new QFile (path);
        raedFile();
-       empty = false;
    }
 }
 
@@ -43,36 +41,33 @@ bool Config::raedFile()
 
     QStringList configLines = QString(configFile->readAll()).split("\n");
 
-    //if (configLines.length() > 1)
+
+    for (int i=0; i < configLines.length(); i++)
     {
-        qDebug () << "545454564asssddddddd";
-        for (int i=0; i < configLines.length(); i++)
+        if (QString(configLines.at(i)).length() > 2)
         {
-            if (QString(configLines.at(i)).length() > 2)
+            QStringList tempConfigLine = QString(configLines.at(i)).split("=");
+
+            if (tempConfigLine.length() == 2)
             {
-                qDebug () << "asssddddddd";
-                QStringList tempConfigLine = QString(configLines.at(i)).split("=");
-
-                if (tempConfigLine.length() == 2)
+                QString cfgKey = tempConfigLine.at(0);
+                QString cfgValue = tempConfigLine.at(1);
+                if (cfgKey.contains(" "))
                 {
-                    QString cfgKey = tempConfigLine.at(0);
-                    QString cfgValue = tempConfigLine.at(1);
-                    if (cfgKey.contains(" "))
-                    {
-                        cfgKey.remove(" ");
-                    }
-                    if (cfgValue.contains(" "))
-                    {
-                        cfgValue.remove(" ");
-                    }
-
-                    qDebug () << cfgKey;
-                    configKeyName->operator <<(cfgKey);
-                    configKeyValue->operator <<(cfgValue);
+                    cfgKey.remove(" ");
                 }
+                if (cfgValue.contains(" "))
+                {
+                    cfgValue.remove(" ");
+                }
+
+                qDebug () << cfgKey;
+                configKeyName->operator <<(cfgKey);
+                configKeyValue->operator <<(cfgValue);
             }
         }
     }
+
 
     configFile->flush();
     configFile->close();
@@ -81,7 +76,6 @@ bool Config::raedFile()
 
 bool Config::save()
 {
-    empty = false;
     configFile->remove();
     if (!configFile->open(QFile::WriteOnly | QFile::Text))
     {
@@ -97,31 +91,6 @@ bool Config::save()
         qDebug () << line;
         configFile->write(line.toLocal8Bit());
     }
-
-    /*QTextStream stream(&cFile);
-
-    for (int i(0); i < countLine*2; i++)
-    {
-        int tempI = 0;
-        if (i%2 == 0)
-        {
-            if (i != 0)
-            {
-                tempI = qFloor(i/2);
-            }
-            QString temp = name->at(tempI);
-            stream << temp << " ";
-        }
-        else
-        {
-            if (i != 0)
-            {
-                tempI = i/2;
-            }
-            QString temp = argumet->at(tempI);
-            stream << temp << "\n";
-        }
-    }*/
 
     configFile->flush();
     configFile->close();
@@ -150,7 +119,7 @@ QStringList Config::get(QString parametr)
 
 bool Config::set(QString parametr, QString value)
 {
-    int number = -1;
+    /*int number = -1;
     for (int i(0); i < configKeyName->count(); i++)
     {
         if (parametr == configKeyName->at(i))
@@ -161,12 +130,22 @@ bool Config::set(QString parametr, QString value)
     }
     if (number == -1) return false;
 
-    configKeyValue->replace(number, value);
+    configKeyValue->replace(number, value);*/
+
+    configKeyName->push_back(parametr);
+    configKeyValue->push_back(value);
 
     return true;
 }
 
 bool Config::isEmpty()
 {
-    return empty;
+    if (configKeyName->length() == 0)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }

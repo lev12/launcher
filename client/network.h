@@ -28,7 +28,6 @@
 #include "globalVariable.h"
 #include "log.h"
 #include "config.h"
-#include "version.h"
 #include "downloader.h"
 #include "downloaderForFile.h"
 #include "downloaderForVersion.h"
@@ -54,7 +53,7 @@ public:
     DownloaderForVersion* getVersion (QString appName, QString verName);
     DownloaderForFile* getFile       (QUrl url, QFileInfo file);
     Downloader* getFileSize          (QString appName, QString verName, QString file);
-    Downloader* getAppInfo           (QString appName);
+    Downloader* getVerInfo           (QString appName, QString verName);
 
 private:
     Config *cfg;

@@ -27,6 +27,7 @@ public:
     Application(QString path, Network *network);
 
     UiApplication* getUiApplication();
+    bool deleteUiApplication ();
 
     bool deleteAllVersion ();
 
@@ -40,11 +41,7 @@ private:
     QString *appName;
     QIcon *appIcon;
     QString *appPath;
-    QStringList *appSupportLanguage;
-    QList <Platform> *appSupportPlatform;
-    QString *appRecommendedSystemRequirements;
-    QString *appMinimumSystemRequirements;
-    QString *actualVersion;
+
 
     bool initAppPath (QString path);
     bool initVerCon ();
@@ -53,45 +50,10 @@ private:
     bool initAppIcon ();
     bool initUiApp ();
     bool initConfig ();
-    bool initSupportLanguage ();
-    bool initSupportPlatform ();
-    bool initSystemRequirements ();
-    bool initActualVersion ();
 
+    bool setLastCurrentVersionOfConfig (QString *verName);
     bool fillingConfigApp();
     QList<Platform> strToPlatform (QStringList platformStrList);
-    /*appInfo app;
-    QComboBox *comboBox;
-    QPushButton *startButton;
-    QHBoxLayout *pbHb;
-    QProgressBar *progressBar;
-    Network *network;
-    VersionManager *versionmanager;
-    VersionController *verContaoller;
-
-    bool showVersionManager;
-    QHBoxLayout *VMHB;
-
-    QStringList versionsNetwork;
-
-    QStringList sortVersions (QStringList versions);
-public slots:
-    void connectServer ();
-    void listVersion ();
-    void endDownloadFile ();
-    void open();
-    void updateButton();
-    void updateDownload();
-    void removeVersionManager();
-    void deleteVersionVersionManager();
-    void downloadVersionVersionManager();
-
-signals:
-    void getListVersions ();
-    void downloadVersion ();
-
-    void activeButton();
-    void deactiveButton();*/
 };
 
 #endif // APPLICATION_H

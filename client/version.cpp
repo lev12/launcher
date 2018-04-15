@@ -1,6 +1,6 @@
 #include "version.h"
 
-Version::Version()
+Version::Version(QString AppName, Network *network)
 {
     verNumber = NULL;
     verType = NULL;
@@ -9,6 +9,14 @@ Version::Version()
     verFolder = NULL;
     verConfig = NULL;
     verFileList = NULL;
+    verSupportPlatform = NULL;
+    verSupportLanguge = NULL;
+    verRecSysReq = NULL;
+    verMinSysReq = NULL;
+    net = NULL;
+
+    initAppName (AppName);
+    initNetwork(network);
 }
 
 Version::~Version()
@@ -18,31 +26,87 @@ Version::~Version()
     delete verFileList;
 }
 
+//inti version
 bool Version::initInstallVersion(QString pathToFolderWithVesrions)
 {
+    if (!(checkVersion(QFileInfo(pathToFolderWithVesrions))))
+    {
+        return false;
+    }
+
     initVerIsInstall(true);
     initVerFolder(pathToFolderWithVesrions);
     initConfig(pathToFolderWithVesrions);
+    initVerNumberAndTypeInNoInstall(verFolder->dirName());
+
     fillingFileList();
-    fillingOfConfig();
+    if (verConfig->isEmpty())
+    {
+        requestInfoVer ();
+    }
+    else
+    {
+        initVerName ();
+        initStartedFile ();
+        initVerSupportPlatform ();
+        initVerSupportLanguge ();
+        initVerRecSysReq ();
+        initVerMinSysReq ();
+    }
+    return true;
 }
 
 bool Version::initNoIntallVersion(QString verName)
 {
     initVerIsInstall(false);
-    initVerNumberAndType(verName);
+    initVerNumberAndTypeInNoInstall(verName);
+    return true;
 }
 
-bool Version::initVerIsInstall(bool VerIsInstall)
+bool Version::installVersion()
 {
-    verIsInstall = &VerIsInstall;
     return true;
+}
+
+//init var
+bool Version::initAppName(QString AppName)
+{
+    appName = new QString();
+    *appName = AppName;
+    return true;
+}
+
+bool Version::initVerNumberAndTypeInNoInstall (QString verName)
+{
+    QStringList lstVersionName = verName.split(" ");
+    if (lstVersionName.length() < 2)
+    {
+        return false;
+    }
+
+    bool isConvertToInt;
+    verNumber = new int;
+    *verNumber = lstVersionName.at(1).toInt(&isConvertToInt);
+    if (!isConvertToInt)
+    {
+        return false;
+    }
+    verType = new VersionType;
+    *verType = stringToVersionType(QString(lstVersionName.at(0)));
+    return true;
+}
+
+void Version::initVerIsInstall(bool VerIsInstall)
+{
+    verIsInstall = new bool;
+    *verIsInstall = VerIsInstall;
 }
 
 bool Version::initVerFolder(QString pathToFolderWithVesrions)
 {
     if (!(QFileInfo(pathToFolderWithVesrions).isDir()))
     {
+        //TODO
         return false;
     }
 
@@ -50,31 +114,131 @@ bool Version::initVerFolder(QString pathToFolderWithVesrions)
     return true;
 }
 
-bool Version::initStartedFile(QString startFile)
-{
-    verStartedFile = new QFileInfo (startFile);
-    return true;
-}
-
 bool Version::initConfig(QString pathToFolderWithVesrions)
 {
     QString pathToConfig = pathToFolderWithVesrions;
     pathToConfig.append("/version_config.cfg");
+    if (!(QFile::exists(pathToConfig)))
+    {
+        return false;
+    }
     verConfig = new Config (pathToConfig);
 
     return true;
 }
 
-bool Version::initVerNumberAndType (QString verName)
+bool Version::initNetwork(Network *network)
 {
-    QStringList lstVersionName = verName.split(" ");
-
-    *verNumber = lstVersionName.at(1).toInt();
-
-    *verType = stringToVersionType(QString(lstVersionName.at(0)));
+    if (network == NULL) return false;
+    net = network;
     return true;
 }
 
+//init read from config
+bool Version::initVerName()
+{
+    verType = new VersionType;
+    *verType = stringToVersionType (verConfig->get("Version_Type").at(0));
+
+    verNumber = new int;
+    *verNumber = verConfig->get("Version_Number").at(0).toInt();
+
+    return true;
+}
+
+bool Version::initStartedFile()
+{
+    QString pathToStartFile = verFolder->absolutePath();
+    pathToStartFile.append("/");
+    pathToStartFile.append(verConfig->get("Start_File").at(0));
+
+    verStartedFile = new QFileInfo (pathToStartFile);
+    return true;
+}
+
+bool Version::initVerSupportPlatform()
+{
+    if (verConfig == NULL) return false;
+
+    QStringList platform = verConfig->get("Platform");
+    if (platform.at(0) == "false")
+    {
+        return false;
+    }
+
+    *verSupportPlatform = strToPlatform(platform);
+
+    return true;
+}
+
+bool Version::initVerSupportLanguge()
+{
+    if (verConfig == NULL) return false;
+
+    return true;
+}
+
+bool Version::initVerRecSysReq()
+{
+    if (verConfig == NULL) return false;
+
+    return true;
+}
+
+bool Version::initVerMinSysReq()
+{
+    if (verConfig == NULL) return false;
+
+    return true;
+}
+
+//request on server
+
+bool Version::requestInfoVer()
+{
+    if (net == NULL) return false;
+
+    QString verName = versionTypeToString (*verType);
+    verName.append("_");
+    verName.append(*verNumber);
+    Downloader *dl = net->getVerInfo(*appName, verName);
+    QObject::connect(dl, Downloader::replyServer, this, Version::responseInfoVerAndFillingConfig);
+
+    return true;
+}
+
+void Version::responseInfoVerAndFillingConfig(QStringList *response)
+{
+    if (response->length() == 0) return;
+
+    qDebug () << response;
+
+    QStringList listKey;
+    QStringList listValue;
+
+    for (int i (0); i < response->length(); i++)
+    {
+        if (i%2 == 0)
+        {
+            listKey.operator <<(response->at(i));
+        }
+        else
+        {
+            listValue.operator <<(response->at(i));
+        }
+    }
+
+    for (int i(0); i < listKey.length();i++)
+    {
+        verConfig->set(listKey.at(i),listValue.at(i));
+    }
+    verConfig->save();
+
+    return;
+}
+
+
+//get
 QString Version::getFullName()
 {
     QString name;
@@ -133,6 +297,30 @@ int Version::getVersionSize()
 QList <QFileInfo> *Version::getFileList()
 {
     return verFileList;
+}
+
+QStringList Version::getSupportLanguage()
+{
+    if (verSupportLanguge == NULL) initVerSupportLanguge ();
+    return *verSupportLanguge;
+}
+
+QList<Platform> Version::getSupportPlatform()
+{
+    if (verSupportPlatform == NULL) initVerSupportPlatform ();
+    return *verSupportPlatform;
+}
+
+QString Version::getRecommendedSystemRequirements()
+{
+    if (verRecSysReq == NULL) initVerRecSysReq ();
+    return *verRecSysReq;
+}
+
+QString Version::getMinimumSystemRequirements()
+{
+    if (verMinSysReq == NULL) initVerMinSysReq ();
+    return *verMinSysReq;
 }
 
 QString Version::getPathStartedFile()
@@ -207,12 +395,14 @@ bool Version::fillingOfConfig()
         return false;
     }
 
+
     verNumber = new int;
     *verNumber = (verConfig->get("Version_Number").at(0).toInt());
     VersionType verTypeTemp = stringToVersionType(verConfig->get("Version_Type").at(0));
     verType = &verTypeTemp;
     QFileInfo verStartedFileTemp (verConfig->get("Start_File").at(0));
     verStartedFile = &verStartedFileTemp;
+    return true;
 }
 
 int Version::removeFolder(QDir &dir)
@@ -242,6 +432,49 @@ int Version::removeFolder(QDir &dir)
       res = 1;
     }
     return res;
+}
+
+bool Version::checkVersion(QFileInfo path)
+{
+    if (path.isFile())
+    {
+        return false;
+    }
+
+    QString pathToConfigVersion = path.absoluteFilePath();
+    pathToConfigVersion.append("/version_config.cfg");
+    QFile confIni (pathToConfigVersion);
+    if (!(confIni.open(QFile::ReadOnly | QFile::Text)))
+    {
+        return false;
+    }
+    return true;
+
+    /*QStringList data;
+    Config cfg (pathToConfigVersion);
+    data.operator <<(cfg.get("Version_Type"));
+    data.operator <<(cfg.get("Version_Number"));
+    data.operator <<(cfg.get("Start_File"));
+
+    if (data.at(0) == "pre-alpha"
+     || data.at(0) == "alpha"
+     || data.at(0) == "beta"
+     || data.at(0) == "release")
+    {
+        if (QString(data.at(1)).toInt() != 0)
+        {
+            QString pathToExe = path.absoluteFilePath();
+            pathToExe.append("/");
+            pathToExe.append(data.at(2));
+            QFile exe (pathToExe);
+            if (exe.exists())
+            {
+                return true;
+            }
+        }
+    }
+
+    return false;*/
 }
 
 QString Version::versionTypeToString (VersionType type)
@@ -297,45 +530,17 @@ VersionType Version::stringToVersionType (QString str)
     return type;
 }
 
-bool Version::checkVersion(QFileInfo path)
+QList<Platform> Version::strToPlatform (QStringList platformStrList)
 {
-    if (path.isFile())
+    QList<Platform> resault;
+    foreach (QString tempList, platformStrList)
     {
-        return false;
+        if (tempList == "PC") resault << PC;
+        else if (tempList == "MAC") resault << MAC;
+        else if (tempList == "Android") resault << Android;
+        else if (tempList == "IOS") resault << IOS;
+        else if (tempList == "XBox") resault << XBox;
+        else if (tempList == "PlayStation") resault << PlayStation;
     }
-
-    QString pathToConfigVersion = path.absoluteFilePath();
-    pathToConfigVersion.append("/data version.ini");
-    QFile confIni (pathToConfigVersion);
-    if (!(confIni.open(QFile::ReadOnly | QFile::Text)))
-    {
-        return false;
-    }
-
-    QStringList data;
-    Config cfg (pathToConfigVersion);
-    data.operator <<(cfg.get("Version_Type"));
-    data.operator <<(cfg.get("Version_Number"));
-    data.operator <<(cfg.get("Start_File"));
-
-    if (data.at(0) == "pre-alpha"
-     || data.at(0) == "alpha"
-     || data.at(0) == "beta"
-     || data.at(0) == "release")
-    {
-        if (QString(data.at(1)).toInt() != 0)
-        {
-            QString pathToExe = path.absoluteFilePath();
-            pathToExe.append("/");
-            pathToExe.append(data.at(2));
-            QFile exe (pathToExe);
-            if (exe.exists())
-            {
-                return true;
-            }
-        }
-    }
-
-    return false;
+    return resault;
 }
-

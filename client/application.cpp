@@ -10,21 +10,14 @@ Application::Application(QString path, Network *network)
     appName = NULL;
     appIcon  = NULL;
     appPath = NULL;
-    appSupportLanguage = NULL;
-    appSupportPlatform = NULL;
-    appRecommendedSystemRequirements = NULL;
-    appMinimumSystemRequirements = NULL;
-    actualVersion = NULL;
 
     initAppPath(path);
     initNet (network);
     initConfig ();
     initAppName();
     initVerCon ();
-    initSupportLanguage ();
-    initSupportPlatform ();
-    initSystemRequirements ();
-    initActualVersion();
+
+    verCon->setLastCurrentVesion(cfgApp->get("last_current_version").at(0));
 }
 
 bool Application::initAppName()
@@ -62,24 +55,34 @@ bool Application::initAppIcon()
 
 bool Application::initVerCon()
 {
-    if (net == NULL || appPath == NULL) return false;
+    if (net == NULL || appPath == NULL || appName == NULL) return false;
 
-    verCon = new VersionController(*appPath, net);
+    verCon = new VersionController(appPath, net, appName);
     return true;
 }
 
 bool Application::initUiApp()
 {
     if (verCon == NULL) return false;
-    uiApp = new UiApplication ();
-    uiApp->initName(appName);
-    uiApp->initSupportLanguage(appSupportLanguage);
-    uiApp->initIcon(appIcon);
-    uiApp->initPlatforms(appSupportPlatform);
-    uiApp->initRecommendedSystemRequirements(appRecommendedSystemRequirements);
-    uiApp->initMinimumSystemRequirements(appMinimumSystemRequirements);
-    uiApp->initVersionList(verCon->getFullListVersionStrList());
-    uiApp->setCurrentVersion(actualVersion);
+    uiApp = new UiApplication (NULL, appName);
+    Version *actualVersion = verCon->getLsatCurrentVersion();
+    if  (actualVersion != NULL)
+    {
+        uiApp->setIcon(appIcon);
+        QStringList supportLanguage = actualVersion->getSupportLanguage();
+        uiApp->setSupportLanguage(&supportLanguage);
+        QList<Platform> supportPlatform = actualVersion->getSupportPlatform();
+        uiApp->setPlatforms(&supportPlatform);
+        QString recSysReq = actualVersion->getRecommendedSystemRequirements();
+        uiApp->setRecommendedSystemRequirements(&recSysReq);
+        QString minSysReq = actualVersion->getMinimumSystemRequirements();
+        uiApp->setMinimumSystemRequirements(&minSysReq);
+        uiApp->setVersionList(verCon->getFullListVersionStrList());
+        QString currenVer = actualVersion->getFullName();
+        uiApp->setCurrentVersion(&currenVer);
+    }
+
+
     return true;
 }
 
@@ -106,57 +109,29 @@ bool Application::initConfig()
     return true;
 }
 
-bool Application::initSupportLanguage()
+bool Application::setLastCurrentVersionOfConfig(QString *verName)
 {
     if (cfgApp == NULL) return false;
-
-    QList <QString> lang = cfgApp->get("languages");
-
-    appSupportLanguage = new QStringList (lang);
+    cfgApp->set("last_current_version", *verName);
+    cfgApp->save();
 
     return true;
 }
 
-bool Application::initSupportPlatform()
-{
-    if (cfgApp == NULL) return false;
-
-    QStringList platformList = cfgApp->get("platforms");
-    appSupportPlatform = new QList<Platform> (strToPlatform(platformList));
-    return true;
-}
-
-bool Application::initSystemRequirements()
-{
-    if (cfgApp == NULL) return false;
-
-    QString recSysReq = cfgApp->get("RecommendedSystemRequirements").at(0);
-    QString minSysReq = cfgApp->get("MinimumSystemRequirements").at(0);
-    if (recSysReq == "false" || minSysReq == "false")
-    {
-        if  (!(fillingConfigApp ()))
-        {
-            // TODO create error signal
-            qDebug () << "application error filling config in sys req";
-        }
-    }
-    appRecommendedSystemRequirements = new QString(recSysReq);
-    appMinimumSystemRequirements = new QString (minSysReq);
-
-    return true;
-}
-
-bool Application::initActualVersion()
-{
-    actualVersion = new QString ("alpha_45");
-    return true;
-}
 
 UiApplication* Application::getUiApplication()
 {
     if (uiApp == NULL) initUiApp();
     uiApp->setActivePage(1); //TODO read cfg
     return uiApp;
+}
+
+bool Application::deleteUiApplication()
+{
+    if (uiApp != NULL) return false;
+    setLastCurrentVersionOfConfig (uiApp->getCurrentVersion());
+    delete uiApp;
+    return true;
 }
 
 bool Application::deleteAllVersion()
@@ -172,7 +147,6 @@ bool Application::fillingConfigApp()
 {
     if (net == NULL) return false;
     if (!(net->isConnected())) return false;
-    net->getAppInfo(*appName);
     //TODO
     return true;
 }

@@ -5,18 +5,21 @@
 #include <QString>
 #include <QDir>
 #include <QFile>
+#include <QObject>
 
 #include "globalVariable.h"
 #include "config.h"
+#include "network.h"
 
 
-class Version
+class Version : public QObject
 {
+    Q_OBJECT
 public:
     //verName =  typeVersion space versionNumber
 
 
-    Version();
+    Version(QString AppName, Network *network);
 
     ~Version();
     QString getFullName();
@@ -28,15 +31,21 @@ public:
     QString getPathStartedFile();
     int getVersionSize();
     QList<QFileInfo> *getFileList();
+    QStringList getSupportLanguage();
+    QList <Platform> getSupportPlatform ();
+    QString getRecommendedSystemRequirements ();
+    QString getMinimumSystemRequirements ();
+
     bool verDeleteFile();
 
     bool initInstallVersion(QString pathToFolderWithVesrions);
     bool initNoIntallVersion(QString verName);
-    bool installVersion(QString pathToFolderWithVesrions, QString verName, QString startedFileName);
+    bool installVersion();
 
     static bool checkVersion (QFileInfo path);
 
 private:
+    QString *appName;
     int *verNumber;
     VersionType *verType;
     bool *verIsInstall;
@@ -44,20 +53,45 @@ private:
     QDir *verFolder;
     Config *verConfig;
     QList <QFileInfo> *verFileList;
+    Network *net;
 
-    bool initStartedFile(QString startFile);
+    QList <Platform> *verSupportPlatform;
+    QStringList *verSupportLanguge;
+    QString *verRecSysReq;
+    QString *verMinSysReq;
+
+    //and for no install version
+    bool initAppName (QString AppName);
+    bool initVerNumberAndTypeInNoInstall(QString verName);
+
+    //no read from config
     bool initConfig(QString pathToFolderWithVesrions);
     bool initVerFolder(QString pathToFolderWithVesrions);
-    bool initVerIsInstall(bool VerIsInstall);
-    bool initVerNumberAndType(QString verName);
+    void initVerIsInstall(bool VerIsInstall);
+    bool initNetwork (Network *network);
+
+    //read from config
+    bool initVerName ();
+    bool initStartedFile ();
+    bool initVerSupportPlatform ();
+    bool initVerSupportLanguge ();
+    bool initVerRecSysReq ();
+    bool initVerMinSysReq ();
+
+    bool requestInfoVer ();
 
     bool fillingFileList();
     bool fillingFileListOfDir(QDir &dir);
     bool fillingConfig();
     bool fillingOfConfig(); // fill verNumber,verType,verStartedFile of config
+
     int removeFolder (QDir &dir);
-    QString versionTypeToString (VersionType type);
-    VersionType stringToVersionType (QString str);
+    static QString versionTypeToString (VersionType type);
+    static VersionType stringToVersionType (QString str);
+    static QList<Platform> strToPlatform (QStringList platformStrList);
+
+private slots:
+    void responseInfoVerAndFillingConfig (QStringList *response);
 };
 
 #endif // VERSION_H

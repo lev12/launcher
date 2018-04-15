@@ -120,13 +120,13 @@ Downloader* Network::getFileSize (QString appName, QString verName, QString file
     return NULL;
 }
 
-Downloader *Network::getAppInfo(QString appName)
+Downloader *Network::getVerInfo(QString appName, QString verName)
 {
     if (*isConnect)
     {
-        Downloader *getAppInfo = new Downloader (appName,0);
-        getAppInfo->requestApplicationInfo();
-        return getAppInfo;
+        Downloader *getVerInfo = new Downloader (appName,0);
+        getVerInfo->requestVersionInfo();
+        return getVerInfo;
     }
     return NULL;
 }

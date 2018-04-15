@@ -23,7 +23,7 @@ public:
     bool requestFileListVersion();
     bool requestSizeVersion();
     bool requestFileSize();
-    bool requestApplicationInfo();
+    bool requestVersionInfo();
 
 private:
     enum DownloadType
@@ -35,7 +35,7 @@ private:
         FileListVersion,
         SizeVersion,
         FileSize,
-        ApplicationInfo
+        VersionInfo
     };
 
     QNetworkAccessManager *manager;
@@ -56,7 +56,7 @@ private:
     bool parseFileListVersion (QByteArray data);
     bool parseSizeVersion     (QByteArray data);
     bool parseFileSize        (QByteArray data);
-    bool parseApplicationInfo (QByteArray data);
+    bool parseVersionInfo (QByteArray data);
 private slots:
     void readServer(QNetworkReply *reply);
 signals:

@@ -192,13 +192,15 @@ bool Downloader::requestFileSize()
     return true;
 }
 
-bool Downloader::requestApplicationInfo()
+bool Downloader::requestVersionInfo()
 {
     QString requestUrl = apiHost;
-    requestUrl.append("app.getAppInfo?");
+    requestUrl.append("app.getVersionInfo?");
     requestUrl.append("app=");
-    requestUrl.append(appName);
-    downloaderType = ApplicationInfo;
+    requestUrl.append("Electrical_Simulator");
+    requestUrl.append("&version=");
+    requestUrl.append("alpha_45");
+    downloaderType = VersionInfo;
 
     if (!sendRequest(requestUrl))
     {
@@ -234,8 +236,8 @@ void Downloader::readServer(QNetworkReply *reply)
     case FileSize:
         parseFileSize (data);
         break;
-    case ApplicationInfo:
-        parseApplicationInfo(data);
+    case VersionInfo:
+        parseVersionInfo(data);
         break;
     default:
         QString send = "wrongCmd(";
@@ -388,19 +390,19 @@ bool Downloader::parseFileSize(QByteArray data)
     return false;
 }
 
-bool Downloader::parseApplicationInfo(QByteArray data)
+bool Downloader::parseVersionInfo(QByteArray data)
 {
     QString data_str = data;
     data_str = deleteForRx (data_str);
 
-    QRegExp rx ("response:appInfo:(.+)");
+    QRegExp rx ("response:info:(.+)");
     if (rx.indexIn(data_str) != -1)
     {
         QStringList resp = QString(rx.cap(1)).split(",");
         response = new QStringList ();
 
-        qDebug () << response;
-        replyServer(response);
+        qDebug () << resp;
+        replyServer(&resp);
         return true;
     }
     return false;

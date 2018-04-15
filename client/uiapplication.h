@@ -15,16 +15,17 @@ class UiApplication : public QFrame
     Q_OBJECT
 
 public:
-    UiApplication(QWidget *parent = 0);
+    UiApplication(QWidget *parent = 0, QString *AppName = NULL);
     ~UiApplication();
 
-    bool initName(QString *name);
-    bool initIcon(QIcon *icon);
-    bool initSupportLanguage (QStringList *Language);
-    bool initPlatforms(QList<Platform> *Platforms);
-    bool initMinimumSystemRequirements(QString *text);
-    bool initRecommendedSystemRequirements(QString *text);
-    bool initVersionList(QStringList *versionsList);
+    QString *getCurrentVersion ();
+
+    bool setIcon (QIcon *icon);
+    bool setSupportLanguage (QStringList *Language);
+    bool setPlatforms(QList<Platform> *Platforms);
+    bool setMinimumSystemRequirements(QString *text);
+    bool setRecommendedSystemRequirements(QString *text);
+    bool setVersionList(QStringList *versionsList);
     void setCurrentVersion(QString *version);
 
     bool setActivePage (int i);
@@ -43,6 +44,15 @@ private:
     QString *recommendedSysRequiremets;
     QString *currentVersion;
     QStringList *versions;
+
+    bool initName(QString *name);
+    bool initIcon();
+    bool initSupportLanguage ();
+    bool initPlatforms();
+    bool initMinimumSystemRequirements();
+    bool initRecommendedSystemRequirements();
+    bool initVersionList();
+
 
     QFrame *createGeneralPage();
 
