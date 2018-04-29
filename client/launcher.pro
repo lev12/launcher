@@ -16,79 +16,71 @@ CONFIG += c++11
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    settings.cpp \
-    background.cpp \
-    menu.cpp \
-    general.cpp \
-    versionmanager.cpp \
-    settingsmenu.cpp \
-    sendmassage.cpp \
-    updatelauncher.cpp \
-    dialogupdatelauncher.cpp \
-    uploader.cpp \
-    menuGeneral.cpp \
+    ui/settings.cpp \
+    ui/menu.cpp \
+    ui/general.cpp \
+    ui/versionmanager.cpp \
+    ui/settingsmenu.cpp \
+    ui/sendmassage.cpp \
+    ui/updatelauncher.cpp \
+    ui/dialogUpdateLauncher.cpp \
+    network/uploader.cpp \
+    ui/menuGeneral.cpp \
     application.cpp \
     config.cpp \
-    downloader.cpp \
-    downloaderForFile.cpp \
-    downloaderForVersion.cpp \
-    electricalAssistant.cpp \
+    network/downloader.cpp \
+    network/downloaderForFile.cpp \
+    network/downloaderForVersion.cpp \
     log.cpp \
-    network.cpp \
+    network/network.cpp \
     version.cpp \
     versionController.cpp \
     electricalsimulator.cpp \
-    uielectricalsimulator.cpp \
-    uiapplication.cpp \
-    menuvertical.cpp \
-    uigeneralapplication.cpp \
+    ui/uiapplication.cpp \
+    ui/menuvertical.cpp \
+    ui/uigeneralapplication.cpp \
     applicationcontroller.cpp
 
 HEADERS  += mainwindow.h \
-    settings.h \
-    background.h \
-    menu.h \
-    general.h \
-    versionmanager.h \
-    settingsmenu.h \
-    sendmassage.h \
-    updatelauncher.h \
-    dialogupdatelauncher.h \
-    uploader.h \
-    menuGeneral.h \
+    ui/settings.h \
+    ui/menu.h \
+    ui/general.h \
+    ui/versionmanager.h \
+    ui/settingsmenu.h \
+    ui/sendmassage.h \
+    ui/updatelauncher.h \
+    ui/dialogupdatelauncher.h \
+    network/uploader.h \
+    ui/menuGeneral.h \
     globalVariable.h \
     log.h \
-    network.h \
+    network/network.h \
     application.h \
     config.h \
-    downloader.h \
-    downloaderForFile.h \
-    downloaderForVersion.h \
-    electricalAssistant.h \
+    network/downloader.h \
+    network/downloaderForFile.h \
+    network/downloaderForVersion.h \
     version.h \
     versionController.h \
     electricalsimulator.h \
-    uielectricalsimulator.h \
-    uiapplication.h \
-    menuvertical.h \
-    uigeneralapplication.h \
+    ui/uiapplication.h \
+    ui/menuvertical.h \
+    ui/uigeneralapplication.h \
     applicationcontroller.h
 
 
 FORMS    += mainwindow.ui \
-    settings.ui \
-    menu.ui \
-    general.ui \
-    versionmanager.ui \
-    settingsmenu.ui \
-    sendmassage.ui \
-    updatelauncher.ui \
-    dialogupdatelauncher.ui \
-    menuGeneral.ui \
-    electricalAssistant.ui \
-    uielectricalsimulator.ui \
-    uiapplication.ui \
-    menuvertical.ui \
-    uigeneralapplication.ui
+    ui/settings.ui \
+    ui/menu.ui \
+    ui/general.ui \
+    ui/versionmanager.ui \
+    ui/settingsmenu.ui \
+    ui/sendmassage.ui \
+    ui/updatelauncher.ui \
+    ui/dialogUpdateLauncher.ui \
+    ui/menuGeneral.ui \
+    ui/uiapplication.ui \
+    ui/menuvertical.ui \
+    ui/uigeneralapplication.ui
 
-RESOURCES += rec.qrc \
+RESOURCES += rec/rec.qrc \
