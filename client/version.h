@@ -9,7 +9,7 @@
 
 #include "globalVariable.h"
 #include "config.h"
-#include "network.h"
+#include "network/network.h"
 
 
 class Version : public QObject

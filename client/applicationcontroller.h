@@ -8,7 +8,7 @@
 #include <QFile>
 
 #include "application.h"
-#include "network.h"
+#include "network/network.h"
 
 class ApplicationController : public QObject
 {

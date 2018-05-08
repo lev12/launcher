@@ -8,7 +8,7 @@
 
 #include "version.h"
 #include "globalVariable.h"
-#include "network.h"
+#include "network/network.h"
 
 class VersionController : public QObject
 {

@@ -15,13 +15,11 @@
 
 #include "log.h"
 #include "config.h"
-#include "network.h"
-#include "menu.h"
-#include "electricalAssistant.h"
-#include "electricalSimulator.h"
-#include "general.h"
-#include "dialogupdatelauncher.h"
-#include "menuGeneral.h"
+#include "network/network.h"
+#include "ui/menu.h"
+#include "ui/general.h"
+#include "ui/dialogupdatelauncher.h"
+#include "ui/menuGeneral.h"
 #include "applicationcontroller.h"
 
 namespace Ui {

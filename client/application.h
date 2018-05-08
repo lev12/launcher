@@ -30,7 +30,7 @@ public:
     bool deleteUiApplication ();
 
     bool deleteAllVersion ();
-
+    bool static checkApplication();
 private:
 
     VersionController *verCon;
