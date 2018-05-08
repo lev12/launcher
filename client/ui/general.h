@@ -4,7 +4,6 @@
 #include <QFrame>
 #include "settingsmenu.h"
 #include "globalVariable.h"
-#include "background.h"
 #include "menu.h"
 
 namespace Ui {

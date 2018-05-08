@@ -16,6 +16,7 @@ private:
     QFile *configFile;
 
 public:
+    const QString errorResponse = "false";
 
     QStringList *configKeyName;
     QStringList *configKeyValue;

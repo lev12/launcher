@@ -2,7 +2,10 @@
 
 Network::Network(Log *plog)
 {
-    log = plog;
+    if (plog != NULL)
+    {
+        log = plog;
+    }
     cfg = new Config();
     netConfig = new QNetworkConfigurationManager ();
 

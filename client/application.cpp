@@ -1,16 +1,7 @@
 #include "application.h"
-#include <QTime>
 
 Application::Application(QString path, Network *network)
 {
-    verCon = NULL;
-    uiApp = NULL;
-    net = NULL;
-    cfgApp = NULL;
-    appName = NULL;
-    appIcon  = NULL;
-    appPath = NULL;
-
     initAppPath(path);
     initNet (network);
     initConfig ();
@@ -20,42 +11,54 @@ Application::Application(QString path, Network *network)
     verCon->setLastCurrentVesion(cfgApp->get("last_current_version").at(0));
 }
 
-bool Application::initAppName()
-{
-    if (cfgApp == NULL) return false;
-
-    appName = new QString (cfgApp->get("name").at(0));
-    return true;
-}
-
 bool Application::initNet(Network *network)
 {
-    if (network == NULL) return false;
-
+    if (network == NULL)
+    {
+        net = new Network ();
+        return false;
+    }
     net = network;
     return true;
 }
 
+bool Application::initAppName()
+{
+    QString *cfgAppName = new QString (cfgApp->get("name").at(0));
+    if (*cfgAppName == cfgApp->errorResponse) return false;
+    appName = cfgAppName;
+    return true;
+}
 bool Application::initAppPath(QString path)
 {
-    if (!(QFile::exists(path))) return false;
-
+    if (!(QFile::exists(path)))
+    {
+        QString errorPath = "not found path application:";
+        errorPath.append(path);
+        throw errorPath;
+        return false;
+    }
     appPath = new QString (path);
-
     return true;
 }
 
 bool Application::initAppIcon()
 {
-    if (cfgApp == NULL) return false;
     QString iconPath = cfgApp->get("iconPath").at(0);
+    if (iconPath == cfgApp->errorResponse) return false;
+
     appIcon = new QIcon (iconPath);
     return true;
 }
 
 bool Application::initVerCon()
 {
-    if (net == NULL || appPath == NULL || appName == NULL) return false;
+    if (net->isConnected() == false || *appPath == "" || *appName == "")
+    {
+        QString nullstring = "";
+        verCon = new VersionController(&nullstring, net, &nullstring);
+        return false;
+    }
 
     verCon = new VersionController(appPath, net, appName);
     return true;

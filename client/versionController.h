@@ -31,6 +31,7 @@ public:
     bool updateVersionsList();
     bool downloadVersion(Version ver);
 
+    bool isFoundVersions ();
 private:
     QList <Version*> *versionsList;
     QFileInfo *folderWithAllVersions;

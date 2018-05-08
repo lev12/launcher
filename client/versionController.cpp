@@ -2,12 +2,32 @@
 
 VersionController::VersionController(QString *pathToFolderWithAllVersions, Network *g_net, QString *AppName)
 {
-    initAppName (AppName);
-    net = g_net;
-    initVersionController(pathToFolderWithAllVersions);
+    if (*AppName != QString("") || AppName != NULL)
+    {
+        initAppName (AppName);
+    }
 
-    fillingVersionList();
-    actualVersion = getListInsallVersion().at(0);
+    if (g_net != NULL)
+    {
+        net = g_net;
+    }
+    else
+    {
+        net = new Network();
+    }
+
+    if (*pathToFolderWithAllVersions != QString(""))
+    {
+        initVersionController(pathToFolderWithAllVersions);
+    }
+
+    if (*AppName != QString("") ||
+        *pathToFolderWithAllVersions != QString("") ||
+         g_net != NULL)
+    {
+        fillingVersionList();
+        actualVersion = getListInsallVersion().at(0);
+    }
     //fillingActualVersion();
 }
 
@@ -241,4 +261,12 @@ QList <Version*> VersionController::sortVersionList()
     return returnVersionsList;
 }
 
-
+bool VersionController::isFoundVersions()
+{
+    if (versionsList->length() > 0){
+        return true;
+    }
+    else{
+        return false;
+    }
+}

@@ -70,7 +70,6 @@ MainWindow::~MainWindow()
     cfg->save();
 
     delete cfg;
-    delete electricalsimulator;
     delete menu;
     //delete network;
     delete ui;
@@ -111,7 +110,6 @@ void MainWindow::setWidgetApp ()
 
     if (removeIndex == 1)
     {
-        delete electricalsimulator;
         //electricalsimulator = new ElectricalSimulator(network);
     }
     removeWidget = menu->showApp;

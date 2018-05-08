@@ -15,9 +15,9 @@
 #include <QDesktopServices>
 
 #include "globalVariable.h"
-#include "network.h"
+#include "network/network.h"
 #include "versionController.h"
-#include "uiapplication.h"
+#include "ui/uiapplication.h"
 #include "config.h"
 
 class Application : public QObject

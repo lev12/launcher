@@ -36,7 +36,7 @@ class Network : public QObject
 {
     Q_OBJECT
 public:
-    Network(Log *plog);
+    Network(Log *plog = NULL);
 
     bool isConnected ();
 

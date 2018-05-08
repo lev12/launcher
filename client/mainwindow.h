@@ -48,8 +48,6 @@ private:
     Network *network;
     QThread *threadNet;
     Menu *menu;
-    ElectricalAssistant *electricalassistant;
-    ElectricalSimulator *electricalsimulator;
     General *general;
     DialogUpdateLauncher *updatelauncher;
     MenuGeneral *menugeneral;
