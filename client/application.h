@@ -30,7 +30,7 @@ public:
     bool deleteUiApplication ();
 
     bool deleteAllVersion ();
-    bool static checkApplication();
+    bool static checkApplication(QString AppPath);
 private:
 
     VersionController *verCon;

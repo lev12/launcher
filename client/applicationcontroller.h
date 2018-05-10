@@ -31,7 +31,6 @@ private:
     bool initAppList ();
 
     bool fillingAppList ();
-    bool checkApplication (QString pathToFolder);
 };
 
 #endif // APPLICATIONCONTROLLER_H

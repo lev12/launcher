@@ -2,6 +2,8 @@
 
 Application::Application(QString path, Network *network)
 {
+    uiApp = NULL;
+
     initAppPath(path);
     initNet (network);
     initConfig ();
@@ -169,3 +171,27 @@ QList<Platform> Application::strToPlatform (QStringList platformStrList)
     return resault;
 }
 
+bool Application::checkApplication(QString AppPath)
+{
+    QString pathToConfig = AppPath;
+    pathToConfig.append("/app.cfg");
+    if (!(QFile::exists(pathToConfig)))
+    {
+        return false;
+    }
+
+    Config appConfig(pathToConfig);
+    QString AppName = appConfig.get("name").at(0);
+    if (AppName == appConfig.errorResponse)
+    {
+        return false;
+    }
+
+    VersionController versionController(&AppPath, NULL, &AppName);
+    if (!(versionController.isFoundVersions()))
+    {
+        return false;
+    }
+
+    return true;
+}

@@ -48,23 +48,16 @@ bool ApplicationController::fillingAppList()
     QFileInfoList appDirList = folderWithApp->entryInfoList();
     foreach (QFileInfo tempFileInfo, appDirList)
     {
-        QString tempPath = tempFileInfo.absoluteFilePath();
-        if (checkApplication(tempPath))
+        QString tempAppPath = tempFileInfo.absoluteFilePath();
+
+        if (Application::checkApplication(tempAppPath))
         {
-            Application *app = new Application (tempPath, net);
+            Application *app = new Application (tempAppPath, net);
             appList->operator <<(app);
         }
     }
 
     return true;
-}
-
-bool ApplicationController::checkApplication(QString pathToFolder)
-{
-    QString pathToConfig = pathToFolder;
-    pathToConfig.append("/app.cfg");
-    if (!(QFile::exists(pathToConfig))) return false;
-    else return true;
 }
 
 QList <Application *> *ApplicationController::getAppList()
