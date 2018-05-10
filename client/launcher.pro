@@ -39,7 +39,8 @@ SOURCES += main.cpp\
     ui/uiapplication.cpp \
     ui/menuvertical.cpp \
     ui/uigeneralapplication.cpp \
-    applicationcontroller.cpp
+    applicationcontroller.cpp \
+    ui/uiApplicationItem.cpp
 
 HEADERS  += mainwindow.h \
     ui/settings.h \
@@ -66,7 +67,8 @@ HEADERS  += mainwindow.h \
     ui/uiapplication.h \
     ui/menuvertical.h \
     ui/uigeneralapplication.h \
-    applicationcontroller.h
+    applicationcontroller.h \
+    ui/uiApplicationItem.h
 
 
 FORMS    += mainwindow.ui \
@@ -81,6 +83,7 @@ FORMS    += mainwindow.ui \
     ui/menuGeneral.ui \
     ui/uiapplication.ui \
     ui/menuvertical.ui \
-    ui/uigeneralapplication.ui
+    ui/uigeneralapplication.ui \
+    ui/uiApplicationItem.ui
 
 RESOURCES += rec/rec.qrc \
