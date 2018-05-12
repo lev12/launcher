@@ -147,7 +147,7 @@ bool DownloaderForVersion::downloadNextFile()
 {
     if (currentDonloadFile <= fileListVersion->length())
     {
-        QString urlStr (_Host);
+        QString urlStr (AdderssServer);
         urlStr.append("app/");
         urlStr.append(appName);
         urlStr.append("/");

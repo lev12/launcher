@@ -24,6 +24,7 @@
 #include <QNetworkRequest>
 #include <QNetworkReply>
 #include <QNetworkConfigurationManager>
+#include <QTcpSocket>
 
 #include "globalVariable.h"
 #include "log.h"
@@ -60,6 +61,12 @@ private:
     Log *log;
     QNetworkConfigurationManager *netConfig;
     bool *isConnect;
+    const unsigned short PortServer = 80;
+    const QString AdderssServer = "electrical-simulator.ru";
+
+    bool initConnect ();
+
+    bool pingServer (QString adderss, qint16 port);
 
 private slots:
     void setConnectState (bool state);

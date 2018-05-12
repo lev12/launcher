@@ -42,6 +42,7 @@ private:
     QStringList *fileListVersion;
     int currentDonloadFile;
     QDir *verDir;
+    const QString AdderssServer = "http://electrical-simulator.ru/api/method/";
 
 private slots:
     void replyCheckVersion(QStringList *response);

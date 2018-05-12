@@ -8,10 +8,22 @@ Network::Network(Log *plog)
     }
     cfg = new Config();
     netConfig = new QNetworkConfigurationManager ();
-
     isConnect = new bool;
+
+    initConnect();
+}
+
+bool Network::initConnect()
+{
     *isConnect = netConfig->isOnline();
     connect(netConfig, QNetworkConfigurationManager::onlineStateChanged, this, Network::setConnectState);
+
+    if (*isConnect)
+    {
+        *isConnect = pingServer(AdderssServer,PortServer);
+    }
+
+    return true;
 }
 
 bool Network::isConnected()
@@ -134,9 +146,25 @@ Downloader *Network::getVerInfo(QString appName, QString verName)
     return NULL;
 }
 
+bool Network::pingServer(QString adderss, qint16 port)
+{
+    QTcpSocket socket;
+    socket.connectToHost(adderss,port);
+    if (socket.waitForConnected())
+    {
+        return true;
+    }
+    return false;
+}
+
 void Network::setConnectState(bool state)
 {
     *isConnect = state;
+    if (state)
+    {
+        *isConnect = pingServer(AdderssServer,PortServer);
+    }
+    qDebug () << "net state:" << *isConnect;
     return;
 }
 
