@@ -43,7 +43,6 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-    Config *cfg;
     Log *log;
     Network *network;
     QThread *threadNet;

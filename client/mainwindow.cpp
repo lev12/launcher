@@ -16,7 +16,6 @@ MainWindow::MainWindow(QWidget *parent) :
     QDir dir (".//");
     dir.mkdir("data");
 
-    cfg = new Config();
     menu = new Menu ();
     network = new Network(log);
     menugeneral = new MenuGeneral();
@@ -24,9 +23,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->general->addWidget(menugeneral);
     ui->general->addWidget(appCon->getAppList()->at(0)->getUiApplication());
     //threadNet = new QThread (this);
-    if (cfg->get("log").at(0) == "sendToTheServer")
+    if (cfgLauncher.get("log").at(0) == "sendToTheServer")
     {
-        log = new Log(cfg->get("logPath").at(0));
+        log = new Log(cfgLauncher.get("logPath").at(0));
         log->head();
     }
 
@@ -44,8 +43,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     //menu->setShowWidget(cfg->get("page").toInt());
 
-    this->setGeometry(100,100,cfg->get("width").at(0).toInt(),cfg->get("height").at(0).toInt());
-    if (cfg->get("fullScrean").at(0) == "true")
+    this->setGeometry(100,100,cfgLauncher.get("width").at(0).toInt(),cfgLauncher.get("height").at(0).toInt());
+    if (cfgLauncher.get("fullScrean").at(0) == "true")
     {
         this->showMaximized();
     }
@@ -58,18 +57,17 @@ MainWindow::~MainWindow()
     log->end();
     log->compression();
     log->comressionEnd(QString(".//log/compression.bin"));
-    log->grabber(cfg->get("countFileLog").at(0).toInt());
+    log->grabber(cfgLauncher.get("countFileLog").at(0).toInt());
 
-    cfg->configKeyValue->clear();
-    cfg->configKeyName->clear();
-    cfg->raedFile();
-    cfg->set("page",QString::number(menu->showIndex));
-    cfg->set("width", QString::number(this->width()));
-    cfg->set("height", QString::number(this->height()));
-    cfg->set("fullScrean", cfg->get("fullScrean").at(0));
-    cfg->save();
+    cfgLauncher.configKeyValue->clear();
+    cfgLauncher.configKeyName->clear();
+    cfgLauncher.raedFile();
+    cfgLauncher.set("page",QString::number(menu->showIndex));
+    cfgLauncher.set("width", QString::number(this->width()));
+    cfgLauncher.set("height", QString::number(this->height()));
+    cfgLauncher.set("fullScrean", cfgLauncher.get("fullScrean").at(0));
+    cfgLauncher.save();
 
-    delete cfg;
     delete menu;
     //delete network;
     delete ui;

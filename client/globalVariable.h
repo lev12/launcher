@@ -7,8 +7,7 @@
 #include "log.h"
 
 const float number_version_launcher = 1.0;
-
-
+static Config cfgLauncher = Config();
 const QString _Data = "data/";
 
 enum VersionType
