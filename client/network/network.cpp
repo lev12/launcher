@@ -6,22 +6,31 @@ Network::Network(Log *plog)
     {
         log = plog;
     }
-    cfg = new Config();
     netConfig = new QNetworkConfigurationManager ();
     isConnect = new bool;
+    PortServer = new unsigned short;
+    AdderssServer = new QString;
 
     initConnect();
 }
 
 bool Network::initConnect()
-{
+{    
     *isConnect = netConfig->isOnline();
     connect(netConfig, QNetworkConfigurationManager::onlineStateChanged, this, Network::setConnectState);
 
-    if (*isConnect)
+    *PortServer = QString(cfgLauncher.get("PortServer").at(0)).toShort();
+    *AdderssServer = cfgLauncher.get("DomainServer").at(0);
+    qDebug () << PortServer << "        " << AdderssServer;
+    if(QString::number(*PortServer) != cfgLauncher.errorResponse &&
+       *AdderssServer != cfgLauncher.errorResponse)
     {
-        *isConnect = pingServer(AdderssServer,PortServer);
+        if (*isConnect)
+        {
+            *isConnect = pingServer(*AdderssServer,*PortServer);
+        }
     }
+
 
     return true;
 }
@@ -162,7 +171,7 @@ void Network::setConnectState(bool state)
     *isConnect = state;
     if (state)
     {
-        *isConnect = pingServer(AdderssServer,PortServer);
+        *isConnect = pingServer(*AdderssServer,*PortServer);
     }
     qDebug () << "net state:" << *isConnect;
     return;

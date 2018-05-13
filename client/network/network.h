@@ -57,12 +57,11 @@ public:
     Downloader* getVerInfo           (QString appName, QString verName);
 
 private:
-    Config *cfg;
     Log *log;
     QNetworkConfigurationManager *netConfig;
     bool *isConnect;
-    const unsigned short PortServer = 80;
-    const QString AdderssServer = "electrical-simulator.ru";
+    unsigned short *PortServer;
+    QString *AdderssServer;
 
     bool initConnect ();
 
