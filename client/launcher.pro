@@ -49,7 +49,8 @@ SOURCES += main.cpp\
     network/requestVersionInfo.cpp \
     network/requestVersionsList.cpp \
     network/requestCheckApplication.cpp \
-    network/requestAppicationInfo.cpp
+    network/requestAppicationInfo.cpp \
+    network/resqustActualVersion.cpp
 
 HEADERS  += mainwindow.h \
     ui/settings.h \
@@ -86,7 +87,8 @@ HEADERS  += mainwindow.h \
     network/requestVersionInfo.h \
     network/requestVersionsList.h \
     network/requestCheckApplication.h \
-    network/requestAppicationInfo.h
+    network/requestAppicationInfo.h \
+    network/resqustActualVersion.h
 
 
 FORMS    += mainwindow.ui \

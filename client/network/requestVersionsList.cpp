@@ -15,11 +15,15 @@ bool RequestVersionsList::parse(QByteArray data)
     {
         QString str = rx.cap(1);
         QStringList listVerTemp = str.split(",");
-        response = new QStringList ();
+        QList <NetworkData> *response =  new QList <NetworkData> ();
         foreach (QString temp, listVerTemp)
         {
-            response->operator <<( _toSpace(temp));
+            NetworkData netData;
+            netData.key = "versionList";
+            netData.value = _toSpace(temp);
+            response->operator <<(netData);
         }
+
 
         replyServer(response);
         return true;
