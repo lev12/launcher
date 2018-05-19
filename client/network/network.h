@@ -33,6 +33,10 @@
 #include "downloaderForFile.h"
 #include "downloaderForVersion.h"
 
+#include "abstractRequest.h"
+#include "requestCheckVersion.h"
+#include "requestApplicationList.h"
+
 class Network : public QObject
 {
     Q_OBJECT
@@ -63,12 +67,16 @@ private:
     unsigned short *PortServer;
     QString *AdderssServer;
 
+    AbstractRequest *ral;
+    AbstractRequest *rcv;
+
     bool initConnect ();
 
     bool pingServer (QString adderss, qint16 port);
 
 private slots:
     void setConnectState (bool state);
+    void reschver (QList<NetworkData> *response);
 };
 
 #endif // NETWORK_H

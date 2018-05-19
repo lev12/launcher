@@ -40,7 +40,16 @@ SOURCES += main.cpp\
     ui/menuvertical.cpp \
     ui/uigeneralapplication.cpp \
     applicationcontroller.cpp \
-    ui/uiApplicationItem.cpp
+    ui/uiApplicationItem.cpp \
+    network/abstractRequest.cpp \
+    network/requestApplicationList.cpp \
+    network/abstractRequestForVersion.cpp \
+    network/requestCheckVersion.cpp \
+    network/abstractRequestForApplication.cpp \
+    network/requestVersionInfo.cpp \
+    network/requestVersionsList.cpp \
+    network/requestCheckApplication.cpp \
+    network/requestAppicationInfo.cpp
 
 HEADERS  += mainwindow.h \
     ui/settings.h \
@@ -68,7 +77,16 @@ HEADERS  += mainwindow.h \
     ui/menuvertical.h \
     ui/uigeneralapplication.h \
     applicationcontroller.h \
-    ui/uiApplicationItem.h
+    ui/uiApplicationItem.h \
+    network/abstractRequest.h \
+    network/requestApplicationList.h \
+    network/abstractRequestForVersion.h \
+    network/requestCheckVersion.h \
+    network/abstractRequestForApplication.h \
+    network/requestVersionInfo.h \
+    network/requestVersionsList.h \
+    network/requestCheckApplication.h \
+    network/requestAppicationInfo.h
 
 
 FORMS    += mainwindow.ui \

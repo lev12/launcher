@@ -10,8 +10,11 @@ Network::Network(Log *plog)
     isConnect = new bool;
     PortServer = new unsigned short;
     AdderssServer = new QString;
-
     initConnect();
+
+    rcv = new RequestCheckVersion(*AdderssServer,*PortServer,"dffe","Electrical_Simulator","alpha_45");
+    connect(rcv, AbstractRequest::replyServer, this, Network::reschver);
+    ral = new RequestApplicationList(*AdderssServer,*PortServer,"vhshvuhivhsiuhish");
 }
 
 bool Network::initConnect()
@@ -21,7 +24,6 @@ bool Network::initConnect()
 
     *PortServer = QString(cfgLauncher.get("PortServer").at(0)).toShort();
     *AdderssServer = cfgLauncher.get("DomainServer").at(0);
-    qDebug () << PortServer << "        " << AdderssServer;
     if(QString::number(*PortServer) != cfgLauncher.errorResponse &&
        *AdderssServer != cfgLauncher.errorResponse)
     {
@@ -175,6 +177,11 @@ void Network::setConnectState(bool state)
     }
     qDebug () << "net state:" << *isConnect;
     return;
+}
+
+void Network::reschver(QList<NetworkData> *response)
+{
+    qDebug () << response->at(0).value;
 }
 
 /*bool Network::parseUploadLog(QByteArray data)
