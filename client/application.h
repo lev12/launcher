@@ -42,6 +42,8 @@ private:
     QIcon *appIcon;
     QString *appPath;
 
+    RequestVersion *rv;
+
 
     bool initAppPath (QString path);
     bool initVerCon ();

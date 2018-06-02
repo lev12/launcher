@@ -12,9 +12,10 @@ Network::Network(Log *plog)
     AdderssServer = new QString;
     initConnect();
 
-    rcv = new RequestCheckVersion(*AdderssServer,*PortServer,"dffe","Electrical_Simulator","alpha_45");
+    /*rcv = new RequestCheckVersion(*AdderssServer,*PortServer,"dffe","Electrical_Simulator","alpha_45");
     connect(rcv, AbstractRequest::replyServer, this, Network::reschver);
     ral = new RequestApplicationList(*AdderssServer,*PortServer,"vhshvuhivhsiuhish");
+    */
 }
 
 bool Network::initConnect()

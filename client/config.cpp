@@ -61,7 +61,6 @@ bool Config::raedFile()
                     cfgValue.remove(" ");
                 }
 
-                qDebug () << cfgKey;
                 configKeyName->operator <<(cfgKey);
                 configKeyValue->operator <<(cfgValue);
             }
@@ -81,14 +80,13 @@ bool Config::save()
     {
         return false;
     }
-    qDebug () << configKeyName->length();
+
     for (int i=0; i < configKeyName->length();i++)
     {
         QString line = QString(configKeyName->at(i));
         line.append(" = ");
         line.append(QString(configKeyValue->at(i)));
         line.append("\n");
-        qDebug () << line;
         configFile->write(line.toLocal8Bit());
     }
 
@@ -119,19 +117,6 @@ QStringList Config::get(QString parametr)
 
 bool Config::set(QString parametr, QString value)
 {
-    /*int number = -1;
-    for (int i(0); i < configKeyName->count(); i++)
-    {
-        if (parametr == configKeyName->at(i))
-        {
-            number = i;
-            break;
-        }
-    }
-    if (number == -1) return false;
-
-    configKeyValue->replace(number, value);*/
-
     configKeyName->push_back(parametr);
     configKeyValue->push_back(value);
 

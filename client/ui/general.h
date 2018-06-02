@@ -22,7 +22,6 @@ public:
     ~General();
 
     Menu *menu;
-    Config *cfg;
     Log *log;
     bool showSettings = false;
     SettingsMenu *settingMenu;

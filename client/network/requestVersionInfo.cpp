@@ -7,6 +7,7 @@ RequestVersionInfo::RequestVersionInfo(QString serverAddress, unsigned short ser
 
 bool RequestVersionInfo::parse(QByteArray data)
 {
+    qDebug () << data;
     QString data_str = data;
     data_str = deleteForRx (data_str);
 

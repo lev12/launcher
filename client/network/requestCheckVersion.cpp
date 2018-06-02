@@ -12,14 +12,14 @@ bool RequestCheckVersion::parse(QByteArray data)
     QRegExp rx ("response:(version):(.+)");
     if (rx.indexIn(datastr) != -1)
     {
-        bool isFoundVersion;
+        QString isFoundVersion;
         if (rx.cap(2) == "true")
         {
-            isFoundVersion = true;
+            isFoundVersion = "true";
         }
         else
         {
-            isFoundVersion = false;
+            isFoundVersion = "false";
         }
         QList<NetworkData> *response;
         NetworkData responseData;

@@ -7,7 +7,7 @@
 #include "log.h"
 
 const float number_version_launcher = 1.0;
-static Config cfgLauncher = Config();
+static Config cfgLauncher = Config(".\\conf.cfg");
 const QString _Data = "data/";
 
 struct NetworkData

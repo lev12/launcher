@@ -36,6 +36,7 @@
 #include "abstractRequest.h"
 #include "requestCheckVersion.h"
 #include "requestApplicationList.h"
+#include "requestVersion.h"
 
 class Network : public QObject
 {

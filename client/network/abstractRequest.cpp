@@ -61,19 +61,23 @@ QString AbstractRequest::getRequestUrl(QString method,QString param)
 
 bool AbstractRequest::sendRequest(QString url)
 {
-    QUrl sendUrl(url);
-    QNetworkRequest request;
-    request.setUrl(sendUrl);
-    netManager->get(request);
+    sendRequestUrl (QUrl(url));
+    return true;
+}
+
+bool AbstractRequest::sendRequest(QUrl url)
+{
+    sendRequestUrl (url);
     return true;
 }
 
 void AbstractRequest::readServer(QNetworkReply *reply)
 {
     QByteArray data = reply->readAll();
+    qDebug () << data;
     if (!parse(data))
     {
-        qDebug () << data;
+        qDebug () << "net error   :" << data;
     }
 }
 
@@ -132,4 +136,27 @@ QString AbstractRequest::deleteForRx (QString data)
         data_str.append(temp);
     }
     return data_str;
+}
+
+bool AbstractRequest::sendRequestUrl(QUrl url)
+{
+    qDebug () << url;
+    QNetworkRequest request;
+    request.setUrl(url);
+    realyServer = netManager->get(request);
+    return true;
+}
+
+QNetworkReply* AbstractRequest::getNetReply()
+{
+    return realyServer;
+}
+
+QString AbstractRequest::getUrlServer()
+{
+    QString urlstr = "http://";
+    urlstr.append(*serverAddress);
+    urlstr.append(":");
+    urlstr.append(QString::number(*serverPort));
+    return urlstr;
 }

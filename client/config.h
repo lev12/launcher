@@ -21,7 +21,7 @@ public:
     QStringList *configKeyName;
     QStringList *configKeyValue;
 
-    Config(QString path = ".\\conf.cfg");
+    Config(QString path);
     ~Config();
     bool create(QString path);
     bool raedFile();
