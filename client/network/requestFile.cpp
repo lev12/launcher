@@ -2,17 +2,19 @@
 
 RequestFile::RequestFile(QUrl UrlFile, QFileInfo file)
 {
-    if (!(UrlFile.isValid()) || UrlFile.isEmpty())
+    /*if (!(UrlFile.isValid()) || UrlFile.isEmpty())
     {
         throw "no valid url";
     }
     if (!(file.isFile()))
     {
         throw "is no file";
-    }
+    }*/
 
     sendRequest(UrlFile);
     downloadFile = new QFile (file.absoluteFilePath());
+    QDir mkDir;
+    mkDir.mkpath(file.absolutePath());
     netReply = getNetReply();
     if (!(downloadFile->open(QFile::WriteOnly)))
     {
@@ -24,6 +26,7 @@ RequestFile::RequestFile(QUrl UrlFile, QFileInfo file)
 RequestFile::~RequestFile()
 {
     downloadFile->close();
+
 }
 
 
@@ -36,6 +39,7 @@ bool RequestFile::parse(QByteArray data)
     netData.value = QFileInfo(*downloadFile).absoluteFilePath();
     response->operator <<(netData);
     replyServer(response);
+    deleteLater();
     return true;
 }
 

@@ -51,9 +51,10 @@ bool RequestVersion::getFileListVersion(QString *VerName, QString *AppName)
 
 bool RequestVersion::getFile()
 {
-    AbstractRequest *reqestFileListVer = new RequestFile (absoluteUrlPath(verFileReletivePathList->at(*indexDownloadFile)),
-                                                          QFileInfo(absoluteFilePath(verFileReletivePathList->at(*indexDownloadFile))));
-    connect(reqestFileListVer, AbstractRequest::replyServer, this, RequestVersion::receiveFileListVersion);
+    QUrl absUrlFile (absoluteUrlPath(verFileReletivePathList->at(*indexDownloadFile)));
+    QFileInfo absFilePath (QFileInfo(absoluteFilePath(verFileReletivePathList->at(*indexDownloadFile))));
+    AbstractRequest *reqestFileListVer = new RequestFile (absUrlFile, absFilePath);
+    connect(reqestFileListVer, AbstractRequest::replyServer, this, RequestVersion::receiveFinishFileDownload);
     return true;
 }
 
@@ -151,17 +152,18 @@ void RequestVersion::receiveFileListVersion(QList<NetworkData> *response)
     foreach (NetworkData netdatatemp, *response)
     {
         QString tempFileReletivePath (netdatatemp.value);
-        verFileReletivePathList->operator <<(tempFileReletivePath);
+        QString restempFileReletivePath = tempFileReletivePath.split("\\/").join("/");
+        verFileReletivePathList->operator <<(restempFileReletivePath);
     }
     getFile ();
 }
 
 void RequestVersion::receiveFinishFileDownload(QList<NetworkData> *response)
 {
-    if (verFileReletivePathList->length() <= *indexDownloadFile)
+    if (verFileReletivePathList->length()-1 > *indexDownloadFile)
     {
         qDebug () << *indexDownloadFile;
-        indexDownloadFile++;
+        *indexDownloadFile = *indexDownloadFile + 1;
         getFile ();
     }
     else

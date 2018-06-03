@@ -13,6 +13,7 @@ AbstractRequest::AbstractRequest(QString ServerAddress, unsigned short ServerPor
 AbstractRequest::~AbstractRequest()
 {
     disconnect(netManager, &QNetworkAccessManager::finished, this, &AbstractRequest::readServer);
+    delete netManager;
 }
 
 QString AbstractRequest::getTokenParam(QString token)
@@ -74,7 +75,7 @@ bool AbstractRequest::sendRequest(QUrl url)
 void AbstractRequest::readServer(QNetworkReply *reply)
 {
     QByteArray data = reply->readAll();
-    qDebug () << data;
+    //qDebug () << data;
     if (!parse(data))
     {
         qDebug () << "net error   :" << data;
