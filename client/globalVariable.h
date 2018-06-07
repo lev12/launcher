@@ -2,7 +2,6 @@
 #define GLOBAL_VARIABLE_H
 
 #include <QString>
-#include <QWidget>
 #include "config.h"
 #include "log.h"
 

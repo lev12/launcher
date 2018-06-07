@@ -32,11 +32,13 @@ signals:
     void comressionEnd(QString path);
 
 private:
+
     QFile *logFile;
 
     void buildTable(Node *root);
     QVector<bool> *code;
     QMap < char,QVector<bool> > *table;
+    const QString defaultLogPath = ".\\log";
 public:
     enum type
     {

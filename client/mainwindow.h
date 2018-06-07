@@ -34,8 +34,6 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 private slots:
-    void connectServerStat();
-    void disconnectServerStat();
     void setWidgetApp ();
     void setFullScreanMode ();
     void setNormalMode ();
@@ -44,16 +42,11 @@ private slots:
 private:
     Ui::MainWindow *ui;
     Log *log;
-    Network *network;
-    QThread *threadNet;
-    Menu *menu;
     General *general;
+    Network *network;
     DialogUpdateLauncher *updatelauncher;
     MenuGeneral *menugeneral;
     ApplicationController *appCon;
-    QBrush *brush;
-    QPalette *palette;
-    QDesktopWidget *d;
 };
 
 #endif // MAINWINDOW_H

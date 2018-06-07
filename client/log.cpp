@@ -11,7 +11,16 @@ Log::Log(QString PathLog)
     logFileName.append(time);
     logFileName.append("_client.log");
 
-    QString pathFileLog = PathLog;
+    QString pathFileLog;
+    QFileInfo LogFileInfo (PathLog);
+    if (LogFileInfo.isDir())
+    {
+        pathFileLog = PathLog;
+    }
+    else
+    {
+        pathFileLog = defaultLogPath;
+    }
     pathFileLog.append(logFileName);
     logFile = new QFile(pathFileLog);
     if (!(logFile->open(QIODevice::WriteOnly | QIODevice::Text)))

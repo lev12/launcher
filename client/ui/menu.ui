@@ -222,7 +222,7 @@ background-color: rgb(3, 4, 30, 60);</string>
          <string/>
         </property>
         <property name="icon">
-         <iconset resource="rec.qrc">
+         <iconset resource="../rec/rec.qrc">
           <normaloff>:/icon/electrical simulator.png</normaloff>:/icon/electrical simulator.png</iconset>
         </property>
         <property name="iconSize">
@@ -312,7 +312,7 @@ background-color: rgb(3, 4, 30, 60);</string>
   </layout>
  </widget>
  <resources>
-  <include location="rec.qrc"/>
+  <include location="../rec/rec.qrc"/>
  </resources>
  <connections/>
 </ui>
