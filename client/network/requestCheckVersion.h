@@ -6,7 +6,7 @@
 class RequestCheckVersion : public AbstractRequestForVersion
 {
 public:
-    RequestCheckVersion(QString serverAddress, unsigned short serverPort, QString token, QString app, QString ver);
+    RequestCheckVersion(QString *serverAddress, unsigned short serverPort, QString token, QString app, QString ver);
     virtual bool parse (QByteArray data);
 private:
     const QString method = "checkVersion";

@@ -15,7 +15,7 @@ class AbstractRequest : public QObject
 {
     Q_OBJECT
 public:
-    explicit AbstractRequest (QString ServerAddress = "electrical-simulator.ru",unsigned short ServerPort = 80,QObject *parent = nullptr);
+    explicit AbstractRequest (QString *ServerAddress = &serverDomain, unsigned short ServerPort = 80, QObject *parent = nullptr);
     ~AbstractRequest ();
 
     QString getTokenParam (QString token);

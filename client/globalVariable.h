@@ -9,6 +9,7 @@
 const float number_version_launcher = 1.0;
 static Config cfgLauncher = Config(".\\conf.cfg");
 const QString _Data = "data/";
+static QString serverDomain = "electrical-simulator.ru";
 
 struct NetworkData
 {

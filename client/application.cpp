@@ -10,9 +10,6 @@ Application::Application(QString path, Network *network)
     initAppName();
     initVerCon ();
 
-    QString *verName = new QString ("alpha_45");
-    rv = new RequestVersion ("electrical-simulator.ru",80,appName,verName);
-
     verCon->setLastCurrentVesion(cfgApp->get("last_current_version").at(0));
 }
 

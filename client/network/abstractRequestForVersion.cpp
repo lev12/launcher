@@ -1,7 +1,7 @@
 #include "abstractRequestForVersion.h"
 #include "abstractRequestForVersion.h"
 
-AbstractRequestForVersion::AbstractRequestForVersion(QString serverAddress, unsigned short serverPort) : AbstractRequest (serverAddress,serverPort)
+AbstractRequestForVersion::AbstractRequestForVersion(QString *serverAddress, unsigned short serverPort) : AbstractRequest (serverAddress,serverPort)
 {
 
 }

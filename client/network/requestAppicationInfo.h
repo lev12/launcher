@@ -6,7 +6,7 @@
 class requestAppicationInfo : public AbstractRequestForApplication
 {
 public:
-    requestAppicationInfo(QString serverAddress, unsigned short serverPort,QString token,QString app);
+    requestAppicationInfo(QString *serverAddress, unsigned short serverPort,QString token,QString app);
     virtual bool parse (QByteArray data);
 private:
     const QString method = "appicationInfo";

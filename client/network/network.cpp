@@ -8,14 +8,10 @@ Network::Network(Log *plog)
     }
     netConfig = new QNetworkConfigurationManager ();
     isConnect = new bool;
-    PortServer = new unsigned short;
-    AdderssServer = new QString;
+    portServer = new unsigned short;
+    addressServer = new QString;
+    token = new QString ("todo");
     initConnect();
-
-    /*rcv = new RequestCheckVersion(*AdderssServer,*PortServer,"dffe","Electrical_Simulator","alpha_45");
-    connect(rcv, AbstractRequest::replyServer, this, Network::reschver);
-    ral = new RequestApplicationList(*AdderssServer,*PortServer,"vhshvuhivhsiuhish");
-    */
 }
 
 bool Network::initConnect()
@@ -23,14 +19,14 @@ bool Network::initConnect()
     *isConnect = netConfig->isOnline();
     connect(netConfig, QNetworkConfigurationManager::onlineStateChanged, this, Network::setConnectState);
 
-    *PortServer = QString(cfgLauncher.get("PortServer").at(0)).toShort();
-    *AdderssServer = cfgLauncher.get("DomainServer").at(0);
-    if(QString::number(*PortServer) != cfgLauncher.errorResponse &&
-       *AdderssServer != cfgLauncher.errorResponse)
+    *portServer = QString(cfgLauncher.get("PortServer").at(0)).toShort();
+    *addressServer = cfgLauncher.get("DomainServer").at(0);
+    if(QString::number(*portServer) != cfgLauncher.errorResponse &&
+       *addressServer != cfgLauncher.errorResponse)
     {
         if (*isConnect)
         {
-            *isConnect = pingServer(*AdderssServer,*PortServer);
+            *isConnect = pingServer(*addressServer,*portServer);
         }
     }
 
@@ -50,109 +46,91 @@ Network::~Network()
 }
 
 //get request
-Downloader* Network::getVersionList(QString appName)
+AbstractRequest* Network::getVersionList(QString appName)
 {
     if (*isConnect)
     {
-        Downloader *getVerList = new Downloader (appName,0);
-        getVerList->requestVersionList();
+        AbstractRequest *getVerList = new RequestVersionsList (addressServer,*portServer,*token,appName);
         return getVerList;
     }
     return NULL;
 }
 
-Downloader* Network::getActualVersion (QString appName)
+AbstractRequest* Network::getActualVersion (QString appName)
 {
     if (*isConnect)
     {
-        Downloader *getActVer = new Downloader (appName,0);
-        getActVer->requestActualVersion();
+        AbstractRequest *getActVer = new requestActualVersion (addressServer,*portServer,*token,appName);
         return getActVer;
     }
     return NULL;
 }
 
-Downloader* Network::getExeFile(QString appName, QString verName)
+/*AbstractRequest* Network::getSizeVersion(QString appName, QString verName)
 {
     if (*isConnect)
     {
-        Downloader *getExeFile = new Downloader (appName,0);
-        getExeFile->requestExeFileVersion();
-        return getExeFile;
-    }
-    return NULL;
-}
-
-Downloader* Network::getSizeVersion(QString appName, QString verName)
-{
-    if (*isConnect)
-    {
-        Downloader *getSizeVersion = new Downloader (appName,0);
-        getSizeVersion->requestSizeVersion();
+        AbstractRequest *getSizeVersion = new AbstractRequest (appName,0);
         return getSizeVersion;
     }
     return NULL;
-}
+}*/
 
-Downloader* Network::getFileList(QString appName, QString verName)
+AbstractRequest* Network::getFileList(QString appName, QString verName)
 {
     if (*isConnect)
     {
-        Downloader *getFileList = new Downloader (appName,0);
-        getFileList->requestFileListVersion();
+        AbstractRequest *getFileList = new RequestFileListVersion (addressServer,*portServer,*token,appName,verName);
         return getFileList;
     }
     return NULL;
 }
 
-Downloader* Network::getCheckVersion(QString appName, QString verName)
+AbstractRequest* Network::getCheckVersion(QString appName, QString verName)
 {
     if (*isConnect)
     {
-        Downloader *getCheckVersion = new Downloader (appName,0);
-        getCheckVersion->requestCheckVersion();
+        AbstractRequest *getCheckVersion = new RequestCheckVersion (addressServer,*portServer,*token,appName,verName);
         return getCheckVersion;
     }
     return NULL;
 }
 
-DownloaderForVersion* Network::getVersion(QString appName, QString verName)
+AbstractRequest *Network::getVersion(QString appName, QString verName)
 {
     if (*isConnect)
     {
-        DownloaderForVersion *getVer = new DownloaderForVersion(appName, verName, 0);
+        AbstractRequest *getVer = new RequestVersion (addressServer,*portServer,*token,&appName,&verName);
         return getVer;
     }
     return NULL;
 }
 
-DownloaderForFile* Network::getFile(QUrl url, QFileInfo file)
+AbstractRequest *Network::getFile(QUrl url, QFileInfo file)
 {
     if (*isConnect)
     {
-        DownloaderForFile *getFl = new DownloaderForFile (url,file, 0);
+        RequestFile *getFl = new RequestFile (url,file);
         return getFl;
     }
     return NULL;
 }
 
-Downloader* Network::getFileSize (QString appName, QString verName, QString file)
+/*AbstractRequest* Network::getFileSize (QString appName, QString verName, QString file)
 {
     if (*isConnect)
     {
-        Downloader *getFileSize = new Downloader (appName,0);
-        getFileSize->requestFileSize();
+        AbstractRequest *getFileSize = new AbstractRequest (appName,0);
         return getFileSize;
     }
     return NULL;
-}
+}*/
 
-Downloader *Network::getVerInfo(QString appName, QString verName)
+AbstractRequest *Network::getVerInfo(QString appName, QString verName)
 {
     if (*isConnect)
     {
-        Downloader *getVerInfo = new Downloader (appName,0);
-        getVerInfo->requestVersionInfo();
+        AbstractRequest *getVerInfo = new RequestVersionInfo (addressServer,*portServer,*token,appName,verName);
         return getVerInfo;
     }
     return NULL;
@@ -174,15 +152,10 @@ void Network::setConnectState(bool state)
     *isConnect = state;
     if (state)
     {
-        *isConnect = pingServer(*AdderssServer,*PortServer);
+        *isConnect = pingServer(*addressServer,*portServer);
     }
     qDebug () << "net state:" << *isConnect;
     return;
-}
-
-void Network::reschver(QList<NetworkData> *response)
-{
-    qDebug () << response->at(0).value;
 }
 
 /*bool Network::parseUploadLog(QByteArray data)

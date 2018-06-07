@@ -1,9 +1,9 @@
 #include "abstractRequest.h"
 
-AbstractRequest::AbstractRequest(QString ServerAddress, unsigned short ServerPort, QObject *parent) : QObject(parent)
+AbstractRequest::AbstractRequest(QString *ServerAddress, unsigned short ServerPort, QObject *parent) : QObject(parent)
 {
     netManager = new QNetworkAccessManager();
-    serverAddress = new QString (ServerAddress);
+    serverAddress = new QString (*ServerAddress);
     serverPort = new unsigned short;
     *serverPort = ServerPort;
 
@@ -75,7 +75,6 @@ bool AbstractRequest::sendRequest(QUrl url)
 void AbstractRequest::readServer(QNetworkReply *reply)
 {
     QByteArray data = reply->readAll();
-    //qDebug () << data;
     if (!parse(data))
     {
         qDebug () << "net error   :" << data;

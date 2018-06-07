@@ -91,7 +91,7 @@ private:
     static QList<Platform> strToPlatform (QStringList platformStrList);
 
 private slots:
-    void responseInfoVerAndFillingConfig (QStringList *response);
+    void responseInfoVerAndFillingConfig (QList<NetworkData> *response);
 };
 
 #endif // VERSION_H

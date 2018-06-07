@@ -85,16 +85,16 @@ bool VersionController::initLastCurrentVersion()
 bool VersionController::fillingActualVersion()
 {
     if (net == NULL) return false;
-    Downloader *dl = net->getActualVersion(*appName);
-    QObject::connect(dl, Downloader::replyServer, this, VersionController::setActualVersionNet);
+    AbstractRequest *dl = net->getActualVersion(*appName);
+    QObject::connect(dl, AbstractRequest::replyServer, this, VersionController::setActualVersionNet);
     return true;
 }
 
-void VersionController::setActualVersionNet(QStringList *response)
+void VersionController::setActualVersionNet(QList<NetworkData> *response)
 {
     if (response->length() == 0) return;
 
-    actualVersion = getVersion(response->at(0));
+    actualVersion = getVersion(response->at(0).value);
 }
 
 QList <Version*> VersionController::getFullListVersion()

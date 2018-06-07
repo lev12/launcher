@@ -12,7 +12,7 @@
 class RequestVersion : public AbstractRequest
 {
 public:
-    RequestVersion(QString serverAddress, unsigned short serverPort, QString *app, QString *version);
+    RequestVersion(QString *serverAddress, unsigned short serverPort,QString Token ,QString *app, QString *version);
     virtual bool parse (QByteArray data);
 private:
     bool init (QString versionName, QString applicationName);
@@ -30,6 +30,7 @@ private:
     QDir *verPath;
     int *indexDownloadFile;
     QStringList  *verFileReletivePathList;
+    QString *token;
 private slots:
     void receiveCheckVersion (QList<NetworkData> *response);
     void receiveVersionInfo (QList<NetworkData> *response);

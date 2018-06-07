@@ -52,7 +52,7 @@ private:
     QList<Version *> sortVersionList();
 
 private slots:
-    void setActualVersionNet (QStringList *response);
+    void setActualVersionNet (QList<NetworkData> *response);
 
 signals:
     void responseActualVersion (QString verName);

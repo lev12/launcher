@@ -1,6 +1,6 @@
 #include "requestVersionInfo.h"
 
-RequestVersionInfo::RequestVersionInfo(QString serverAddress, unsigned short serverPort,QString token,QString app,QString ver) : AbstractRequestForVersion (serverAddress,serverPort)
+RequestVersionInfo::RequestVersionInfo(QString *serverAddress, unsigned short serverPort,QString token,QString app,QString ver) : AbstractRequestForVersion (serverAddress,serverPort)
 {
     sendRequest(getRequestUrl(method,getRequestParam(token,app,ver)));
 }

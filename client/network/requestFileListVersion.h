@@ -6,7 +6,7 @@
 class RequestFileListVersion : public AbstractRequestForVersion
 {
 public:
-    RequestFileListVersion(QString serverAddress, unsigned short serverPort, QString token, QString app, QString ver);
+    RequestFileListVersion(QString *serverAddress, unsigned short serverPort, QString token, QString app, QString ver);
     virtual bool parse (QByteArray data);
 private:
 

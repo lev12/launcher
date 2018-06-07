@@ -201,13 +201,13 @@ bool Version::requestInfoVer()
     QString verName = versionTypeToString (*verType);
     verName.append("_");
     verName.append(*verNumber);
-    Downloader *dl = net->getVerInfo(*appName, verName);
-    QObject::connect(dl, Downloader::replyServer, this, Version::responseInfoVerAndFillingConfig);
+    AbstractRequest *dl = net->getVerInfo(*appName, verName);
+    QObject::connect(dl, AbstractRequest::replyServer, this, Version::responseInfoVerAndFillingConfig);
 
     return true;
 }
 
-void Version::responseInfoVerAndFillingConfig(QStringList *response)
+void Version::responseInfoVerAndFillingConfig(QList<NetworkData> *response)
 {
     if (response->length() == 0) return;
 
@@ -218,14 +218,8 @@ void Version::responseInfoVerAndFillingConfig(QStringList *response)
 
     for (int i (0); i < response->length(); i++)
     {
-        if (i%2 == 0)
-        {
-            listKey.operator <<(response->at(i));
-        }
-        else
-        {
-            listValue.operator <<(response->at(i));
-        }
+        listKey.operator <<(response->at(i).key);
+        listValue.operator <<(response->at(i).value);
     }
 
     for (int i(0); i < listKey.length();i++)

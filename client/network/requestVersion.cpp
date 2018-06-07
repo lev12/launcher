@@ -1,8 +1,9 @@
 #include "requestVersion.h"
 
-RequestVersion::RequestVersion(QString serverAddress, unsigned short serverPort,QString *app,QString *version) : AbstractRequest (serverAddress,serverPort)
+RequestVersion::RequestVersion(QString *serverAddress, unsigned short serverPort, QString Token, QString *app, QString *version) : AbstractRequest (serverAddress,serverPort)
 {
     init (*version, *app);
+    token = new QString (Token);
     getCheckVersion(verName, appName);
 }
 
@@ -30,21 +31,21 @@ bool RequestVersion::init(QString versionName, QString applicationName)
 
 bool RequestVersion::getCheckVersion(QString *VerName, QString *AppName)
 {
-    AbstractRequest *reqestCheckVer = new RequestCheckVersion (*serverAddress, *serverPort, "token", *AppName, *VerName);
+    AbstractRequest *reqestCheckVer = new RequestCheckVersion (serverAddress, *serverPort, *token, *AppName, *VerName);
     connect(reqestCheckVer, AbstractRequest::replyServer, this, RequestVersion::receiveCheckVersion);
     return true;
 }
 
 bool RequestVersion::getVersionInfo(QString *VerName, QString *AppName)
 {
-    AbstractRequest *reqestVerInfo = new RequestVersionInfo (*serverAddress, *serverPort, "token", *AppName, *VerName);
+    AbstractRequest *reqestVerInfo = new RequestVersionInfo (serverAddress, *serverPort, *token, *AppName, *VerName);
     connect(reqestVerInfo, AbstractRequest::replyServer, this, RequestVersion::receiveVersionInfo);
     return true;
 }
 
 bool RequestVersion::getFileListVersion(QString *VerName, QString *AppName)
 {
-    AbstractRequest *reqestFileListVer = new RequestFileListVersion (*serverAddress, *serverPort, "token", *AppName, *VerName);
+    AbstractRequest *reqestFileListVer = new RequestFileListVersion (serverAddress, *serverPort, *token, *AppName, *VerName);
     connect(reqestFileListVer, AbstractRequest::replyServer, this, RequestVersion::receiveFileListVersion);
     return true;
 }

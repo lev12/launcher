@@ -6,7 +6,7 @@
 class RequestVersionsList : public AbstractRequestForApplication
 {
 public:
-    RequestVersionsList(QString serverAddress, unsigned short serverPort,QString token,QString app);
+    RequestVersionsList(QString *serverAddress, unsigned short serverPort,QString token,QString app);
     virtual bool parse (QByteArray data);
 private:
     const QString method = "checkVersion";
