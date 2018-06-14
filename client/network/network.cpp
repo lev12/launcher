@@ -136,6 +136,16 @@ AbstractRequest *Network::getVerInfo(QString appName, QString verName)
     return NULL;
 }
 
+AbstractRequest *Network::getAppInfo(QString appName)
+{
+    if (*isConnect)
+    {
+        AbstractRequest *getAppInfo = new requestAppicationInfo (addressServer,*portServer,*token,appName);
+        return getAppInfo;
+    }
+    return NULL;
+}
+
 bool Network::pingServer(QString adderss, qint16 port)
 {
     QTcpSocket socket;

@@ -6,11 +6,19 @@ Application::Application(QString path, Network *network)
 
     initAppPath(path);
     initNet (network);
-    initConfig ();
-    initAppName();
-    initVerCon ();
+    initAppName (appPath);
+    if (initConfig ())
+    {
+        fillingConfigApp ();
+    }
+    else
+    {
+        initAppNameConfig(cfgApp);
+        initId (cfgApp);
+        initVerCon (net, appPath, appName);
 
-    verCon->setLastCurrentVesion(cfgApp->get("last_current_version").at(0));
+        verCon->setLastCurrentVesion(cfgApp->get("last_current_version").at(0));
+    }
 }
 
 bool Application::initNet(Network *network)
@@ -24,10 +32,20 @@ bool Application::initNet(Network *network)
     return true;
 }
 
-bool Application::initAppName()
+bool Application::initAppName(QDir *path)
 {
-    QString *cfgAppName = new QString (cfgApp->get("name").at(0));
-    if (*cfgAppName == cfgApp->errorResponse) return false;
+    if (path->exists())
+    {
+        appName = new QString (path->dirName());
+        return true;
+    }
+    return false;
+}
+
+bool Application::initAppNameConfig(Config *cfg)
+{
+    QString *cfgAppName = new QString (cfg->get("name").at(0));
+    if (*cfgAppName == cfg->errorResponse) return false;
     appName = cfgAppName;
     return true;
 }
@@ -40,7 +58,7 @@ bool Application::initAppPath(QString path)
         throw errorPath;
         return false;
     }
-    appPath = new QString (path);
+    appPath = new QDir (path);
     return true;
 }
 
@@ -53,16 +71,16 @@ bool Application::initAppIcon()
     return true;
 }
 
-bool Application::initVerCon()
+bool Application::initVerCon(Network *network, QDir *path, QString *name)
 {
-    if (net->isConnected() == false || *appPath == "" || *appName == "")
+    if (network->isConnected() == false || path->absolutePath() == "" || *name == "")
     {
         QString nullstring = "";
-        verCon = new VersionController(&nullstring, net, &nullstring);
+        verCon = new VersionController(&nullstring, network, &nullstring);
         return false;
     }
-
-    verCon = new VersionController(appPath, net, appName);
+    QString *appDirStr = new QString(path->absolutePath());
+    verCon = new VersionController(appDirStr, network, name);
     return true;
 }
 
@@ -98,7 +116,7 @@ bool Application::initConfig()
         return false;
     }
 
-    QString cfgPath = *appPath;
+    QString cfgPath = appPath->absolutePath();
     cfgPath.append("/");
     cfgPath.append("app");
     cfgPath.append(".cfg");
@@ -106,12 +124,21 @@ bool Application::initConfig()
     cfgApp = new Config (cfgPath);
     if (cfgApp->isEmpty())
     {
-        if (!(fillingConfigApp ()))
-        {
-            return false;
-        }
+        return false;
     }
     return true;
+}
+
+bool Application::initId(Config *cfg)
+{
+    id = new short;
+    QString idstr = cfg->get("id").at(0);
+    if (idstr != cfg->errorResponse)
+    {
+        *id = idstr.toShort();
+        return true;
+    }
+    return false;
 }
 
 bool Application::setLastCurrentVersionOfConfig(QString *verName)
@@ -152,8 +179,21 @@ bool Application::fillingConfigApp()
 {
     if (net == NULL) return false;
     if (!(net->isConnected())) return false;
-    //TODO
+    AbstractRequest *reqAppInfo = net->getAppInfo(*appName);
+    connect(reqAppInfo,AbstractRequest::replyServer,this,Application::reciveAppInfo);
     return true;
+}
+
+void Application::reciveAppInfo(QList<NetworkData> *response)
+{
+    cfgApp->clear();
+    foreach (NetworkData data, *response)
+    {
+        QString key = data.key;
+        QString value = data.value;
+        cfgApp->set(key,value);
+    }
+    cfgApp->save();
 }
 
 QList<Platform> Application::strToPlatform (QStringList platformStrList)
@@ -170,6 +210,8 @@ QList<Platform> Application::strToPlatform (QStringList platformStrList)
     }
     return resault;
 }
+
+
 
 bool Application::checkApplication(QString AppPath)
 {

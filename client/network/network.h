@@ -62,7 +62,7 @@ public:
     AbstractRequest* getFile       (QUrl url, QFileInfo file);
     //AbstractRequest* getFileSize          (QString appName, QString verName, QString file);
     AbstractRequest* getVerInfo           (QString appName, QString verName);
-
+    AbstractRequest* getAppInfo           (QString appName);
 private:
     Log *log;
     QNetworkConfigurationManager *netConfig;

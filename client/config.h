@@ -29,6 +29,7 @@ public:
     QStringList get(QString parametr);
     bool set(QString parametr, QString value);
     bool isEmpty ();
+    void clear ();
 };
 
 #endif // CONFIG_H

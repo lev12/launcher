@@ -12,6 +12,7 @@
 #include <QVariant>
 #include <QProcess>
 #include <QUrl>
+#include <QDateTime>
 #include <QDesktopServices>
 
 #include "globalVariable.h"
@@ -37,25 +38,30 @@ private:
     UiApplication *uiApp;
     Network *net;
     Config *cfgApp;
+    QDir *appPath;
 
+
+    //info app
     QString *appName;
     QIcon *appIcon;
-    QString *appPath;
-
-    RequestVersion *rv;
-
+    short *id;
+    QDateTime *created;
 
     bool initAppPath (QString path);
-    bool initVerCon ();
+    bool initVerCon (Network *network, QDir *path, QString *name);
     bool initNet (Network *network);
-    bool initAppName ();
+    bool initAppName (QDir *path);
+    bool initAppNameConfig (Config *cfg);
     bool initAppIcon ();
     bool initUiApp ();
     bool initConfig ();
+    bool initId (Config *cfg);
 
     bool setLastCurrentVersionOfConfig (QString *verName);
     bool fillingConfigApp();
     QList<Platform> strToPlatform (QStringList platformStrList);
+private slots:
+    void reciveAppInfo (QList<NetworkData> *response);
 };
 
 #endif // APPLICATION_H

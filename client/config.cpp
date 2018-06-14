@@ -134,3 +134,10 @@ bool Config::isEmpty()
         return false;
     }
 }
+
+void Config::clear()
+{
+    configFile->remove();
+    configFile->open(QFile::WriteOnly | QFile::Text);
+    configFile->close();
+}
