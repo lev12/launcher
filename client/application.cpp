@@ -7,17 +7,17 @@ Application::Application(QString path, Network *network)
     initAppPath(path);
     initNet (network);
     initAppName (appPath);
-    if (initConfig ())
+    if (!initConfig ())
     {
         fillingConfigApp ();
     }
     else
     {
-        initAppNameConfig(cfgApp);
-        initId (cfgApp);
+        initAppNameConfig(appCfg);
+        initId (appCfg);
         initVerCon (net, appPath, appName);
 
-        verCon->setLastCurrentVesion(cfgApp->get("last_current_version").at(0));
+        verCon->setLastCurrentVesion(appCfg->get("last_current_version").at(0));
     }
 }
 
@@ -64,8 +64,8 @@ bool Application::initAppPath(QString path)
 
 bool Application::initAppIcon()
 {
-    QString iconPath = cfgApp->get("iconPath").at(0);
-    if (iconPath == cfgApp->errorResponse) return false;
+    QString iconPath = appCfg->get("iconPath").at(0);
+    if (iconPath == appCfg->errorResponse) return false;
 
     appIcon = new QIcon (iconPath);
     return true;
@@ -121,8 +121,8 @@ bool Application::initConfig()
     cfgPath.append("app");
     cfgPath.append(".cfg");
 
-    cfgApp = new Config (cfgPath);
-    if (cfgApp->isEmpty())
+    appCfg = new Config (cfgPath);
+    if (appCfg->isEmpty())
     {
         return false;
     }
@@ -131,11 +131,11 @@ bool Application::initConfig()
 
 bool Application::initId(Config *cfg)
 {
-    id = new short;
+    appId = new short;
     QString idstr = cfg->get("id").at(0);
     if (idstr != cfg->errorResponse)
     {
-        *id = idstr.toShort();
+        *appId = idstr.toShort();
         return true;
     }
     return false;
@@ -143,9 +143,9 @@ bool Application::initId(Config *cfg)
 
 bool Application::setLastCurrentVersionOfConfig(QString *verName)
 {
-    if (cfgApp == NULL) return false;
-    cfgApp->set("last_current_version", *verName);
-    cfgApp->save();
+    if (appCfg == NULL) return false;
+    appCfg->set("last_current_version", *verName);
+    appCfg->save();
 
     return true;
 }
@@ -156,6 +156,11 @@ UiApplication* Application::getUiApplication()
     if (uiApp == NULL) initUiApp();
     uiApp->setActivePage(1); //TODO read cfg
     return uiApp;
+}
+
+uiApplicationItem* Application::getUiApplicationItem()
+{
+
 }
 
 bool Application::deleteUiApplication()
@@ -186,14 +191,14 @@ bool Application::fillingConfigApp()
 
 void Application::reciveAppInfo(QList<NetworkData> *response)
 {
-    cfgApp->clear();
+    appCfg->clear();
     foreach (NetworkData data, *response)
     {
         QString key = data.key;
         QString value = data.value;
-        cfgApp->set(key,value);
+        appCfg->set(key,value);
     }
-    cfgApp->save();
+    appCfg->save();
 }
 
 QList<Platform> Application::strToPlatform (QStringList platformStrList)

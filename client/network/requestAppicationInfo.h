@@ -1,15 +1,15 @@
-#ifndef REQUESTAPPICATIONINFO_H
-#define REQUESTAPPICATIONINFO_H
+#ifndef REQUESTAPPLICATIONINFO_H
+#define REQUESTAPPLICATIONINFO_H
 
 #include "abstractRequestForApplication.h"
 
-class requestAppicationInfo : public AbstractRequestForApplication
+class requestapplicationInfo : public AbstractRequestForApplication
 {
 public:
-    requestAppicationInfo(QString *serverAddress, unsigned short serverPort,QString token,QString app);
+    requestapplicationInfo(QString *serverAddress, unsigned short serverPort,QString token,QString app);
     virtual bool parse (QByteArray data);
 private:
-    const QString method = "appicationInfo";
+    const QString method = "applicationInfo";
 };
 
-#endif // REQUESTAPPICATIONINFO_H
+#endif // REQUESTAPPLICATIONINFO_H

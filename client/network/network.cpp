@@ -140,7 +140,7 @@ AbstractRequest *Network::getAppInfo(QString appName)
 {
     if (*isConnect)
     {
-        AbstractRequest *getAppInfo = new requestAppicationInfo (addressServer,*portServer,*token,appName);
+        AbstractRequest *getAppInfo = new requestapplicationInfo (addressServer,*portServer,*token,appName);
         return getAppInfo;
     }
     return NULL;

@@ -19,6 +19,7 @@
 #include "network/network.h"
 #include "versionController.h"
 #include "ui/uiapplication.h"
+#include "ui/uiApplicationItem.h"
 #include "config.h"
 
 class Application : public QObject
@@ -28,6 +29,7 @@ public:
     Application(QString path, Network *network);
 
     UiApplication* getUiApplication();
+    uiApplicationItem* getUiApplicationItem();
     bool deleteUiApplication ();
 
     bool deleteAllVersion ();
@@ -37,15 +39,14 @@ private:
     VersionController *verCon;
     UiApplication *uiApp;
     Network *net;
-    Config *cfgApp;
-    QDir *appPath;
-
 
     //info app
+    Config *appCfg;
+    QDir *appPath;
     QString *appName;
     QIcon *appIcon;
-    short *id;
-    QDateTime *created;
+    short *appId;
+    QDateTime *appCreated;
 
     bool initAppPath (QString path);
     bool initVerCon (Network *network, QDir *path, QString *name);

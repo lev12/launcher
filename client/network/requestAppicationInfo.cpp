@@ -1,15 +1,15 @@
 #include "requestAppicationInfo.h"
 
-requestAppicationInfo::requestAppicationInfo(QString *serverAddress, unsigned short serverPort,QString token,QString app) : AbstractRequestForApplication (serverAddress,serverPort)
+requestapplicationInfo::requestapplicationInfo(QString *serverAddress, unsigned short serverPort,QString token,QString app) : AbstractRequestForApplication (serverAddress,serverPort)
 {
     sendRequest(getRequestUrl(method,getRequestParam(token,app)));
 }
 
-bool requestAppicationInfo::parse(QByteArray data)
+bool requestapplicationInfo::parse(QByteArray data)
 {
     QString data_str = data;
     data_str = deleteForRx (data_str);
-
+    qDebug () << data;
     QRegExp rx ("response:info:(.+)");
     if (rx.indexIn(data_str) != -1)
     {
@@ -23,6 +23,7 @@ bool requestAppicationInfo::parse(QByteArray data)
             response->push_back(tempData);
         }
         replyServer(response);
+        qDebug () << response;
         return true;
     }
     return false;
