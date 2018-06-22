@@ -443,32 +443,6 @@ bool Version::checkVersion(QFileInfo path)
         return false;
     }
     return true;
-
-    /*QStringList data;
-    Config cfg (pathToConfigVersion);
-    data.operator <<(cfg.get("Version_Type"));
-    data.operator <<(cfg.get("Version_Number"));
-    data.operator <<(cfg.get("Start_File"));
-
-    if (data.at(0) == "pre-alpha"
-     || data.at(0) == "alpha"
-     || data.at(0) == "beta"
-     || data.at(0) == "release")
-    {
-        if (QString(data.at(1)).toInt() != 0)
-        {
-            QString pathToExe = path.absoluteFilePath();
-            pathToExe.append("/");
-            pathToExe.append(data.at(2));
-            QFile exe (pathToExe);
-            if (exe.exists())
-            {
-                return true;
-            }
-        }
-    }
-
-    return false;*/
 }
 
 QString Version::versionTypeToString (VersionType type)

@@ -49,6 +49,7 @@ bool Application::initAppNameConfig(Config *cfg)
     appName = cfgAppName;
     return true;
 }
+
 bool Application::initAppPath(QString path)
 {
     if (!(QFile::exists(path)))
@@ -73,12 +74,6 @@ bool Application::initAppIcon()
 
 bool Application::initVerCon(Network *network, QDir *path, QString *name)
 {
-    if (network->isConnected() == false || path->absolutePath() == "" || *name == "")
-    {
-        QString nullstring = "";
-        verCon = new VersionController(&nullstring, network, &nullstring);
-        return false;
-    }
     QString *appDirStr = new QString(path->absolutePath());
     verCon = new VersionController(appDirStr, network, name);
     return true;

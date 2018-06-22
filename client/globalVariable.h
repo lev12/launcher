@@ -4,6 +4,7 @@
 #include <QString>
 #include "config.h"
 #include "log.h"
+#include "versionType.h"
 
 const float number_version_launcher = 1.0;
 static Config cfgLauncher = Config(".\\conf.cfg");
@@ -14,15 +15,6 @@ struct NetworkData
 {
     QString key;
     QString value;
-};
-
-enum VersionType
-{
-    pre_alpha,
-    alpha,
-    beta,
-    release,
-    null
 };
 
 enum Language

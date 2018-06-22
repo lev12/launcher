@@ -39,7 +39,6 @@ SOURCES += main.cpp\
     ui/uiapplication.cpp \
     ui/menuvertical.cpp \
     ui/uigeneralapplication.cpp \
-    applicationcontroller.cpp \
     ui/uiApplicationItem.cpp \
     network/abstractRequest.cpp \
     network/requestApplicationList.cpp \
@@ -53,7 +52,11 @@ SOURCES += main.cpp\
     network/requestFile.cpp \
     network/requestVersion.cpp \
     network/requestFileListVersion.cpp \
-    network/requestActualVersion.cpp
+    network/requestActualVersion.cpp \
+    abstractVersion.cpp \
+    versionInstall.cpp \
+    versionNoInstall.cpp \
+    applicationController.cpp
 
 HEADERS  += mainwindow.h \
     ui/settings.h \
@@ -94,7 +97,11 @@ HEADERS  += mainwindow.h \
     network/requestFile.h \
     network/requestVersion.h \
     network/requestFileListVersion.h \
-    network/requestActualVersion.h
+    network/requestActualVersion.h \
+    abstractVersion.h \
+    versionInstall.h \
+    versionNoInstall.h \
+    versionType.h
 
 
 FORMS    += mainwindow.ui \
