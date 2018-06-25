@@ -75,7 +75,7 @@ bool Application::initAppIcon()
 bool Application::initVerCon(Network *network, QDir *path, QString *name)
 {
     QString *appDirStr = new QString(path->absolutePath());
-    verCon = new VersionController(appDirStr, network, name);
+    //verCon = new VersionController(appDirStr, network, name);
     return true;
 }
 
@@ -229,11 +229,11 @@ bool Application::checkApplication(QString AppPath)
         return false;
     }
 
-    VersionController versionController(&AppPath, NULL, &AppName);
-    if (!(versionController.isFoundVersions()))
+    //VersionController versionController(&AppPath, NULL, &AppName);
+    /*if (!(versionController.isFoundVersions()))
     {
         return false;
-    }
+    }*/
 
     return true;
 }

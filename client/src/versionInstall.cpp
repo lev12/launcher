@@ -74,6 +74,7 @@ bool VersionInstall::deleteAllFile()
     delete verFileList;
     verFileList = new QList <QFileInfo*> ();
     verFolder = new QDir ();
+    destroyed ();
     return true;
 }
 

@@ -1,37 +1,21 @@
 #include "versionController.h"
 
-VersionController::VersionController(QString *pathToFolderWithAllVersions, Network *g_net, QString *AppName)
+VersionController::VersionController(QDir &pathToFolderWithAllVersions, Network &network, QString &AppName)
 {
-    if (*AppName != QString("") || AppName != NULL)
+    if (AppName != QString("") || !pathToFolderWithAllVersions.exists())
     {
-        initAppName (AppName);
+        //TODO thorw
+        destroyed();
     }
+    initAppName (&AppName);
+    net = &network;
 
-    if (g_net != NULL)
-    {
-        net = g_net;
-    }
-    else
-    {
-        net = new Network();
-    }
-
-    if (*pathToFolderWithAllVersions != QString(""))
-    {
-        initVersionController(pathToFolderWithAllVersions);
-    }
-
-    if (*AppName != QString("") ||
-        *pathToFolderWithAllVersions != QString("") ||
-         g_net != NULL)
-    {
-        fillingVersionList();
-        actualVersion = getListInsallVersion().at(0);
-    }
-    //fillingActualVersion();
+    //initVersionController(pathToFolderWithAllVersions);
+    fillingVersionList();
+    actualVersion = getListInsallVersion().at(0);
 }
 
-bool VersionController::initVersionController(QString *pathToFolder)
+bool VersionController::initVersionController(QString &pathToFolder)
 {
     folderWithAllVersions = NULL;
     versionsList = NULL;
@@ -45,11 +29,11 @@ bool VersionController::initVersionController(QString *pathToFolder)
     return true;
 }
 
-bool VersionController::initFolderWithAllVersions(QString *pathToFolder)
+bool VersionController::initFolderWithAllVersions(QString pathToFolder)
 {
     if (folderWithAllVersions == NULL)
     {
-        folderWithAllVersions = new QFileInfo (*pathToFolder);
+        folderWithAllVersions = new QFileInfo (pathToFolder);
         return true;
     }
     return false;

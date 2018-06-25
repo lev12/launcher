@@ -14,7 +14,7 @@ class VersionController : public QObject
 {
     Q_OBJECT
 public:
-    VersionController(QString *pathToFolderWithAllVersions, Network *g_net, QString *AppName);
+    VersionController(QDir &pathToFolderWithAllVersions, Network &network, QString &AppName);
     QList <Version*> getFullListVersion();
     QStringList* getFullListVersionStrList();
     QList <Version*> getListInsallVersion();
@@ -41,8 +41,8 @@ private:
     Version *lastCurrentVersion;
 
     bool initAppName (QString *name);
-    bool initVersionController (QString *pathToFolder);
-    bool initFolderWithAllVersions(QString *pathToFolder);
+    bool initVersionController (QString &pathToFolder);
+    bool initFolderWithAllVersions(QString pathToFolder);
     bool initVersionsList();
     bool initActualVersion();
     bool initLastCurrentVersion();

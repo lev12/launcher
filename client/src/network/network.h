@@ -3,7 +3,6 @@
 
 #include <QObject>
 #include <QByteArray>
-#include <QTcpSocket>
 #include <QRegExp>
 #include <QDebug>
 #include <QFile>
