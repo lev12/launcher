@@ -1,11 +1,13 @@
 #include "versionInstall.h"
 
-VersionInstall::VersionInstall(QString AppName, Network *network, QString pathToFolderWithVersions) : AbstractVersion ()
+VersionInstall::VersionInstall(QString AppName, QString pathToFolderWithVersions, Network *network) : AbstractVersion ()
 {
+    initIsInatall(true);
     initAppName(AppName);
     initNetwork(network);
     initRootFolder(pathToFolderWithVersions);
     initVerName(verFolder->dirName());
+    verFileList = new QList <QFileInfo*>;
     fillingFileList (verFolder);
 
     if (initConfig(verFolder->absolutePath()))
@@ -18,6 +20,7 @@ VersionInstall::VersionInstall(QString AppName, Network *network, QString pathTo
         if (!net->isConnected())
         {
             //TODO throw
+            throw 123;
         }
         requestConfigFromNetwork (net);
     }
@@ -48,7 +51,7 @@ QString VersionInstall::getStartedFilePath()
     return verStartedFile->absoluteFilePath();
 }
 
-qint64 *VersionInstall::getVersionSize()
+quint64 *VersionInstall::getVersionSize()
 {
     return verSize;
 }
@@ -188,14 +191,14 @@ bool VersionInstall::fillingFileList(QDir *folder)
     foreach (QString tempFileStr, lstFiles)
     {
         QString tempFilePath = folder->absolutePath() + "/" + tempFileStr;
-        QFileInfo tempFileInfo = QFileInfo(tempFilePath);
-        verFileList->operator <<(&tempFileInfo);
+        QFileInfo* tempFileInfo = new QFileInfo (tempFilePath);
+        verFileList->operator <<(tempFileInfo);
     }
 
     foreach (QString tempDirStr, lstDirs)
     {
         QString tempDirPath = folder->absolutePath() + "/" + tempDirStr;
-        QDir tempDir = QDir (tempDirPath);
+        QDir tempDir (tempDirPath);
         fillingFileList(&tempDir);
     }
     return true;
@@ -220,7 +223,7 @@ bool VersionInstall::initStartedFile(Config *verCfg, QDir *rootFolder)
         return false;
     }
     QString startFileName = verCfg->get("Start_File").at(0);
-    if (startFileName != verCfg->errorResponse)
+    if (startFileName == verCfg->errorResponse)
     {
         //TODO throw
         return false;
@@ -232,7 +235,7 @@ bool VersionInstall::initStartedFile(Config *verCfg, QDir *rootFolder)
 
 bool VersionInstall::initSize(QList<QFileInfo *> *files)
 {
-    verSize = new qint64;
+    verSize = new quint64;
     *verSize = 0;
     foreach (QFileInfo *tempFile, *files)
     {

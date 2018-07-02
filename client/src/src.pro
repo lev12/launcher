@@ -98,7 +98,8 @@ HEADERS  += mainwindow.h \
     abstractVersion.h \
     versionInstall.h \
     versionNoInstall.h \
-    versionType.h
+    versionType.h \
+    platformType.h
 
 
 FORMS    += mainwindow.ui \

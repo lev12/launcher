@@ -6,12 +6,12 @@
 class VersionInstall : public AbstractVersion
 {
 public:
-    VersionInstall(QString AppName, Network *network, QString pathToFolderWithVersions);
+    VersionInstall(QString AppName, QString pathToFolderWithVersions, Network *network);
     ~VersionInstall ();
 
     QString getStartedFileName();
     QString getStartedFilePath();
-    qint64 *getVersionSize();
+    quint64 *getVersionSize();
     QList<QFileInfo*> *getFileList();
 
     bool deleteAllFile();
@@ -23,7 +23,7 @@ private:
     QDir *verFolder;
     Config *verConfig;
     QList <QFileInfo*> *verFileList;
-    qint64 *verSize;
+    quint64 *verSize;
 
     //no read from config
     bool initConfig(QString pathToFolderWithVesrions);

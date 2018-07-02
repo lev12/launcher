@@ -26,7 +26,7 @@ public:
     bool setVerListComboBox (QStringList *versions);
     bool setCurrentVersion (QString *version);
     bool setWhatNew (QList <News> news);
-    bool setPlatforms (QList<Platform> *platform);
+    bool setPlatforms (QList<PlatformType> *platform);
     bool setSupportLanguage (QStringList *language);
     bool setMinimumSystemRequirements (QString *text);
     bool setRecommendedSystemRequirements (QString *text);

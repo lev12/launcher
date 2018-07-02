@@ -32,7 +32,7 @@ public:
     int getVersionSize();
     QList<QFileInfo> *getFileList();
     QStringList getSupportLanguage();
-    QList <Platform> getSupportPlatform ();
+    QList <PlatformType> getSupportPlatform ();
     QString getRecommendedSystemRequirements ();
     QString getMinimumSystemRequirements ();
 
@@ -55,7 +55,7 @@ private:
     QList <QFileInfo> *verFileList;
     Network *net;
 
-    QList <Platform> *verSupportPlatform;
+    QList <PlatformType> *verSupportPlatform;
     QStringList *verSupportLanguge;
     QString *verRecSysReq;
     QString *verMinSysReq;
@@ -88,7 +88,7 @@ private:
     int removeFolder (QDir &dir);
     static QString versionTypeToString (VersionType type);
     static VersionType stringToVersionType (QString str);
-    static QList<Platform> strToPlatform (QStringList platformStrList);
+    static QList<PlatformType> strToPlatform (QStringList platformStrList);
 
 private slots:
     void responseInfoVerAndFillingConfig (QList<NetworkData> *response);

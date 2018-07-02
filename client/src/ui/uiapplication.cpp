@@ -58,7 +58,7 @@ bool UiApplication::initSupportLanguage()
 
 bool UiApplication::initPlatforms()
 {
-    platforms = new QList<Platform>;
+    platforms = new QList<PlatformType>;
 
     return true;
 }
@@ -100,7 +100,7 @@ bool UiApplication::setSupportLanguage(QStringList *Language)
     return true;
 }
 
-bool UiApplication::setPlatforms(QList<Platform> *Platforms)
+bool UiApplication::setPlatforms(QList<PlatformType> *Platforms)
 {
     if (platforms == NULL) initPlatforms();
     *platforms = *Platforms;

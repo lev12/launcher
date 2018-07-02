@@ -4,7 +4,7 @@ VersionNoInstall::VersionNoInstall(QString AppName, QString VerName) : AbstractV
 {
     initIsInatall(false);
     initAppName(AppName);
-    if(initVerName(VerName))
+    if(!initVerName(VerName))
     {
         throw "no correct ver name";
     }

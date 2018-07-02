@@ -60,7 +60,7 @@ private:
 
     bool setLastCurrentVersionOfConfig (QString *verName);
     bool fillingConfigApp();
-    QList<Platform> strToPlatform (QStringList platformStrList);
+    QList<PlatformType> strToPlatform (QStringList platformStrList);
 private slots:
     void reciveAppInfo (QList<NetworkData> *response);
 };

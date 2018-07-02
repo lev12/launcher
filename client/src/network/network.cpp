@@ -1,6 +1,6 @@
 #include "network.h"
 
-Network::Network(Log *plog)
+Network::Network(QString AddressServer,quint16 PortServer, Log *plog)
 {
     if (plog != NULL)
     {
@@ -10,6 +10,8 @@ Network::Network(Log *plog)
     isConnect = new bool;
     portServer = new unsigned short;
     addressServer = new QString;
+    *portServer = PortServer;
+    *addressServer = AddressServer;
     token = new QString ("todo");
     initConnect();
 }
@@ -19,15 +21,9 @@ bool Network::initConnect()
     *isConnect = netConfig->isOnline();
     connect(netConfig, QNetworkConfigurationManager::onlineStateChanged, this, Network::setConnectState);
 
-    *portServer = QString(cfgLauncher.get("PortServer").at(0)).toShort();
-    *addressServer = cfgLauncher.get("DomainServer").at(0);
-    if(QString::number(*portServer) != cfgLauncher.errorResponse &&
-       *addressServer != cfgLauncher.errorResponse)
+    if (*isConnect)
     {
-        if (*isConnect)
-        {
-            *isConnect = pingServer(*addressServer,*portServer);
-        }
+        *isConnect = pingServer(*addressServer,*portServer);
     }
 
 

@@ -48,7 +48,7 @@ bool UiGeneralApplication::setWhatNew(QList<News> news)
     return true;
 }
 
-bool UiGeneralApplication::setPlatforms(QList<Platform> *platform)
+bool UiGeneralApplication::setPlatforms(QList<PlatformType> *platform)
 {
     if (platform == NULL)
     {
@@ -56,7 +56,7 @@ bool UiGeneralApplication::setPlatforms(QList<Platform> *platform)
     }
 
     QStringList plstrlist;
-    foreach (Platform pl, *platform)
+    foreach (PlatformType pl, *platform)
     {
         if (pl == PC) plstrlist.operator <<("PC");
         else if (pl == MAC) plstrlist.operator <<("Mac");

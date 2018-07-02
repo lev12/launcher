@@ -10,4 +10,5 @@ enum VersionType
     null
 };
 
+Q_DECLARE_METATYPE(VersionType);
 #endif // VERSIONTYPE_H

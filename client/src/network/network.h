@@ -44,7 +44,7 @@ class Network : public QObject
 {
     Q_OBJECT
 public:
-    Network(Log *plog = NULL);
+    Network(QString AddressServer, quint16 PortServer, Log *plog = NULL);
 
     bool isConnected ();
 
@@ -62,8 +62,11 @@ public:
     //AbstractRequest* getFileSize          (QString appName, QString verName, QString file);
     AbstractRequest* getVerInfo           (QString appName, QString verName);
     AbstractRequest* getAppInfo           (QString appName);
+
+    static bool pingServer (QString adderss, qint16 port);
 private:
     Log *log;
+    Config *cfgData;
     QNetworkConfigurationManager *netConfig;
     bool *isConnect;
     unsigned short *portServer;
@@ -71,8 +74,6 @@ private:
     QString *token;
 
     bool initConnect ();
-
-    bool pingServer (QString adderss, qint16 port);
 
 private slots:
     void setConnectState (bool state);

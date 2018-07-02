@@ -4,6 +4,7 @@
 #include <QObject>
 #include "network/network.h"
 #include "versionType.h"
+#include "platformType.h"
 
 class AbstractVersion : public QObject
 {
@@ -23,13 +24,13 @@ protected:
     VersionType *verType;
     bool *verIsInstall;
 
+    static QString versionTypeToString (VersionType type);
+    static VersionType stringToVersionType (QString str);
+    static PlatformType stringToPlatform(QString platformStr);
+
     void initIsInatall (bool install);
     void initAppName (QString AppName);
     bool initVerName (QString VerName);
-
-    static QString versionTypeToString (VersionType type);
-    static VersionType stringToVersionType (QString str);
-    static QList<Platform> strToPlatform (QStringList platformStrList);
 };
 
 #endif // ABSTRACTVERSION_H

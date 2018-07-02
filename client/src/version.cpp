@@ -299,7 +299,7 @@ QStringList Version::getSupportLanguage()
     return *verSupportLanguge;
 }
 
-QList<Platform> Version::getSupportPlatform()
+QList<PlatformType> Version::getSupportPlatform()
 {
     if (verSupportPlatform == NULL) initVerSupportPlatform ();
     return *verSupportPlatform;
@@ -450,7 +450,7 @@ QString Version::versionTypeToString (VersionType type)
     QString type_str;
     switch (type) {
     case pre_alpha:
-        type_str = "pre-alpha";
+        type_str = "pre_alpha";
         break;
     case alpha:
         type_str = "alpha";
@@ -474,7 +474,7 @@ QString Version::versionTypeToString (VersionType type)
 VersionType Version::stringToVersionType (QString str)
 {
     VersionType type;
-    if (str == "pre-alpha")
+    if (str == "pre_alpha")
     {
         type = pre_alpha;
     }
@@ -498,9 +498,9 @@ VersionType Version::stringToVersionType (QString str)
     return type;
 }
 
-QList<Platform> Version::strToPlatform (QStringList platformStrList)
+QList<PlatformType> Version::strToPlatform(QStringList platformStrList)
 {
-    QList<Platform> resault;
+    QList<PlatformType> resault;
     foreach (QString tempList, platformStrList)
     {
         if (tempList == "PC") resault << PC;

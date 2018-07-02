@@ -22,7 +22,7 @@ public:
 
     bool setIcon (QIcon *icon);
     bool setSupportLanguage (QStringList *Language);
-    bool setPlatforms(QList<Platform> *Platforms);
+    bool setPlatforms(QList<PlatformType> *Platforms);
     bool setMinimumSystemRequirements(QString *text);
     bool setRecommendedSystemRequirements(QString *text);
     bool setVersionList(QStringList *versionsList);
@@ -39,7 +39,7 @@ private:
     QString *appName;
     QIcon *appIcon;
     QStringList *language;
-    QList<Platform> *platforms;
+    QList<PlatformType> *platforms;
     QString *minSysRequiremets;
     QString *recommendedSysRequiremets;
     QString *currentVersion;
@@ -58,8 +58,6 @@ private:
 
     bool removeActiveFrame();
     bool renderFrame (int i);
-    QList<Platform> strToPlatform (QStringList platformStrList);
-
 private slots:
     void showGeneral();
     void showVersionMenager();

@@ -1,5 +1,5 @@
 # Name of the project
-TARGET = template-Qt
+TARGET = launcher
 
 # Application (executable)
 TEMPLATE = app

@@ -25,7 +25,7 @@ bool Application::initNet(Network *network)
 {
     if (network == NULL)
     {
-        net = new Network ();
+        net = new Network (cfgLauncher.get("DomainServer").at(0),QString(cfgLauncher.get("PortServer").at(0)).toUShort());
         return false;
     }
     net = network;
@@ -89,7 +89,7 @@ bool Application::initUiApp()
         uiApp->setIcon(appIcon);
         QStringList supportLanguage = actualVersion->getSupportLanguage();
         uiApp->setSupportLanguage(&supportLanguage);
-        QList<Platform> supportPlatform = actualVersion->getSupportPlatform();
+        QList<PlatformType> supportPlatform = actualVersion->getSupportPlatform();
         uiApp->setPlatforms(&supportPlatform);
         QString recSysReq = actualVersion->getRecommendedSystemRequirements();
         uiApp->setRecommendedSystemRequirements(&recSysReq);
@@ -196,9 +196,9 @@ void Application::reciveAppInfo(QList<NetworkData> *response)
     appCfg->save();
 }
 
-QList<Platform> Application::strToPlatform (QStringList platformStrList)
+QList<PlatformType> Application::strToPlatform(QStringList platformStrList)
 {
-    QList<Platform> resault;
+    QList<PlatformType> resault;
     foreach (QString tempList, platformStrList)
     {
         if (tempList == "PC") resault << PC;

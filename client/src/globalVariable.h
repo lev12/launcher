@@ -5,6 +5,7 @@
 #include "config.h"
 #include "log.h"
 #include "versionType.h"
+#include "platformType.h"
 
 const float number_version_launcher = 1.0;
 static Config cfgLauncher = Config(".\\conf.cfg");
@@ -35,16 +36,6 @@ enum Language
     Malay,
     Persian,
     Dutch
-};
-
-enum Platform
-{
-    PC,
-    MAC,
-    Android,
-    IOS,
-    XBox,
-    PlayStation
 };
 
 struct appInfo

@@ -33,7 +33,7 @@ VersionType AbstractVersion::getVersionType()
 
 bool AbstractVersion::getIsInstall()
 {
-    return verIsInstall;
+    return *verIsInstall;
 }
 
 QString AbstractVersion::getAppName()
@@ -70,7 +70,11 @@ QString AbstractVersion::versionTypeToString (VersionType type)
 VersionType AbstractVersion::stringToVersionType (QString str)
 {
     VersionType type;
-    if (str == "pre-alpha")
+    if (str == "pre_alpha")
+    {
+        type = pre_alpha;
+    }
+    else if (str == "pre-alpha")
     {
         type = pre_alpha;
     }
@@ -94,18 +98,17 @@ VersionType AbstractVersion::stringToVersionType (QString str)
     return type;
 }
 
-QList<Platform> AbstractVersion::strToPlatform (QStringList platformStrList)
+PlatformType AbstractVersion::stringToPlatform (QString platformStr)
 {
-    QList<Platform> resault;
-    foreach (QString tempList, platformStrList)
-    {
-        if (tempList == "PC") resault << PC;
-        else if (tempList == "MAC") resault << MAC;
-        else if (tempList == "Android") resault << Android;
-        else if (tempList == "IOS") resault << IOS;
-        else if (tempList == "XBox") resault << XBox;
-        else if (tempList == "PlayStation") resault << PlayStation;
-    }
+    PlatformType resault;
+    if (platformStr == "PC") resault = PC;
+    else if (platformStr == "MAC") resault = MAC;
+    else if (platformStr == "Android") resault = Android;
+    else if (platformStr == "IOS") resault = IOS;
+    else if (platformStr == "XBox") resault = XBox;
+    else if (platformStr == "PlayStation") resault = PlayStation;
+    else resault = Null;
+
     return resault;
 }
 
@@ -127,10 +130,24 @@ bool AbstractVersion::initVerName(QString VerName)
 
     QStringList tempVerNameList;
     tempVerNameList = VerName.split("_");
-    if(tempVerNameList.length() >= 1)
+    if (tempVerNameList.length() > 1 && tempVerNameList.at(0) == "pre" && QString(tempVerNameList.at(1)).remove(5,QString(tempVerNameList.at(1)).length()) == "alpha")
+    {
+        tempVerNameList.pop_front();
+        if (QString(tempVerNameList.at(0)).remove(0,5).length() > 0)
+        {
+            tempVerNameList.replace(0,QString(tempVerNameList.at(0)).remove(0,5));
+        }
+        else
+        {
+            tempVerNameList.pop_front();
+        }
+
+        tempVerNameList.push_front("pre-alpha");
+    }
+    if(tempVerNameList.length() <= 1)
     {
         tempVerNameList = VerName.split(" ");
-        if (tempVerNameList.length() >= 1)
+        if (tempVerNameList.length() <= 1)
         {
             return false;
         }

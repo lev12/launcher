@@ -18,7 +18,7 @@ Config::Config(QString path)
 
 Config::~Config()
 {
-    save();
+    //save();
 }
 
 bool Config::create(QString path)

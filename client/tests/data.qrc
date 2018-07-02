@@ -1,0 +1,25 @@
+<RCC>
+    <qresource>
+        <file>versionTestData/alpha_96/simulatorelectricity.exe</file>
+        <file>versionTestData/alpha_96/version_config.cfg</file>
+        <file>versionTestData/beta 64/simulatorelectricity.exe</file>
+        <file>versionTestData/beta 64/version_config.cfg</file>
+        <file>versionTestData/beta_566/simulatorelectricity.exe</file>
+        <file>versionTestData/beta_566/version_config.cfg</file>
+        <file>versionTestData/pre_alpha 27/simulatorelectricity.exe</file>
+        <file>versionTestData/pre_alpha 27/version_config.cfg</file>
+        <file>versionTestData/pre_alpha_4/simulatorelectricity.exe</file>
+        <file>versionTestData/pre_alpha_4/version_config.cfg</file>
+        <file>versionTestData/pre-alpha_6/simulatorelectricity.exe</file>
+        <file>versionTestData/pre-alpha_6/version_config.cfg</file>
+        <file>versionTestData/release 34/simulatorelectricity.exe</file>
+        <file>versionTestData/release 34/version_config.cfg</file>
+        <file>versionTestData/release_58/simulatorelectricity.exe</file>
+        <file>versionTestData/release_58/version_config.cfg</file>
+        <file>versionTestData/launcher config.cfg</file>
+        <file>versionTestData/pre-alpha 66/simulatorelectricity.exe</file>
+        <file>versionTestData/pre-alpha 66/version_config.cfg</file>
+        <file>versionTestData/alpha 88/simulatorelectricity.exe</file>
+        <file>versionTestData/alpha 88/version_config.cfg</file>
+    </qresource>
+</RCC>

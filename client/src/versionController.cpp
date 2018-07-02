@@ -227,7 +227,7 @@ QList <Version*> VersionController::sortVersionList()
         QString tempStrName = temp->getFullName();
         QString type = tempStrName.split(" ").at(0);
 
-        if      (type == "pre-alpha")   preAlpha.operator <<(versions.at(i));
+        if      (type == "pre_alpha")   preAlpha.operator <<(versions.at(i));
         else if (type == "alpha")       Alpha.operator <<(versions.at(i));
         else if (type == "beta")        Beta.operator <<(versions.at(i));
         else if (type == "release")     Release.operator <<(versions.at(i));

@@ -14,7 +14,7 @@ MainWindow::MainWindow(QWidget *parent) :
     setCentralWidget(ui->verticalFrame);
 
     menugeneral = new MenuGeneral();
-    network = new Network(log);
+    network = new Network(cfgLauncher.get("DomainServer").at(0),QString(cfgLauncher.get("PortServer").at(0)).toUShort(),log);
     appCon = new ApplicationController (QString(".\\data"),network);
     ui->general->addWidget(menugeneral);
     ui->general->addWidget(appCon->getAppList()->at(0)->getUiApplication());

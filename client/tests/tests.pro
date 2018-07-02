@@ -16,7 +16,23 @@ CONFIG -= qt # no Qt libraries used
 CONFIG += qt warn_on depend_includepath testcase
 
 # Include files for this project
-SOURCES +=  tst_testcase.cpp
+SOURCES += \  
+    main.cpp \
+    versiondata.cpp \
+    versionInstallTest.cpp \
+    versionNoInstallTest.cpp \
+    abstractVersionTest.cpp \
+    networkTest.cpp
 
 # Use the dynamically linked library
 LIBS += -L../src -ltemplate
+
+HEADERS += \
+    versiondata.h \
+    abstractVersionTest.h \
+    versionNoInstallTest.h \
+    versionInstallTest.h \
+    networkTest.h
+
+RESOURCES += \
+    data.qrc
