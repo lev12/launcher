@@ -15,9 +15,9 @@ private:
     int countLine = 10;
     QFile *configFile;
 
-public:
-    const QString errorResponse = "false";
 
+public:
+    static const QString errorResponse;
     QStringList *configKeyName;
     QStringList *configKeyValue;
 
@@ -30,6 +30,7 @@ public:
     bool set(QString parametr, QString value);
     bool isEmpty ();
     void clear ();
-};
 
+    static bool isError (QString &value);
+};
 #endif // CONFIG_H

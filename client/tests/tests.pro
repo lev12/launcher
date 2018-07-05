@@ -22,7 +22,8 @@ SOURCES += \
     versionInstallTest.cpp \
     versionNoInstallTest.cpp \
     abstractVersionTest.cpp \
-    networkTest.cpp
+    networkTest.cpp \
+    versionControllerTest.cpp
 
 # Use the dynamically linked library
 LIBS += -L../src -ltemplate
@@ -32,7 +33,8 @@ HEADERS += \
     abstractVersionTest.h \
     versionNoInstallTest.h \
     versionInstallTest.h \
-    networkTest.h
+    networkTest.h \
+    versionControllerTest.h
 
 RESOURCES += \
     data.qrc

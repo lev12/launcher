@@ -27,7 +27,6 @@
 
 #include "globalVariable.h"
 #include "log.h"
-#include "config.h"
 
 #include "requestActualVersion.h"
 #include "requestAppicationInfo.h"
@@ -66,7 +65,6 @@ public:
     static bool pingServer (QString adderss, qint16 port);
 private:
     Log *log;
-    Config *cfgData;
     QNetworkConfigurationManager *netConfig;
     bool *isConnect;
     unsigned short *portServer;

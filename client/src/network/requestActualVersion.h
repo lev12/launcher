@@ -5,6 +5,7 @@
 
 class requestActualVersion : public AbstractRequestForApplication
 {
+
 public:
     requestActualVersion(QString *serverAddress, unsigned short serverPort,QString token,QString app);
     virtual bool parse (QByteArray data);

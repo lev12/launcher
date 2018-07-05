@@ -3,7 +3,7 @@ TARGET = template
 
 # Library, so that the application and the tests can use it
 TEMPLATE = lib
-
+CONFIG += c++14
 # Include default settings
 include(../defaults.pri)
 

@@ -1,5 +1,5 @@
 #include "config.h"
-
+const QString Config::errorResponse = "false";
 Config::Config(QString path)
 {
    configKeyName = new QStringList();
@@ -133,6 +133,15 @@ bool Config::isEmpty()
     {
         return false;
     }
+}
+
+bool Config::isError(QString &value)
+{
+    if (value == errorResponse)
+    {
+        return true;
+    }
+    return false;
 }
 
 void Config::clear()

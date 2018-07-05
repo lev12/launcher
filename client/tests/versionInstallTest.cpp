@@ -77,8 +77,8 @@ void VersionInstallTest::test_init_data()
 
 void VersionInstallTest::test_init()
 {
-    Config cfgL(":/data/versionTestData/launcher config.cfg");
-    Network *network = new Network (cfgLauncher.get("DomainServer").at(0),QString(cfgLauncher.get("PortServer").at(0)).toUShort());
+    Config cfgL(":/versionTestData/launcher config.cfg");
+    Network *network = new Network (cfgL.get("DomainServer").at(0),QString(cfgL.get("PortServer").at(0)).toUShort());
     QString appName = versionData::randomString();
     qDebug () << "app name:     " << appName;
 
