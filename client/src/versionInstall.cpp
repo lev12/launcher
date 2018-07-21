@@ -116,7 +116,7 @@ bool VersionInstall::requestConfigFromNetwork(Network *network)
     {
         return false;
     }
-    AbstractRequest *request = network->getVerInfo(*appName,getFullName());
+    AbstractRequest *request = network->getVersionInfo(*appName,getFullName());
     connect(request, AbstractRequest::replyServer, this, reciveConfig);
     return true;
 }
@@ -126,7 +126,7 @@ void VersionInstall::reciveConfig(QList<NetworkData> *response)
     verConfig->clear();
     foreach (NetworkData netData, *response)
     {
-        verConfig->set(netData.key,netData.value);
+        verConfig->set(netData.key,netData.value.toString());
     }
     verConfig->save();
 }

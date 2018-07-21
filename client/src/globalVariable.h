@@ -12,12 +12,6 @@ static Config cfgLauncher = Config(".\\conf.cfg");
 const QString _Data = "data/";
 static QString serverDomain = "electrical-simulator.ru";
 
-struct NetworkData
-{
-    QString key;
-    QString value;
-};
-
 enum Language
 {
     Chinese,

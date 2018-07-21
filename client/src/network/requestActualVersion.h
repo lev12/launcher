@@ -8,6 +8,7 @@ class requestActualVersion : public AbstractRequestForApplication
 
 public:
     requestActualVersion(QString *serverAddress, unsigned short serverPort,QString token,QString app);
+    void send();
     virtual bool parse (QByteArray data);
 private:
     const QString method = "actualVersion";

@@ -6,8 +6,9 @@
 #include <QFileInfo>
 #include <QObject>
 
-#include "version.h"
 #include "globalVariable.h"
+#include "versionInstall.h"
+#include "versionNoInstall.h"
 #include "network/network.h"
 
 class VersionController : public QObject
@@ -15,30 +16,30 @@ class VersionController : public QObject
     Q_OBJECT
 public:
     VersionController(QDir &pathToFolderWithAllVersions, Network &network, QString &AppName);
-    QList <Version*> getFullListVersion();
+    QList <AbstractVersion*> getFullListVersion();
     QStringList* getFullListVersionStrList();
-    QList <Version*> getListInsallVersion();
-    QList <Version*> getListVersionOnServer();
-    Version *getVersion(QString verName);
+    QList <VersionInstall*> getListInsallVersion();
+    QList <VersionNoInstall*> getListVersionOnServer();
+    AbstractVersion *getVersion(QString verName);
 
-    Version *getActualVersion ();
+    AbstractVersion *getActualVersion ();
     QString getActualVersionStr();
-    Version *getLsatCurrentVersion();
+    VersionInstall *getLsatCurrentVersion();
 
     void setLastCurrentVesion (QString verName);
 
     bool deleteAllVersion();
     bool updateVersionsList();
-    bool downloadVersion(Version ver);
+    bool downloadVersion(VersionNoInstall ver);
 
     bool isFoundVersions ();
 private:
-    QList <Version*> *versionsList;
+    QList <AbstractVersion*> *versionsList;
     QFileInfo *folderWithAllVersions;
     Network *net;
     QString *appName;
-    Version *actualVersion;
-    Version *lastCurrentVersion;
+    AbstractVersion *actualVersion;
+    VersionInstall *lastCurrentVersion;
 
     bool initAppName (QString *name);
     bool initVersionController (QString &pathToFolder);
@@ -49,7 +50,7 @@ private:
 
     bool fillingActualVersion();
     bool fillingVersionList();
-    QList<Version *> sortVersionList();
+    QList<AbstractVersion *> sortVersionList();
 
 private slots:
     void setActualVersionNet (QList<NetworkData> *response);

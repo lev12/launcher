@@ -83,18 +83,18 @@ bool Application::initUiApp()
 {
     if (verCon == NULL) return false;
     uiApp = new UiApplication (NULL, appName);
-    Version *actualVersion = verCon->getLsatCurrentVersion();
+    AbstractVersion *actualVersion = verCon->getLsatCurrentVersion();
     if  (actualVersion != NULL)
     {
         uiApp->setIcon(appIcon);
-        QStringList supportLanguage = actualVersion->getSupportLanguage();
+        /*QStringList supportLanguage = actualVersion->getSupportLanguage();
         uiApp->setSupportLanguage(&supportLanguage);
         QList<PlatformType> supportPlatform = actualVersion->getSupportPlatform();
         uiApp->setPlatforms(&supportPlatform);
         QString recSysReq = actualVersion->getRecommendedSystemRequirements();
         uiApp->setRecommendedSystemRequirements(&recSysReq);
         QString minSysReq = actualVersion->getMinimumSystemRequirements();
-        uiApp->setMinimumSystemRequirements(&minSysReq);
+        uiApp->setMinimumSystemRequirements(&minSysReq);*/
         uiApp->setVersionList(verCon->getFullListVersionStrList());
         QString currenVer = actualVersion->getFullName();
         uiApp->setCurrentVersion(&currenVer);
@@ -190,8 +190,8 @@ void Application::reciveAppInfo(QList<NetworkData> *response)
     foreach (NetworkData data, *response)
     {
         QString key = data.key;
-        QString value = data.value;
-        appCfg->set(key,value);
+        QVariant value = data.value;
+        appCfg->set(key,value.toString());
     }
     appCfg->save();
 }

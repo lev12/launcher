@@ -52,6 +52,16 @@ AbstractRequest* Network::getVersionList(QString appName)
     return NULL;
 }
 
+AbstractRequest *Network::getApplicationList()
+{
+    if (*isConnect)
+    {
+        AbstractRequest *getVerList = new RequestApplicationList (addressServer,*portServer,*token);
+        return getVerList;
+    }
+    return NULL;
+}
+
 AbstractRequest* Network::getActualVersion (QString appName)
 {
     if (*isConnect)
@@ -92,11 +102,11 @@ AbstractRequest* Network::getCheckVersion(QString appName, QString verName)
     return NULL;
 }
 
-AbstractRequest *Network::getVersion(QString appName, QString verName)
+AbstractRequest *Network::getVersion(QString &appName, QString &verName, QDir &saveFolderPath)
 {
     if (*isConnect)
     {
-        AbstractRequest *getVer = new RequestVersion (addressServer,*portServer,*token,&appName,&verName);
+        AbstractRequest *getVer = new RequestVersion (*addressServer,*portServer,*token,appName,verName,saveFolderPath);
         return getVer;
     }
     return NULL;
@@ -122,12 +132,12 @@ AbstractRequest *Network::getFile(QUrl url, QFileInfo file)
     return NULL;
 }*/
 
-AbstractRequest *Network::getVerInfo(QString appName, QString verName)
+AbstractRequest *Network::getVersionInfo(QString appName, QString verName)
 {
     if (*isConnect)
     {
-        AbstractRequest *getVerInfo = new RequestVersionInfo (addressServer,*portServer,*token,appName,verName);
-        return getVerInfo;
+        AbstractRequest *getVersionInfo = new RequestVersionInfo (addressServer,*portServer,*token,appName,verName);
+        return getVersionInfo;
     }
     return NULL;
 }

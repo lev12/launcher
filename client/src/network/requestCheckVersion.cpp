@@ -24,7 +24,7 @@ bool RequestCheckVersion::parse(QByteArray data)
         QList<NetworkData> *response;
         NetworkData responseData;
         responseData.key = rx.cap(1);
-        responseData.value = QString(isFoundVersion);
+        responseData.value = QVariant(isFoundVersion);
         response = new QList<NetworkData>;
         response->push_back(responseData);
 

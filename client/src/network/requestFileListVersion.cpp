@@ -22,7 +22,7 @@ bool RequestFileListVersion::parse(QByteArray data)
         {
             NetworkData netDatatemp;
             netDatatemp.key = QString::number(i);
-            netDatatemp.value = fileList.at(i);
+            netDatatemp.value = QVariant(fileList.at(i));
 
             response->operator <<(netDatatemp);
         }

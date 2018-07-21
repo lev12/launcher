@@ -9,7 +9,7 @@ public:
     RequestApplicationList(QString *serverAddress, int serverPort, QString token);
     virtual bool parse (QByteArray data);
 private:
-    const QString method = "appicationList";
+    const QString method = "applicationList";
 };
 
 #endif // REQUESTAPPLICATIONLIST_H

@@ -1,8 +1,8 @@
 #include "requestVersion.h"
 
-RequestVersion::RequestVersion(QString *serverAddress, unsigned short serverPort, QString Token, QString *app, QString *version) : AbstractRequest (serverAddress,serverPort)
+RequestVersion::RequestVersion(QString &serverAddress, unsigned short &serverPort, QString &Token , QString &app, QString &ver, QDir &saveFolderPath) : AbstractRequest (&serverAddress,serverPort)
 {
-    init (*version, *app);
+    init (ver, app, saveFolderPath);
     token = new QString (Token);
     getCheckVersion(verName, appName);
 }
@@ -14,17 +14,11 @@ bool RequestVersion::parse(QByteArray data)
     throw errorstr;
 }
 
-bool RequestVersion::init(QString versionName, QString applicationName)
+bool RequestVersion::init(QString versionName, QString applicationName, QDir saveFolderPath)
 {
     verName = new QString (versionName);
     appName = new QString (applicationName);
-
-    QString pathVersion = ".//";
-    pathVersion.append(_Data);
-    pathVersion.append(applicationName);
-    pathVersion.append("/");
-    pathVersion.append(versionName);
-    verPath = new QDir (pathVersion);
+    saveFolder = new QDir (saveFolderPath);
 
     return true;
 }
@@ -74,20 +68,30 @@ QUrl RequestVersion::absoluteUrlPath(QString reletiveFilePath)
 
 QString RequestVersion::absoluteFilePath(QString reletiveFilePath)
 {
-    QString resault (".//");
-    resault.append(_Data);
-    resault.append(*appName);
-    resault.append("/");
-    resault.append(*verName);
-    resault.append("/");
-    resault.append(reletiveFilePath);
+    QString resault ("");
+    if (saveFolder->exists())
+    {
+        resault.append(saveFolder->absolutePath());
+        resault.append("/");
+        resault.append(reletiveFilePath);
+    }
+    else
+    {
+        resault.append(".//");
+        resault.append(_Data);
+        resault.append(*appName);
+        resault.append("/");
+        resault.append(*verName);
+        resault.append("/");
+        resault.append(reletiveFilePath);
+    }
     qDebug () << resault;
     return resault;
 }
 
 void RequestVersion::receiveCheckVersion(QList<NetworkData> *response)
 {
-    QString isVerStr = response->at(0).value;
+    QString isVerStr = response->at(0).value.toString();
     qDebug () << isVerStr;
     bool isVer;
     if (isVerStr == "true")
@@ -130,10 +134,10 @@ void RequestVersion::receiveVersionInfo(QList<NetworkData> *response)
     foreach (NetworkData netdatatemp, *response)
     {
         verInfoKey << netdatatemp.key;
-        verInfoValue << netdatatemp.value;
+        verInfoValue << netdatatemp.value.toString();
     }
 
-    QString pathCfgVersion = verPath->absolutePath();
+    QString pathCfgVersion = saveFolder->absolutePath();
     pathCfgVersion.append("/version_config.cfg");
     Config cfgVersion (pathCfgVersion);
     for (int i(0); i < verInfoKey.length(); i++)
@@ -141,6 +145,7 @@ void RequestVersion::receiveVersionInfo(QList<NetworkData> *response)
         cfgVersion.set(verInfoKey.at(i), verInfoValue.at(i));
     }
     cfgVersion.save();
+    qDebug () << "ihuu8uhuhiuhuh";
     getFileListVersion(verName, appName);
 }
 
@@ -152,9 +157,9 @@ void RequestVersion::receiveFileListVersion(QList<NetworkData> *response)
 
     foreach (NetworkData netdatatemp, *response)
     {
-        QString tempFileReletivePath (netdatatemp.value);
-        QString restempFileReletivePath = tempFileReletivePath.split("\\/").join("/");
-        verFileReletivePathList->operator <<(restempFileReletivePath);
+        QString tempFileReletivePath (netdatatemp.value.toString());
+        //QString restempFileReletivePath = tempFileReletivePath.split("/").join("/");
+        verFileReletivePathList->operator <<(netdatatemp.value.toString());
     }
     getFile ();
 }

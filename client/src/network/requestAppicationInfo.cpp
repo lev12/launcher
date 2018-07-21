@@ -9,21 +9,27 @@ bool requestapplicationInfo::parse(QByteArray data)
 {
     QString data_str = data;
     data_str = deleteForRx (data_str);
-    qDebug () << data;
+    qDebug () << data_str;
+
     QRegExp rx ("response:info:(.+)");
     if (rx.indexIn(data_str) != -1)
     {
         QList <NetworkData> *response = new QList <NetworkData> ();
-        QStringList verinfo = QString(rx.cap(1)).split(",");
-        foreach (QString infotemp, verinfo) {
-            NetworkData tempData;
-            tempData.key = "info";
-            tempData.value = infotemp;
 
-            response->push_back(tempData);
+        QJsonDocument appinfoDoc = QJsonDocument::fromJson(data);\
+        QJsonObject appinfoRootObj = appinfoDoc.object();\
+        QJsonValue appinfoResponse = appinfoRootObj.value("response");
+        QJsonValue appinfoValue = appinfoResponse.toObject().value("info");
+        QJsonArray appinfoArray = appinfoValue.toArray();
+        for (int i(0);i < appinfoArray.count();i++)
+        {
+            NetworkData netData;
+            QVariantMap tempInfoMap = appinfoArray.at(i).toObject().toVariantMap();
+            netData.key = tempInfoMap.keys().at(0);
+            netData.value = tempInfoMap.values().at(0);
+            response->operator <<(netData);
         }
         replyServer(response);
-        qDebug () << response;
         return true;
     }
     return false;

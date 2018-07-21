@@ -20,7 +20,7 @@ bool RequestVersionsList::parse(QByteArray data)
         {
             NetworkData netData;
             netData.key = "versionList";
-            netData.value = _toSpace(temp);
+            netData.value = QVariant(_toSpace(temp));
             response->operator <<(netData);
         }
 

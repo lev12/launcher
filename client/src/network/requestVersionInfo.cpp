@@ -15,13 +15,19 @@ bool RequestVersionInfo::parse(QByteArray data)
     if (rx.indexIn(data_str) != -1)
     {
         QList <NetworkData> *response = new QList <NetworkData> ();
-        QStringList verinfo = QString(rx.cap(1)).split(",");
-        foreach (QString infotemp, verinfo) {
-            NetworkData tempData;
-            tempData.key = "info";
-            tempData.value = infotemp;
 
-            response->push_back(tempData);
+        QJsonDocument verinfoDoc = QJsonDocument::fromJson(data);\
+        QJsonObject verinfoRootObj = verinfoDoc.object();\
+        QJsonValue verinfoResponse = verinfoRootObj.value("response");
+        QJsonValue verinfoValue = verinfoResponse.toObject().value("info");
+        QJsonArray verinfoArray = verinfoValue.toArray();
+        for (int i(0);i < verinfoArray.count();i++)
+        {
+            NetworkData netData;
+            QVariantMap tempInfoMap = verinfoArray.at(i).toObject().toVariantMap();
+            netData.key = tempInfoMap.keys().at(0);
+            netData.value = tempInfoMap.values().at(0);
+            response->operator <<(netData);
         }
         replyServer(response);
         return true;

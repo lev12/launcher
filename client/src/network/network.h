@@ -15,10 +15,6 @@
 #include <QMap>
 
 #include <QNetworkAccessManager>
-#include <QJsonArray>
-#include <QJsonValue>
-#include <QJsonObject>
-#include <QJsonDocument>
 #include <QUrl>
 #include <QNetworkRequest>
 #include <QNetworkReply>
@@ -53,13 +49,14 @@ public:
     //appName all space _
     AbstractRequest* getActualVersion     (QString appName);
     AbstractRequest* getVersionList       (QString appName);
+    AbstractRequest* getApplicationList   ();
     //AbstractRequest* getSizeVersion       (QString appName, QString verName);
     AbstractRequest* getFileList          (QString appName, QString verName);
     AbstractRequest* getCheckVersion      (QString appName, QString verName);
-    AbstractRequest* getVersion (QString appName, QString verName);
+    AbstractRequest* getVersion (QString &appName, QString &verName, QDir &saveFolderPath);
     AbstractRequest* getFile       (QUrl url, QFileInfo file);
     //AbstractRequest* getFileSize          (QString appName, QString verName, QString file);
-    AbstractRequest* getVerInfo           (QString appName, QString verName);
+    AbstractRequest* getVersionInfo           (QString appName, QString verName);
     AbstractRequest* getAppInfo           (QString appName);
 
     static bool pingServer (QString adderss, qint16 port);

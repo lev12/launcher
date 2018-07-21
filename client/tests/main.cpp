@@ -6,7 +6,8 @@
 int main(int argc, char *argv[])
 {
     QCoreApplication app(argc, argv);
-    /*VersionInstallTest *testIVer = new VersionInstallTest ();
+    qRegisterMetaType<QList<NetworkData>*>("QList<NetworkData>*");
+    /*ersionInstallTest *testIVer = new VersionInstallTest ();
     QTest::qExec (testIVer,argc, argv);
     VersionNoInstallTest *testNIVer = new VersionNoInstallTest ();
     QTest::qExec (testNIVer,argc, argv);

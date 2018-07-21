@@ -5,7 +5,7 @@
 #include "network/network.h"
 #include "versionType.h"
 #include "platformType.h"
-
+#include <QTranslator>
 class AbstractVersion : public QObject
 {
     Q_OBJECT
@@ -18,15 +18,14 @@ public:
     bool getIsInstall ();
     QString getAppName ();
 
+    static QString versionTypeToString (VersionType type);
+    static VersionType stringToVersionType (QString str);
+    static PlatformType stringToPlatform(QString platformStr);
 protected:
     QString *appName;
     int *verNumber;
     VersionType *verType;
     bool *verIsInstall;
-
-    static QString versionTypeToString (VersionType type);
-    static VersionType stringToVersionType (QString str);
-    static PlatformType stringToPlatform(QString platformStr);
 
     void initIsInatall (bool install);
     void initAppName (QString AppName);

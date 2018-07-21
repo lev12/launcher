@@ -43,7 +43,7 @@ bool VersionController::initVersionsList()
 {
     if (versionsList == NULL)
     {
-        versionsList = new QList <Version*> ();
+        versionsList = new QList <AbstractVersion*> ();
     }
     return true;
 }
@@ -52,18 +52,18 @@ bool VersionController::initActualVersion()
 {
     if (actualVersion == NULL)
     {
-        actualVersion = new Version (*appName,net);
+        actualVersion = new AbstractVersion ();
     }
     return true;
 }
 
 bool VersionController::initLastCurrentVersion()
 {
-    if (lastCurrentVersion == NULL)
+    /*if (lastCurrentVersion == NULL)
     {
-        lastCurrentVersion = new Version (*appName,net);
+        lastCurrentVersion = new VersionInstall;
     }
-    return true;
+    return true;*/
 }
 
 bool VersionController::fillingActualVersion()
@@ -78,10 +78,10 @@ void VersionController::setActualVersionNet(QList<NetworkData> *response)
 {
     if (response->length() == 0) return;
 
-    actualVersion = getVersion(response->at(0).value);
+    actualVersion = getVersion(response->at(0).value.toString());
 }
 
-QList <Version*> VersionController::getFullListVersion()
+QList<AbstractVersion *> VersionController::getFullListVersion()
 {
     return *versionsList;
 }
@@ -90,7 +90,7 @@ QStringList* VersionController::getFullListVersionStrList()
 {
     QStringList* resaultList = new QStringList();
 
-    foreach (Version *tempResList, *versionsList)
+    foreach (AbstractVersion *tempResList, *versionsList)
     {
         resaultList->operator <<(tempResList->getFullName());
     }
@@ -98,39 +98,39 @@ QStringList* VersionController::getFullListVersionStrList()
     return resaultList;
 }
 
-QList <Version*> VersionController::getListInsallVersion()
+QList<VersionInstall *> VersionController::getListInsallVersion()
 {
-    QList <Version*> result;
+    QList <VersionInstall*> result;
 
-    foreach (Version *tempVer, *versionsList)
+    foreach (AbstractVersion *tempVer, *versionsList)
     {
         if (tempVer->getIsInstall())
         {
-            result.operator <<(tempVer);
+            result.operator <<(static_cast<VersionInstall*>(tempVer));
         }
     }
 
     return result;
 }
 
-QList <Version*> VersionController::getListVersionOnServer()
+QList<VersionNoInstall *> VersionController::getListVersionOnServer()
 {
-    QList <Version*> result;
+    QList <VersionNoInstall*> result;
 
-    foreach (Version *tempVer, *versionsList)
+    foreach (AbstractVersion *tempVer, *versionsList)
     {
         if (!tempVer->getIsInstall())
         {
-            result.operator <<(tempVer);
+            result.operator <<(static_cast<VersionNoInstall*>(tempVer));
         }
     }
 
     return result;
 }
 
-Version* VersionController::getVersion(QString verName)
+AbstractVersion* VersionController::getVersion(QString verName)
 {
-    foreach (Version *tempVer, *versionsList)
+    foreach (AbstractVersion *tempVer, *versionsList)
     {
         if (tempVer->getFullName() == verName)
         {
@@ -140,7 +140,7 @@ Version* VersionController::getVersion(QString verName)
     return NULL;
 }
 
-Version *VersionController::getActualVersion()
+AbstractVersion *VersionController::getActualVersion()
 {
     return actualVersion;
 }
@@ -150,7 +150,7 @@ QString VersionController::getActualVersionStr()
     return actualVersion->getFullName();
 }
 
-Version *VersionController::getLsatCurrentVersion()
+VersionInstall *VersionController::getLsatCurrentVersion()
 {
     if (lastCurrentVersion == NULL)
     {
@@ -161,14 +161,14 @@ Version *VersionController::getLsatCurrentVersion()
 
 void VersionController::setLastCurrentVesion(QString verName)
 {
-    lastCurrentVersion = getVersion(verName);
+    lastCurrentVersion = static_cast<VersionInstall*>(getVersion(verName));
 }
 
 bool VersionController::deleteAllVersion()
 {
-    foreach (Version *tempVer, *versionsList)
+    foreach (AbstractVersion *tempVer, *versionsList)
     {
-        tempVer->verDeleteFile();
+        static_cast<VersionInstall*>(tempVer)->deleteAllFile();
     }
 
     return true;
@@ -180,9 +180,9 @@ bool VersionController::updateVersionsList()
     return true;
 }
 
-bool VersionController::downloadVersion(Version ver)
+bool VersionController::downloadVersion(VersionNoInstall ver)
 {
-    net->getVersion("Electrical_Simulator", ver.getFullName());
+    //net->getVersion("Electrical_Simulator", ver.getFullName());
     return false;
 }
 
@@ -201,29 +201,28 @@ bool VersionController::fillingVersionList()
     foreach (QString entry, lstDirs)
     {
         QString entryAbsPath = verFolder.absolutePath() + "/" + entry;
-        if (Version::checkVersion(QFileInfo (entryAbsPath)))
+        if (VersionInstall::checkVersion(QFileInfo (entryAbsPath)))
         {
-            Version *vertemp = new Version (*appName, net);
-            vertemp->initInstallVersion(entryAbsPath);
+            VersionInstall *vertemp = new VersionInstall (*appName,entryAbsPath,net);
             versionsList->operator <<(vertemp);
         }
     }
     return false;
 }
 
-QList <Version*> VersionController::sortVersionList()
+QList<AbstractVersion *> VersionController::sortVersionList()
 {
-    QList <Version*> returnVersionsList;
+    QList <AbstractVersion*> returnVersionsList;
 
-    QList <Version*> versions = *versionsList;
-    QList <Version*> preAlpha;
-    QList <Version*> Alpha;
-    QList <Version*> Beta;
-    QList <Version*> Release;
+    QList <AbstractVersion*> versions = *versionsList;
+    QList <AbstractVersion*> preAlpha;
+    QList <AbstractVersion*> Alpha;
+    QList <AbstractVersion*> Beta;
+    QList <AbstractVersion*> Release;
 
     for (int i(0); i < versions.length(); i++)
     {
-        Version *temp = versions.at(i);
+        AbstractVersion *temp = versions.at(i);
         QString tempStrName = temp->getFullName();
         QString type = tempStrName.split(" ").at(0);
 

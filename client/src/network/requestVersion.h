@@ -12,10 +12,10 @@
 class RequestVersion : public AbstractRequest
 {
 public:
-    RequestVersion(QString *serverAddress, unsigned short serverPort,QString Token ,QString *app, QString *version);
+    RequestVersion(QString &serverAddress, unsigned short &serverPort, QString &Token , QString &app, QString &ver, QDir &saveFolder);
     virtual bool parse (QByteArray data);
 private:
-    bool init (QString versionName, QString applicationName);
+    bool init (QString versionName, QString applicationName, QDir saveFolder);
 
     bool getCheckVersion (QString *VerName, QString *AppName);
     bool getVersionInfo (QString *VerName, QString *AppName);
@@ -27,10 +27,10 @@ private:
 
     QString *verName;
     QString *appName;
-    QDir *verPath;
     int *indexDownloadFile;
     QStringList  *verFileReletivePathList;
     QString *token;
+    QDir *saveFolder;
 private slots:
     void receiveCheckVersion (QList<NetworkData> *response);
     void receiveVersionInfo (QList<NetworkData> *response);

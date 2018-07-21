@@ -13,12 +13,13 @@ bool requestActualVersion::parse(QByteArray data)
 
     if (rxClv.indexIn(data_str) != -1)
     {
-        QString actualVersionOnServer = QString (rxClv.cap(1));
+        QVariant actualVersionOnServer = QVariant (rxClv.cap(1));
 
         QList <NetworkData> *response = new QList <NetworkData> ();
         NetworkData netData;
-        netData.key = "versionList";
+        netData.key = "actualVersion";
         netData.value = actualVersionOnServer;
+        response->operator <<(netData);
 
         replyServer(response);
         return true;

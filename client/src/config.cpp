@@ -7,7 +7,10 @@ Config::Config(QString path)
 
    if (!QFile::exists(path))
    {
-       create(path);
+       if (!create(path))
+       {
+           qDebug () << "fail created file" << path;
+       }
    }
    else
    {
@@ -23,6 +26,8 @@ Config::~Config()
 
 bool Config::create(QString path)
 {
+    QDir makeDir;
+    makeDir.mkpath(QFileInfo (path).absolutePath());
     QFile cFile(path);
     if (!(cFile.open(QFile::WriteOnly | QFile::Text))) {
         return false;

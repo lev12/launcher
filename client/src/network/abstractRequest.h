@@ -8,8 +8,12 @@
 #include <QNetworkAccessManager>
 #include <QNetworkRequest>
 #include <QNetworkReply>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QJsonArray>
 
 #include "globalVariable.h"
+#include "networkData.h"
 
 class AbstractRequest : public QObject
 {
@@ -26,9 +30,9 @@ public:
     bool sendRequest(QString url);
     bool sendRequest(QUrl url);
 
-    QString _toSpace(QString str);
-    QString spaceTo_(QString str);
-    QString deleteForRx (QString data);
+    static QString _toSpace(QString str);
+    static QString spaceTo_(QString str);
+    static QString deleteForRx (QString data);
 
     QNetworkAccessManager *netManager;
 private:

@@ -25,12 +25,8 @@ SOURCES += mainwindow.cpp \
     ui/menuGeneral.cpp \
     application.cpp \
     config.cpp \
-    network/downloader.cpp \
-    network/downloaderForFile.cpp \
-    network/downloaderForVersion.cpp \
     log.cpp \
     network/network.cpp \
-    version.cpp \
     versionController.cpp \
     electricalsimulator.cpp \
     ui/uiapplication.cpp \
@@ -71,10 +67,6 @@ HEADERS  += mainwindow.h \
     network/network.h \
     application.h \
     config.h \
-    network/downloader.h \
-    network/downloaderForFile.h \
-    network/downloaderForVersion.h \
-    version.h \
     versionController.h \
     electricalsimulator.h \
     ui/uiapplication.h \
@@ -99,7 +91,8 @@ HEADERS  += mainwindow.h \
     versionInstall.h \
     versionNoInstall.h \
     versionType.h \
-    platformType.h
+    platformType.h \
+    network/networkData.h
 
 
 FORMS    += mainwindow.ui \

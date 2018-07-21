@@ -28,7 +28,7 @@ QString AbstractRequest::getApplicationParam(QString app)
 {
     QString applicationParam = keyApplication;
     applicationParam.append("=");
-    applicationParam.append(app);
+    applicationParam.append(spaceTo_(app));
     return applicationParam;
 }
 
@@ -36,7 +36,7 @@ QString AbstractRequest::getVersionParam(QString ver)
 {
     QString versionParam = keyVersion;
     versionParam.append("=");
-    versionParam.append(ver);
+    versionParam.append(spaceTo_(ver));
     return versionParam;
 
 }

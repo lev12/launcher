@@ -25,7 +25,7 @@ bool RequestCheckApplication::parse(QByteArray data)
         QList <NetworkData> *response = new QList <NetworkData> ();
         NetworkData netData;
         netData.key = "application";
-        netData.value = QString(isApplication);
+        netData.value = QVariant(isApplication);
         replyServer(response);
         return true;
     }
