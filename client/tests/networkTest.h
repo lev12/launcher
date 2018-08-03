@@ -48,14 +48,14 @@ private slots:
     void test_getActualVersion ();
     void test_getCheckVersion_data ();
     void test_getCheckVersion ();
-    void test_getFile_data ();
-    void test_getFile ();
-    void test_getVersion_data ();
-    void test_getVersion ();
     void test_getVersionInfo_data ();
     void test_getVersionInfo ();
     void test_getAppInfo_data ();
     void test_getAppInfo ();
+    void test_getFile_data ();
+    void test_getFile ();
+    void test_getVersion_data ();
+    void test_getVersion ();
 };
 
 #endif // NETWORKTEST_H

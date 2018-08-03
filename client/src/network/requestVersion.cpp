@@ -57,9 +57,9 @@ QUrl RequestVersion::absoluteUrlPath(QString reletiveFilePath)
 {
     QString resaultstr (getUrlServer());
     resaultstr.append("/app/");
-    resaultstr.append(*appName);
+    resaultstr.append(spaceTo_(*appName));
     resaultstr.append("/");
-    resaultstr.append(*verName);
+    resaultstr.append(spaceTo_(*verName));
     resaultstr.append("/");
     resaultstr.append(reletiveFilePath);
     qDebug () << resaultstr;
@@ -144,8 +144,7 @@ void RequestVersion::receiveVersionInfo(QList<NetworkData> *response)
     {
         cfgVersion.set(verInfoKey.at(i), verInfoValue.at(i));
     }
-    cfgVersion.save();
-    qDebug () << "ihuu8uhuhiuhuh";
+    qDebug () << cfgVersion.save();
     getFileListVersion(verName, appName);
 }
 

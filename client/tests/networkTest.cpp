@@ -262,98 +262,6 @@ void NetworkTest::test_getCheckVersion()
     QCOMPARE(response->at(0).value.toBool(),true);
 }
 
-void NetworkTest::test_getFile_data()
-{
-    loadFileData(appList);
-}
-
-void NetworkTest::test_getFile()
-{
-    QFETCH (QString,applicationName);
-    QFETCH (QString,versionName);
-    QFETCH (QString,fileRelPath);
-
-    /*QTestEventLoop &loop = QTestEventLoop::instance();
-
-    QString fileDownloadUrlStr("");
-    fileDownloadUrlStr += *addressServer;
-    fileDownloadUrlStr += ":";
-    fileDownloadUrlStr += QString::number(*portServer);
-    fileDownloadUrlStr += "/app/";
-    fileDownloadUrlStr += AbstractRequest::spaceTo_(applicationName);
-    fileDownloadUrlStr += "/";
-    fileDownloadUrlStr += AbstractRequest::spaceTo_(versionName);
-    fileDownloadUrlStr += "/";
-    fileDownloadUrlStr += fileRelPath;
-    QUrl fileDownloadUrl (fileDownloadUrlStr);
-    qDebug () << fileDownloadUrl;
-    QString fileDownloadPath(dataFolder->absolutePath());
-    fileDownloadPath += "/";
-    fileDownloadPath += AbstractRequest::spaceTo_(applicationName);
-    fileDownloadPath += "/";
-    fileDownloadPath += AbstractRequest::spaceTo_(versionName);
-    fileDownloadPath += "/";
-    fileDownloadPath += fileRelPath;
-    qDebug () << fileDownloadPath;
-    qDebug () << QFileInfo (fileDownloadPath).isFile();
-    QFileInfo fileDownload (fileDownloadPath);
-    AbstractRequest *request;
-    try
-    {
-        request = network->getFile(fileDownloadUrl,fileDownload);
-    }
-    catch (char const* error)
-    {
-        qDebug () << error;
-    }
-
-    QSignalSpy *signalspy;
-    signalspy = new QSignalSpy (request,SIGNAL(replyServer(QList<NetworkData>*)));
-
-    connect(request,SIGNAL(replyServer(QList<NetworkData>*)),&loop,SLOT(exitLoop()));
-    loop.enterLoop(30);
-    QVERIFY (!loop.timeout());
-
-    QVariant netData = signalspy->takeFirst();
-    QList<NetworkData>* response = netData.toList().at(0).value<QList<NetworkData>*>();
-    QVERIFY (fileDownload.exists());
-    QVERIFY2 (QFile (fileDownload.absoluteFilePath()).remove(),"not deleted file");*/
-}
-
-void NetworkTest::test_getVersion_data()
-{
-    loadVersionData(appList);
-}
-
-void NetworkTest::test_getVersion()
-{
-    QFETCH (QString,applicationName);
-    QFETCH (QString,versionName);
-
-    QTestEventLoop &loop = QTestEventLoop::instance();
-
-    QString appNameUnderscope = AbstractRequest::spaceTo_(applicationName);
-    QString saveFolderPath (dataFolder->absolutePath());
-    saveFolderPath += "/";
-    saveFolderPath += AbstractRequest::spaceTo_(applicationName);
-    saveFolderPath += "/";
-    saveFolderPath += AbstractRequest::spaceTo_(versionName);
-    QDir saveFolder (saveFolderPath);
-
-    AbstractRequest *request = network->getVersion(appNameUnderscope,versionName,saveFolder);
-
-    QSignalSpy *signalspy;
-    signalspy = new QSignalSpy (request,SIGNAL(replyServer(QList<NetworkData>*)));
-
-    connect(request,SIGNAL(replyServer(QList<NetworkData>*)),&loop,SLOT(exitLoop()));
-    loop.enterLoop(30);
-    QVERIFY (!loop.timeout());
-
-    QVariant netData = signalspy->takeFirst();
-    QList<NetworkData>* response = netData.toList().at(0).value<QList<NetworkData>*>();
-
-}
-
 void NetworkTest::test_getVersionInfo_data()
 {
     loadVersionData(appList);
@@ -445,3 +353,108 @@ void NetworkTest::test_getAppInfo()
         }
     }
 }
+
+void NetworkTest::test_getFile_data()
+{
+    loadFileData(appList);
+}
+
+void NetworkTest::test_getFile()
+{
+    QFETCH (QString,applicationName);
+    QFETCH (QString,versionName);
+    QFETCH (QString,fileRelPath);
+
+    /*QTestEventLoop &loop = QTestEventLoop::instance();
+
+    QString fileDownloadUrlStr("");
+    fileDownloadUrlStr += *addressServer;
+    fileDownloadUrlStr += ":";
+    fileDownloadUrlStr += QString::number(*portServer);
+    fileDownloadUrlStr += "/app/";
+    fileDownloadUrlStr += AbstractRequest::spaceTo_(applicationName);
+    fileDownloadUrlStr += "/";
+    fileDownloadUrlStr += AbstractRequest::spaceTo_(versionName);
+    fileDownloadUrlStr += "/";
+    fileDownloadUrlStr += fileRelPath;
+    QUrl fileDownloadUrl (fileDownloadUrlStr);
+    qDebug () << fileDownloadUrl;
+    QString fileDownloadPath(dataFolder->absolutePath());
+    fileDownloadPath += "/";
+    fileDownloadPath += AbstractRequest::spaceTo_(applicationName);
+    fileDownloadPath += "/";
+    fileDownloadPath += AbstractRequest::spaceTo_(versionName);
+    fileDownloadPath += "/";
+    fileDownloadPath += fileRelPath;
+    qDebug () << fileDownloadPath;
+    qDebug () << QFileInfo (fileDownloadPath).isFile();
+    QFileInfo fileDownload (fileDownloadPath);
+    AbstractRequest *request;
+    try
+    {
+        request = network->getFile(fileDownloadUrl,fileDownload);
+    }
+    catch (char const* error)
+    {
+        qDebug () << error;
+    }
+
+    QSignalSpy *signalspy;
+    signalspy = new QSignalSpy (request,SIGNAL(replyServer(QList<NetworkData>*)));
+
+    connect(request,SIGNAL(replyServer(QList<NetworkData>*)),&loop,SLOT(exitLoop()));
+    loop.enterLoop(30);
+    QVERIFY (!loop.timeout());
+
+    QVariant netData = signalspy->takeFirst();
+    QList<NetworkData>* response = netData.toList().at(0).value<QList<NetworkData>*>();
+    QVERIFY (fileDownload.exists());
+    QVERIFY2 (QFile (fileDownload.absoluteFilePath()).remove(),"not deleted file");*/
+}
+
+void NetworkTest::test_getVersion_data()
+{
+    loadVersionData(appList);
+}
+
+void NetworkTest::test_getVersion()
+{
+    QFETCH (QString,applicationName);
+    QFETCH (QString,versionName);
+
+    QTestEventLoop &loop = QTestEventLoop::instance();
+
+    QString appNameUnderscope = AbstractRequest::spaceTo_(applicationName);
+    QString saveFolderPath (dataFolder->absolutePath());
+    saveFolderPath += "/";
+    saveFolderPath += AbstractRequest::spaceTo_(applicationName);
+    saveFolderPath += "/";
+    saveFolderPath += AbstractRequest::spaceTo_(versionName);
+    QDir saveFolder (saveFolderPath);
+
+    AbstractRequest *request;
+    try
+    {
+        request = network->getVersion(appNameUnderscope,versionName,saveFolder);
+
+
+
+
+    connect(request,SIGNAL(replyServer(QList<NetworkData>*)),&loop,SLOT(exitLoop()));
+    loop.enterLoop(30);
+    }
+    catch (char const* ex)
+    {
+        qDebug () << ex;
+    }
+
+    QSignalSpy *signalspy;
+    signalspy = new QSignalSpy (request,SIGNAL(replyServer(QList<NetworkData>*)));
+    QVERIFY (!loop.timeout());
+
+    QVariant netData = signalspy->takeFirst();
+    QList<NetworkData>* response = netData.toList().at(0).value<QList<NetworkData>*>();
+
+}
+
+
