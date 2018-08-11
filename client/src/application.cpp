@@ -16,8 +16,6 @@ Application::Application(QString path, Network *network)
         initAppNameConfig(appCfg);
         initId (appCfg);
         initVerCon (net, appPath, appName);
-
-        verCon->setLastCurrentVesion(appCfg->get("last_current_version").at(0));
     }
 }
 
@@ -83,8 +81,7 @@ bool Application::initUiApp()
 {
     if (verCon == NULL) return false;
     uiApp = new UiApplication (NULL, appName);
-    AbstractVersion *actualVersion = verCon->getLsatCurrentVersion();
-    if  (actualVersion != NULL)
+    //if  (actualVersion != NULL)
     {
         uiApp->setIcon(appIcon);
         /*QStringList supportLanguage = actualVersion->getSupportLanguage();
@@ -95,9 +92,9 @@ bool Application::initUiApp()
         uiApp->setRecommendedSystemRequirements(&recSysReq);
         QString minSysReq = actualVersion->getMinimumSystemRequirements();
         uiApp->setMinimumSystemRequirements(&minSysReq);*/
-        uiApp->setVersionList(verCon->getFullListVersionStrList());
-        QString currenVer = actualVersion->getFullName();
-        uiApp->setCurrentVersion(&currenVer);
+        //uiApp->setVersionList(verCon->getFullListVersionStrList());
+        //QString currenVer = actualVersion->getFullName();
+        //uiApp->setCurrentVersion(&currenVer);
     }
 
 

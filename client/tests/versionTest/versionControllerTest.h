@@ -2,6 +2,9 @@
 #define VERSIONVONTROLLERTEST_H
 
 #include <QObject>
+#include <QtTest/QtTest>
+#include "versionController.h"
+#include "versiondata.h"
 
 class VersionControllerTest : public QObject
 {
@@ -10,7 +13,8 @@ public:
     explicit VersionControllerTest();
 
 private slots:
-
+    void initTestCase();
+    void cleanupTestCase();
 };
 
 #endif // VERSIONVONTROLLERTEST_H

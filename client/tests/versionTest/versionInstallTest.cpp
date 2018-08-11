@@ -114,9 +114,9 @@ void VersionInstallTest::test_init()
 
         QCOMPARE (versionInstall->getIsInstall(), true);
         QCOMPARE (versionInstall->getAppName(), appName);
-        quint64 verSize = *(versionInstall->getVersionSize());
+        quint64 verSize = versionInstall->getVersionSize();
         QCOMPARE (verSize,(quint64) versionSizeResult);
-        QCOMPARE (versionInstall->getFileList()->length(),versionCountFile);
+        QCOMPARE (versionInstall->getFileList().length(),versionCountFile);
         delete versionInstall;
     }
 

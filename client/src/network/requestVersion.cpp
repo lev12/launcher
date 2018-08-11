@@ -140,12 +140,13 @@ void RequestVersion::receiveVersionInfo(QList<NetworkData> *response)
     QString pathCfgVersion = saveFolder->absolutePath();
     pathCfgVersion.append("/version_config.cfg");
     Config cfgVersion (pathCfgVersion);
+    qDebug () << pathCfgVersion;
     for (int i(0); i < verInfoKey.length(); i++)
     {
         cfgVersion.set(verInfoKey.at(i), verInfoValue.at(i));
     }
-    cfgVersion.save();
     qDebug () << "ihuu8uhuhiuhuh";
+    cfgVersion.save();
     getFileListVersion(verName, appName);
 }
 
@@ -175,5 +176,7 @@ void RequestVersion::receiveFinishFileDownload(QList<NetworkData> *response)
     else
     {
         qDebug () << "finish!!!!!!!!!!!!";
+        QList<NetworkData> *responsever;
+        replyServer(responsever);
     }
 }

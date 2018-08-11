@@ -13,6 +13,7 @@ AbstractRequest::AbstractRequest(QString *ServerAddress, unsigned short ServerPo
 AbstractRequest::~AbstractRequest()
 {
     disconnect(netManager, &QNetworkAccessManager::finished, this, &AbstractRequest::readServer);
+    delete realyServer;
     delete netManager;
 }
 

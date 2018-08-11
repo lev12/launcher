@@ -1,7 +1,7 @@
 #ifndef TST_NOINSTALLVERSION_H
 #define TST_NOINSTALLVERSION_H
-#include <QtTest>
-#include <QCoreApplication>
+
+#include <QtTest/QtTest>
 #include "versionNoInstall.h"
 #include "versiondata.h"
 #include <QObject>

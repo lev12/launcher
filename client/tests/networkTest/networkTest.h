@@ -5,9 +5,8 @@
 #include <QObject>
 #include <QSignalSpy>
 #include <QTestEventLoop>
-#include "network/network.h"
-#include "versiondata.h"
 #include "abstractVersion.h"
+#include "network/network.h"
 Q_DECLARE_METATYPE (QList<NetworkData>*)
 
 class NetworkTest : public QObject
@@ -50,12 +49,12 @@ private slots:
     void test_getCheckVersion ();
     void test_getFile_data ();
     void test_getFile ();
-    void test_getVersion_data ();
-    void test_getVersion ();
     void test_getVersionInfo_data ();
     void test_getVersionInfo ();
     void test_getAppInfo_data ();
     void test_getAppInfo ();
+    void test_getVersion_data ();
+    void test_getVersion ();
 };
 
 #endif // NETWORKTEST_H

@@ -5,7 +5,8 @@
 #include "network/network.h"
 #include "versionType.h"
 #include "platformType.h"
-#include <QTranslator>
+#include <exception>
+
 class AbstractVersion : public QObject
 {
     Q_OBJECT

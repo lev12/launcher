@@ -11,8 +11,8 @@ public:
 
     QString getStartedFileName();
     QString getStartedFilePath();
-    quint64 *getVersionSize();
-    QList<QFileInfo*> *getFileList();
+    quint64 &getVersionSize();
+    QList<QFileInfo*> &getFileList();
 
     bool deleteAllFile();
     static bool checkVersion (QFileInfo path);
@@ -39,6 +39,8 @@ private:
 
     //filling config
     bool requestConfigFromNetwork (Network *network);
+
+    std::string getExceptionVersion(const QString &str);
 
 private slots:
     void reciveConfig (QList<NetworkData> *response);

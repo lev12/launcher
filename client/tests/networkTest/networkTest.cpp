@@ -320,39 +320,7 @@ void NetworkTest::test_getFile()
     QVERIFY2 (QFile (fileDownload.absoluteFilePath()).remove(),"not deleted file");*/
 }
 
-void NetworkTest::test_getVersion_data()
-{
-    loadVersionData(appList);
-}
 
-void NetworkTest::test_getVersion()
-{
-    QFETCH (QString,applicationName);
-    QFETCH (QString,versionName);
-
-    QTestEventLoop &loop = QTestEventLoop::instance();
-
-    QString appNameUnderscope = AbstractRequest::spaceTo_(applicationName);
-    QString saveFolderPath (dataFolder->absolutePath());
-    saveFolderPath += "/";
-    saveFolderPath += AbstractRequest::spaceTo_(applicationName);
-    saveFolderPath += "/";
-    saveFolderPath += AbstractRequest::spaceTo_(versionName);
-    QDir saveFolder (saveFolderPath);
-
-    AbstractRequest *request = network->getVersion(appNameUnderscope,versionName,saveFolder);
-
-    QSignalSpy *signalspy;
-    signalspy = new QSignalSpy (request,SIGNAL(replyServer(QList<NetworkData>*)));
-
-    connect(request,SIGNAL(replyServer(QList<NetworkData>*)),&loop,SLOT(exitLoop()));
-    loop.enterLoop(30);
-    QVERIFY (!loop.timeout());
-
-    QVariant netData = signalspy->takeFirst();
-    QList<NetworkData>* response = netData.toList().at(0).value<QList<NetworkData>*>();
-
-}
 
 void NetworkTest::test_getVersionInfo_data()
 {
@@ -444,4 +412,39 @@ void NetworkTest::test_getAppInfo()
             QVERIFY (tempNetData.value.toString() != "");
         }
     }
+}
+
+void NetworkTest::test_getVersion_data()
+{
+    loadVersionData(appList);
+}
+
+void NetworkTest::test_getVersion()
+{
+    QFETCH (QString,applicationName);
+    QFETCH (QString,versionName);
+
+    QTestEventLoop &loop = QTestEventLoop::instance();
+
+    QString appNameUnderscope = AbstractRequest::spaceTo_(applicationName);
+    QString versionNameUnderscope = AbstractRequest::spaceTo_(versionName);
+    QString saveFolderPath (dataFolder->absolutePath());
+    saveFolderPath += "/";
+    saveFolderPath += AbstractRequest::spaceTo_(applicationName);
+    saveFolderPath += "/";
+    saveFolderPath += AbstractRequest::spaceTo_(versionName);
+    QDir saveFolder (saveFolderPath);
+
+    AbstractRequest *request = network->getVersion(appNameUnderscope,versionNameUnderscope,saveFolder);
+
+    QSignalSpy *signalspy;
+    signalspy = new QSignalSpy (request,SIGNAL(replyServer(QList<NetworkData>*)));
+
+    connect(request,SIGNAL(replyServer(QList<NetworkData>*)),&loop,SLOT(exitLoop()));
+    loop.enterLoop(60);
+    QVERIFY (!loop.timeout());
+
+    QVariant netData = signalspy->takeFirst();
+    QList<NetworkData>* response = netData.toList().at(0).value<QList<NetworkData>*>();
+
 }

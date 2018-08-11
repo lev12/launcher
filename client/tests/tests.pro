@@ -1,40 +1,19 @@
 # Name of the project
-TARGET = test
 
-# Application (executable)
-TEMPLATE = app
-QT += testlib
-QT += gui
-QT += websockets
-# Include default settings
-include(../defaults.pri)
 
-# Some settings
-CONFIG += console # see console output
-CONFIG += c++14 # use the C++14 standard
-CONFIG -= qt # no Qt libraries used
-CONFIG += qt warn_on depend_includepath testcase
+# Subdirectories
+TEMPLATE = subdirs
+CONFIG += ordered # subdirectories are built in the order in which they are specified
+SUBDIRS = \
+    networkTest \
+    versionTest
 
-# Include files for this project
-SOURCES += \  
-    main.cpp \
-    versiondata.cpp \
-    versionInstallTest.cpp \
-    versionNoInstallTest.cpp \
-    abstractVersionTest.cpp \
-    networkTest.cpp \
-    versionControllerTest.cpp
+# Dependencies
+app.depends = src
+tests.depends = src
 
-# Use the dynamically linked library
-LIBS += -L../src -ltemplate
+# Include the default settings
+OTHER_FILES += \
+    defaults.pri
 
-HEADERS += \
-    versiondata.h \
-    abstractVersionTest.h \
-    versionNoInstallTest.h \
-    versionInstallTest.h \
-    networkTest.h \
-    versionControllerTest.h
-
-RESOURCES += \
-    data.qrc
+DEFINES += QT_DEPRECATED_WARNINGS # emit warnings for any feature of Qt which has been marked as deprecated

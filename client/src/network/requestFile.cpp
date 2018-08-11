@@ -6,10 +6,6 @@ RequestFile::RequestFile(QUrl UrlFile, QFileInfo file)
     {
         throw "no valid url";
     }
-    if (!(file.isFile()))
-    {
-        throw "is no file";
-    }
 
     sendRequest(UrlFile);
     downloadFile = new QFile (file.absoluteFilePath());
@@ -18,7 +14,15 @@ RequestFile::RequestFile(QUrl UrlFile, QFileInfo file)
     netReply = getNetReply();
     if (!(downloadFile->open(QFile::WriteOnly)))
     {
-        throw "no creating file";
+        if (!(file.isFile()))
+        {
+            qDebug () << file.absoluteFilePath();
+            throw "is no file";
+        }
+        else
+        {
+            throw "no creating file";
+        }
     }
     netReply->bytesAvailable();
     connect(netReply,QNetworkReply::readyRead, this, RequestFile::readData);
@@ -34,13 +38,15 @@ RequestFile::~RequestFile()
 bool RequestFile::parse(QByteArray data)
 {
     downloadFile->close();
+    netReply->close();
+
     QList <NetworkData> *response = new QList <NetworkData> ();
     NetworkData netData;
     netData.key = "filePath";
     netData.value = QFileInfo(*downloadFile).absoluteFilePath();
     response->operator <<(netData);
     replyServer(response);
-    deleteLater();
+    delete this;
     return true;
 }
 

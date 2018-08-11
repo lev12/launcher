@@ -19,8 +19,7 @@ VersionInstall::VersionInstall(QString AppName, QString pathToFolderWithVersions
     {
         if (!net->isConnected())
         {
-            //TODO throw
-            throw 123;
+            throw std::logic_error(getExceptionVersion(QString("not found config file and no connect network")));
         }
         requestConfigFromNetwork (net);
     }
@@ -35,7 +34,14 @@ QString VersionInstall::getStartedFileName()
 {
     if (!verStartedFile->exists())
     {
-        //TODO
+        if (net->isConnected())
+        {
+            //TODO
+        }
+        else
+        {
+            throw std::logic_error(getExceptionVersion(QString("not found started file")));
+        }
     }
 
     return verStartedFile->fileName();
@@ -51,19 +57,14 @@ QString VersionInstall::getStartedFilePath()
     return verStartedFile->absoluteFilePath();
 }
 
-quint64 *VersionInstall::getVersionSize()
+quint64 &VersionInstall::getVersionSize()
 {
-    return verSize;
+    return *verSize;
 }
 
-QList<QFileInfo*> *VersionInstall::getFileList()
+QList<QFileInfo *> &VersionInstall::getFileList()
 {
-    if (verFileList->length() < 0)
-    {
-        //TODO throw
-        return NULL;
-    }
-    return verFileList;
+    return *verFileList;
 }
 
 bool VersionInstall::deleteAllFile()
@@ -71,6 +72,7 @@ bool VersionInstall::deleteAllFile()
     if (!verFolder->exists())
     {
         //TODO throw
+        throw std::logic_error ("");
         return false;
     }
     removeFolder(*verFolder);
@@ -119,6 +121,16 @@ bool VersionInstall::requestConfigFromNetwork(Network *network)
     AbstractRequest *request = network->getVersionInfo(*appName,getFullName());
     connect(request, AbstractRequest::replyServer, this, reciveConfig);
     return true;
+}
+
+std::string VersionInstall::getExceptionVersion(const QString &str)
+{
+    QString estr (*appName);
+    estr.append(" ");
+    estr.append(getFullName());
+    estr.append(" ");
+    estr.append(str);
+    return estr.toStdString();
 }
 
 void VersionInstall::reciveConfig(QList<NetworkData> *response)

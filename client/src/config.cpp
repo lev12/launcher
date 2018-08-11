@@ -32,7 +32,7 @@ bool Config::create(QString path)
     if (!(cFile.open(QFile::WriteOnly | QFile::Text))) {
         return false;
     }
-    configFile = &cFile;
+    configFile = new QFile(QFileInfo(cFile).absoluteFilePath());
     cFile.close();
     return true;
 }
@@ -80,7 +80,8 @@ bool Config::raedFile()
 
 bool Config::save()
 {
-    configFile->remove();
+    configFile->open(QFile::WriteOnly);
+    qDebug () << configFile->remove();
     if (!configFile->open(QFile::WriteOnly | QFile::Text))
     {
         return false;
