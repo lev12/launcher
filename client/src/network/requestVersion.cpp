@@ -145,12 +145,7 @@ void RequestVersion::receiveVersionInfo(QList<NetworkData> *response)
     {
         cfgVersion.set(verInfoKey.at(i), verInfoValue.at(i));
     }
-<<<<<<< HEAD
-    qDebug () << "ihuu8uhuhiuhuh";
-    cfgVersion.save();
-=======
     qDebug () << cfgVersion.save();
->>>>>>> 692d91f186dffd17c00bc372c87985fd90c47590
     getFileListVersion(verName, appName);
 }
 

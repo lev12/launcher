@@ -412,23 +412,11 @@ void NetworkTest::test_getFile()
     QVERIFY2 (QFile (fileDownload.absoluteFilePath()).remove(),"not deleted file");*/
 }
 
-<<<<<<< HEAD:client/tests/networkTest/networkTest.cpp
-
-
-void NetworkTest::test_getVersionInfo_data()
-=======
 void NetworkTest::test_getVersion_data()
->>>>>>> 692d91f186dffd17c00bc372c87985fd90c47590:client/tests/networkTest.cpp
 {
     loadVersionData(appList);
 }
 
-<<<<<<< HEAD:client/tests/networkTest/networkTest.cpp
-void NetworkTest::test_getVersionInfo()
-{
-    QFETCH (QString,applicationName);
-    QFETCH (QString,versionName);
-=======
 void NetworkTest::test_getVersion()
 {
     QFETCH (QString,applicationName);
@@ -448,13 +436,8 @@ void NetworkTest::test_getVersion()
     try
     {
         request = network->getVersion(appNameUnderscope,versionName,saveFolder);
->>>>>>> 692d91f186dffd17c00bc372c87985fd90c47590:client/tests/networkTest.cpp
-
-
-
-
-    connect(request,SIGNAL(replyServer(QList<NetworkData>*)),&loop,SLOT(exitLoop()));
-    loop.enterLoop(30);
+        connect(request,SIGNAL(replyServer(QList<NetworkData>*)),&loop,SLOT(exitLoop()));
+        loop.enterLoop(30);
     }
     catch (char const* ex)
     {
@@ -469,42 +452,3 @@ void NetworkTest::test_getVersion()
     QList<NetworkData>* response = netData.toList().at(0).value<QList<NetworkData>*>();
 
 }
-
-<<<<<<< HEAD:client/tests/networkTest/networkTest.cpp
-void NetworkTest::test_getVersion_data()
-{
-    loadVersionData(appList);
-}
-
-void NetworkTest::test_getVersion()
-{
-    QFETCH (QString,applicationName);
-    QFETCH (QString,versionName);
-
-    QTestEventLoop &loop = QTestEventLoop::instance();
-
-    QString appNameUnderscope = AbstractRequest::spaceTo_(applicationName);
-    QString versionNameUnderscope = AbstractRequest::spaceTo_(versionName);
-    QString saveFolderPath (dataFolder->absolutePath());
-    saveFolderPath += "/";
-    saveFolderPath += AbstractRequest::spaceTo_(applicationName);
-    saveFolderPath += "/";
-    saveFolderPath += AbstractRequest::spaceTo_(versionName);
-    QDir saveFolder (saveFolderPath);
-
-    AbstractRequest *request = network->getVersion(appNameUnderscope,versionNameUnderscope,saveFolder);
-
-    QSignalSpy *signalspy;
-    signalspy = new QSignalSpy (request,SIGNAL(replyServer(QList<NetworkData>*)));
-
-    connect(request,SIGNAL(replyServer(QList<NetworkData>*)),&loop,SLOT(exitLoop()));
-    loop.enterLoop(60);
-    QVERIFY (!loop.timeout());
-
-    QVariant netData = signalspy->takeFirst();
-    QList<NetworkData>* response = netData.toList().at(0).value<QList<NetworkData>*>();
-
-}
-=======
-
->>>>>>> 692d91f186dffd17c00bc372c87985fd90c47590:client/tests/networkTest.cpp

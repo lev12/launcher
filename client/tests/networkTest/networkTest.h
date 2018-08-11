@@ -47,20 +47,12 @@ private slots:
     void test_getActualVersion ();
     void test_getCheckVersion_data ();
     void test_getCheckVersion ();
-<<<<<<< HEAD:client/tests/networkTest/networkTest.h
-    void test_getFile_data ();
-    void test_getFile ();
-=======
->>>>>>> 692d91f186dffd17c00bc372c87985fd90c47590:client/tests/networkTest.h
     void test_getVersionInfo_data ();
     void test_getVersionInfo ();
     void test_getAppInfo_data ();
     void test_getAppInfo ();
-<<<<<<< HEAD:client/tests/networkTest/networkTest.h
-=======
     void test_getFile_data ();
     void test_getFile ();
->>>>>>> 692d91f186dffd17c00bc372c87985fd90c47590:client/tests/networkTest.h
     void test_getVersion_data ();
     void test_getVersion ();
 };
