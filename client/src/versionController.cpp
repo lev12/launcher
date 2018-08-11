@@ -1,42 +1,31 @@
 #include "versionController.h"
 
-VersionController::VersionController(QDir &pathToFolderWithAllVersions, Network &network, QString &AppName)
+VersionController::VersionController(QDir &pathToFolderWithAllVersions, Network &network, QString &AppName) :
+    net (&network), folderWithAllVersions (&pathToFolderWithAllVersions), appName (&AppName)
 {
-    if (AppName != QString("") || !pathToFolderWithAllVersions.exists())
+    if (AppName != QString(""))
     {
-        //TODO thorw
-        destroyed();
+        QString estr ("no valid application name: ");
+        estr.append(AppName);
+        throw std::invalid_argument (estr.toStdString());
     }
-    initAppName (&AppName);
+    if(!pathToFolderWithAllVersions.exists())
+    {
+        QString estr ("no exists folder: ");
+        estr.append(AppName);
+        throw std::invalid_argument (estr.toStdString());
+    }
     net = &network;
 
     //initVersionController(pathToFolderWithAllVersions);
-    fillingVersionList();
-    actualVersion = getListInsallVersion().at(0);
+    fillingVersionList(*folderWithAllVersions);
 }
 
 bool VersionController::initVersionController(QString &pathToFolder)
 {
-    folderWithAllVersions = NULL;
-    versionsList = NULL;
-    actualVersion = NULL;
-    lastCurrentVersion = NULL;
-
-    initFolderWithAllVersions(pathToFolder);
     initVersionsList();
-    initActualVersion();
 
     return true;
-}
-
-bool VersionController::initFolderWithAllVersions(QString pathToFolder)
-{
-    if (folderWithAllVersions == NULL)
-    {
-        folderWithAllVersions = new QFileInfo (pathToFolder);
-        return true;
-    }
-    return false;
 }
 
 bool VersionController::initVersionsList()
@@ -46,39 +35,6 @@ bool VersionController::initVersionsList()
         versionsList = new QList <AbstractVersion*> ();
     }
     return true;
-}
-
-bool VersionController::initActualVersion()
-{
-    if (actualVersion == NULL)
-    {
-        actualVersion = new AbstractVersion ();
-    }
-    return true;
-}
-
-bool VersionController::initLastCurrentVersion()
-{
-    /*if (lastCurrentVersion == NULL)
-    {
-        lastCurrentVersion = new VersionInstall;
-    }
-    return true;*/
-}
-
-bool VersionController::fillingActualVersion()
-{
-    if (net == NULL) return false;
-    AbstractRequest *dl = net->getActualVersion(*appName);
-    QObject::connect(dl, AbstractRequest::replyServer, this, VersionController::setActualVersionNet);
-    return true;
-}
-
-void VersionController::setActualVersionNet(QList<NetworkData> *response)
-{
-    if (response->length() == 0) return;
-
-    actualVersion = getVersion(response->at(0).value.toString());
 }
 
 QList<AbstractVersion *> VersionController::getFullListVersion()
@@ -121,7 +77,7 @@ QList<VersionNoInstall *> VersionController::getListVersionOnServer()
     {
         if (!tempVer->getIsInstall())
         {
-            result.operator <<(static_cast<VersionNoInstall*>(tempVer));
+            result << static_cast<VersionNoInstall*>(tempVer);
         }
     }
 
@@ -140,30 +96,6 @@ AbstractVersion* VersionController::getVersion(QString verName)
     return NULL;
 }
 
-AbstractVersion *VersionController::getActualVersion()
-{
-    return actualVersion;
-}
-
-QString VersionController::getActualVersionStr()
-{
-    return actualVersion->getFullName();
-}
-
-VersionInstall *VersionController::getLsatCurrentVersion()
-{
-    if (lastCurrentVersion == NULL)
-    {
-        return NULL;
-    }
-    return lastCurrentVersion;
-}
-
-void VersionController::setLastCurrentVesion(QString verName)
-{
-    lastCurrentVersion = static_cast<VersionInstall*>(getVersion(verName));
-}
-
 bool VersionController::deleteAllVersion()
 {
     foreach (AbstractVersion *tempVer, *versionsList)
@@ -176,8 +108,7 @@ bool VersionController::deleteAllVersion()
 
 bool VersionController::updateVersionsList()
 {
-    fillingVersionList();
-    return true;
+    return fillingVersionList(*folderWithAllVersions);
 }
 
 bool VersionController::downloadVersion(VersionNoInstall ver)
@@ -192,9 +123,12 @@ bool VersionController::initAppName(QString *name)
     return true;
 }
 
-bool VersionController::fillingVersionList()
+bool VersionController::fillingVersionList(const QDir &verFolder)
 {
-    QDir verFolder (folderWithAllVersions->absoluteFilePath());
+    if (!verFolder.exists())
+    {
+        return false;
+    }
     QStringList lstDirs = verFolder.entryList(QDir::Dirs |
                     QDir::AllDirs |
                     QDir::NoDotAndDotDot);
@@ -207,7 +141,7 @@ bool VersionController::fillingVersionList()
             versionsList->operator <<(vertemp);
         }
     }
-    return false;
+    return true;
 }
 
 QList<AbstractVersion *> VersionController::sortVersionList()
