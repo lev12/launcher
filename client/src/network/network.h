@@ -25,7 +25,7 @@
 #include "log.h"
 
 #include "requestActualVersion.h"
-#include "requestAppicationInfo.h"
+#include "requestApplicationInfo.h"
 #include "requestApplicationList.h"
 #include "requestCheckApplication.h"
 #include "requestCheckVersion.h"
@@ -41,37 +41,40 @@ class Network : public QObject
 public:
     Network(QString AddressServer, quint16 PortServer, Log *plog = NULL);
 
-    bool isConnected ();
+    virtual bool isConnected ();
 
     ~Network();
 
     //verName type_num
     //appName all space _
-    AbstractRequest* getActualVersion     (QString appName);
-    AbstractRequest* getVersionList       (QString appName);
-    AbstractRequest* getApplicationList   ();
+    virtual AbstractRequest *getActualVersion(QString appName);
+    virtual AbstractRequest *getVersionList(QString appName);
+    virtual AbstractRequest *getApplicationList();
     //AbstractRequest* getSizeVersion       (QString appName, QString verName);
-    AbstractRequest* getFileList          (QString appName, QString verName);
-    AbstractRequest* getCheckVersion      (QString appName, QString verName);
-    AbstractRequest* getVersion (QString &appName, QString &verName, QDir &saveFolderPath);
-    AbstractRequest* getFile       (QUrl url, QFileInfo file);
+    virtual AbstractRequest *getFileListVersion(QString appName, QString verName);
+    virtual AbstractRequest *getCheckVersion(QString appName, QString verName);
+    virtual AbstractRequest* getVersion (QString &appName, QString &verName, QDir &saveFolderPath);
+    virtual AbstractRequest *getFile(QUrl url, QFileInfo file);
     //AbstractRequest* getFileSize          (QString appName, QString verName, QString file);
-    AbstractRequest* getVersionInfo           (QString appName, QString verName);
-    AbstractRequest* getAppInfo           (QString appName);
+    virtual AbstractRequest *getVersionInfo(QString appName, QString verName);
+    virtual AbstractRequest *getAppInfo(QString appName);
 
     static bool pingServer (QString adderss, qint16 port);
 private:
     Log *log;
     QNetworkConfigurationManager *netConfig;
     bool *isConnect;
-    unsigned short *portServer;
-    QString *addressServer;
-    QString *token;
 
     bool initConnect ();
 
 private slots:
     void setConnectState (bool state);
+
+protected:
+    unsigned short *portServer;
+    QString *addressServer;
+    QString *token;
+
 };
 
 #endif // NETWORK_H

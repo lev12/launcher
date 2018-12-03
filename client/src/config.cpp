@@ -1,9 +1,15 @@
 #include "config.h"
-const QString Config::errorResponse = "false";
+const QString Config::errorResponse = "false response of read config";
+
+QStringList &Config::getConfigKeyName() const
+{
+    return *configKeyName;
+}
+
 Config::Config(QString path)
 {
-   configKeyName = new QStringList();
-   configKeyValue = new QStringList();
+    configKeyName = new QStringList();
+    configKeyValue = new QStringList();
 
    if (!QFile::exists(path))
    {
@@ -114,7 +120,7 @@ QStringList Config::get(QString parametr)
         }
     }
 
-    if (number == -1) return QStringList("false");
+    if (number == -1) return QStringList(errorResponse);
 
     QString result = configKeyValue->at(number);
     QStringList resultList = result.split(", ");
@@ -125,6 +131,14 @@ bool Config::set(QString parametr, QString value)
 {
     configKeyName->push_back(parametr);
     configKeyValue->push_back(value);
+
+    return true;
+}
+
+bool Config::set(QString parametr, QStringList value)
+{
+    configKeyName->push_back(parametr);
+    configKeyValue->push_back(value.join(", "));
 
     return true;
 }
@@ -152,7 +166,10 @@ bool Config::isError(QString &value)
 
 void Config::clear()
 {
-    configFile->remove();
+    if(configFile->remove())
+    {
+        qDebug () << "clear remove no";
+    }
     configFile->open(QFile::WriteOnly | QFile::Text);
     configFile->close();
 }

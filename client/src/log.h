@@ -13,27 +13,22 @@
 #include <QHostAddress>
 #include <QRegExp>
 
-class Node
+class Log
 {
-public:
-    int n;
-    char c;
-    Node *left, *right;
-
-    Node ();
-    Node (Node *l, Node *r);
-};
-
-class Log : public QObject
-{
-    Q_OBJECT
-
-signals:
-    void comressionEnd(QString path);
-
 private:
 
     QFile *logFile;
+
+    class Node
+    {
+    public:
+        int n;
+        char c;
+        Node *left, *right;
+
+        Node ();
+        Node (Node *l, Node *r);
+    };
 
     void buildTable(Node *root);
     QVector<bool> *code;

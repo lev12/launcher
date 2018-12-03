@@ -1,11 +1,14 @@
 #include "requestActualVersion.h"
 
-requestActualVersion::requestActualVersion(QString *serverAddress, unsigned short serverPort,QString token,QString app) : AbstractRequestForApplication (serverAddress,serverPort)
+RequestActualVersion::RequestActualVersion() : AbstractRequestForApplication ()
+{}
+
+RequestActualVersion::RequestActualVersion(QString *serverAddress, unsigned short serverPort,QString token,QString app) : AbstractRequestForApplication (serverAddress,serverPort)
 {
     sendRequest(getRequestUrl(method,getRequestParam(token,app)));
 }
 
-bool requestActualVersion::parse(QByteArray data)
+bool RequestActualVersion::parse(QByteArray data)
 {
     QString data_str = data;
     data_str = deleteForRx (data_str);

@@ -413,14 +413,14 @@ void Log::buildTable(Node *root)
     }
 }
 
-Node::Node(Node *l, Node *r)
+Log::Node::Node(Node *l, Node *r)
 {
     left = l;
     right = r;
     n = l->n + r->n;
 }
 
-Node::Node ()
+Log::Node::Node ()
 {
     left=right=NULL;
 }

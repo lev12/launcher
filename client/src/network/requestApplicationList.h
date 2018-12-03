@@ -6,6 +6,7 @@
 class RequestApplicationList : public AbstractRequest
 {
 public:
+    RequestApplicationList();
     RequestApplicationList(QString *serverAddress, int serverPort, QString token);
     virtual bool parse (QByteArray data);
 private:

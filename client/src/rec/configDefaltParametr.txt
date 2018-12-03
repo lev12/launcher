@@ -1,10 +1,10 @@
-width 800
-height 470
-fullScrean false
-lenguage EN
-page 0
-IPServer 192.168.1.13
-PortServer 1234
-log sendToTheServer
-logPath .//log
-countFileLog 10
+width = 800
+height = 470
+fullScrean = false
+lenguage = EN
+page = 0
+IPServer = 192.168.1.13
+PortServer = 1234
+log = sendToTheServer
+logPath = .//log
+countFileLog = 10

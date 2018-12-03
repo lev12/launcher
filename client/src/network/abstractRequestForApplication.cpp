@@ -1,5 +1,9 @@
 #include "abstractRequestForApplication.h"
-#include "abstractRequestForApplication.h"
+
+AbstractRequestForApplication::AbstractRequestForApplication() : AbstractRequest ()
+{
+
+}
 
 AbstractRequestForApplication::AbstractRequestForApplication(QString *serverAddress, unsigned short serverPort) : AbstractRequest (serverAddress,serverPort)
 {

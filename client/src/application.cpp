@@ -15,6 +15,7 @@ Application::Application(QString path, Network *network)
     {
         initAppNameConfig(appCfg);
         initId (appCfg);
+        initAppIcon(appCfg);
         initVerCon (net, appPath, appName);
     }
 }
@@ -61,10 +62,10 @@ bool Application::initAppPath(QString path)
     return true;
 }
 
-bool Application::initAppIcon()
+bool Application::initAppIcon(Config *cfg)
 {
-    QString iconPath = appCfg->get("iconPath").at(0);
-    if (iconPath == appCfg->errorResponse) return false;
+    QString iconPath = cfg->get("iconPath").at(0);
+    if (iconPath == cfg->errorResponse) return false;
 
     appIcon = new QIcon (iconPath);
     return true;
@@ -72,15 +73,14 @@ bool Application::initAppIcon()
 
 bool Application::initVerCon(Network *network, QDir *path, QString *name)
 {
-    QString *appDirStr = new QString(path->absolutePath());
-    //verCon = new VersionController(appDirStr, network, name);
+    verCon = new VersionController (*path, *network,*name);
     return true;
 }
 
 bool Application::initUiApp()
 {
-    if (verCon == NULL) return false;
-    uiApp = new UiApplication (NULL, appName);
+    if (verCon == nullptr) return false;
+    uiApp = new UiApplication (appName);
     //if  (actualVersion != NULL)
     {
         uiApp->setIcon(appIcon);
@@ -146,13 +146,13 @@ bool Application::setLastCurrentVersionOfConfig(QString *verName)
 UiApplication* Application::getUiApplication()
 {
     if (uiApp == NULL) initUiApp();
-    uiApp->setActivePage(1); //TODO read cfg
+    uiApp->setActivePage(1);
     return uiApp;
 }
 
-uiApplicationItem* Application::getUiApplicationItem()
+UiApplicationItem* Application::getUiApplicationItem()
 {
-
+    return new UiApplicationItem (*appName,*appIcon);
 }
 
 bool Application::deleteUiApplication()
@@ -177,7 +177,7 @@ bool Application::fillingConfigApp()
     if (net == NULL) return false;
     if (!(net->isConnected())) return false;
     AbstractRequest *reqAppInfo = net->getAppInfo(*appName);
-    connect(reqAppInfo,AbstractRequest::replyServer,this,Application::reciveAppInfo);
+    connect(reqAppInfo,&AbstractRequest::replyServer,this,&Application::reciveAppInfo);
     return true;
 }
 

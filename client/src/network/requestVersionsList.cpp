@@ -1,5 +1,8 @@
 #include "requestVersionsList.h"
 
+RequestVersionsList::RequestVersionsList() : AbstractRequestForApplication ()
+{}
+
 RequestVersionsList::RequestVersionsList(QString *serverAddress, unsigned short serverPort,QString token,QString app) : AbstractRequestForApplication (serverAddress,serverPort)
 {
     sendRequest(getRequestUrl(method,getRequestParam(token,app)));

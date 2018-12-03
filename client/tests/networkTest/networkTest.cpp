@@ -65,7 +65,7 @@ void NetworkTest::initTestCase()
     QDir (".//").mkdir(".//networkData");
     dataFolder = new QDir (".//networkData");
     
-    cfg = new Config (":/versionTestData/launcher config.cfg");
+    cfg = new Config (":/launcher config.cfg");
     QString tempAddressServer = cfg->get("DomainServer").at(0);
     if (Config::isError(tempAddressServer))
     {
@@ -198,7 +198,7 @@ void NetworkTest::test_getFileList()
 
     QTestEventLoop &loop = QTestEventLoop::instance();
 
-    AbstractRequest *request = network->getFileList(AbstractRequest::spaceTo_(applicationName),versionName);
+    AbstractRequest *request = network->getFileListVersion(AbstractRequest::spaceTo_(applicationName),versionName);
 
     QSignalSpy *signalspy;
     signalspy = new QSignalSpy (request,SIGNAL(replyServer(QList<NetworkData>*)));

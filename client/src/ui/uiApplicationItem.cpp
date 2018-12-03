@@ -1,14 +1,35 @@
 #include "uiApplicationItem.h"
 #include "ui_uiApplicationItem.h"
 
-uiApplicationItem::uiApplicationItem(QWidget *parent) :
+UiApplicationItem::UiApplicationItem(QString &name, QIcon &icon, QWidget *parent) :
     QFrame(parent),
-    ui(new Ui::uiApplicationItem)
+    ui(new Ui::UiApplicationItem)
 {
     ui->setupUi(this);
+
+    appName = new QString (name);
+    appIcon = new QIcon (icon);
+
+    ui->applicationButton->setIcon(*appIcon);
+    ui->applicationName->setText(*appName);
 }
 
-uiApplicationItem::~uiApplicationItem()
+UiApplicationItem::~UiApplicationItem()
 {
     delete ui;
+}
+
+QString *UiApplicationItem::getAppName() const
+{
+    return appName;
+}
+
+QIcon *UiApplicationItem::getAppIcon() const
+{
+    return appIcon;
+}
+
+void UiApplicationItem::on_applicationButton_clicked()
+{
+    clicked(this);
 }

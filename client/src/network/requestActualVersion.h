@@ -3,11 +3,12 @@
 
 #include "abstractRequestForApplication.h"
 
-class requestActualVersion : public AbstractRequestForApplication
+class RequestActualVersion : public AbstractRequestForApplication
 {
 
 public:
-    requestActualVersion(QString *serverAddress, unsigned short serverPort,QString token,QString app);
+    RequestActualVersion();
+    RequestActualVersion(QString *serverAddress, unsigned short serverPort,QString token,QString app);
     void send();
     virtual bool parse (QByteArray data);
 private:

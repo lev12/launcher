@@ -6,12 +6,13 @@
 int main(int argc, char *argv[])
 {
     QCoreApplication app(argc, argv);
-    VersionNoInstallTest *testNIVer = new VersionNoInstallTest ();
+    /*VersionNoInstallTest *testNIVer = new VersionNoInstallTest ();
     QTest::qExec (testNIVer,argc, argv);
     VersionInstallTest *testIVer = new VersionInstallTest ();
     QTest::qExec (testIVer,argc, argv);
     AbstractVersionTest *testAVer = new AbstractVersionTest ();
-    QTest::qExec (testAVer,argc, argv);
+    QTest::qExec (testAVer,argc, argv);*/
+    qRegisterMetaType<QList<NetworkData>*>("QList<NetworkData>*");
     VersionControllerTest *testVerCon = new VersionControllerTest ();
     QTest::qExec (testVerCon,argc, argv);
 }

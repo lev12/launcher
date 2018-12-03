@@ -1,5 +1,5 @@
 <RCC>
-    <qresource>
+    <qresource prefix="/">
         <file>versionTestData/alpha_96/simulatorelectricity.exe</file>
         <file>versionTestData/alpha_96/version_config.cfg</file>
         <file>versionTestData/beta 64/simulatorelectricity.exe</file>
@@ -16,10 +16,60 @@
         <file>versionTestData/release 34/version_config.cfg</file>
         <file>versionTestData/release_58/simulatorelectricity.exe</file>
         <file>versionTestData/release_58/version_config.cfg</file>
-        <file>versionTestData/launcher config.cfg</file>
+        <file>launcher config.cfg</file>
         <file>versionTestData/pre-alpha 66/simulatorelectricity.exe</file>
         <file>versionTestData/pre-alpha 66/version_config.cfg</file>
         <file>versionTestData/alpha 88/simulatorelectricity.exe</file>
         <file>versionTestData/alpha 88/version_config.cfg</file>
+        <file>versionTestForNetworkData/Electrical_Simulator/release 3/simulatorelectricity.exe</file>
+        <file>versionTestForNetworkData/Electrical_Simulator/release 3/version_config.cfg</file>
+        <file>versionTestForNetworkData/Electrical_Simulator/beta 6/simulatorelectricity.exe</file>
+        <file>versionTestForNetworkData/Electrical_Simulator/beta 6/version_config.cfg</file>
+        <file>versionTestForNetworkData/Electrical_Simulator/pre_alpha 2/simulatorelectricity.exe</file>
+        <file>versionTestForNetworkData/Electrical_Simulator/pre_alpha 2/version_config.cfg</file>
+        <file>versionTestForNetworkData/Electrical_Simulator/alpha_9/simulatorelectricity.exe</file>
+        <file>versionTestForNetworkData/Electrical_Simulator/alpha_9/version_config.cfg</file>
+        <file>versionTestForNetworkData/Launcher/pre-alpha_1/simulatorelectricity.exe</file>
+        <file>versionTestForNetworkData/Launcher/pre-alpha_1/version_config.cfg</file>
+        <file>versionTestForNetworkData/Electrical_Simulator/app.cfg</file>
+        <file>versionTestForNetworkData/Launcher/app.cfg</file>
+        <file>versionControllerTestData/set 1/alpha_96/simulatorelectricity.exe</file>
+        <file>versionControllerTestData/set 1/alpha_96/version_config.cfg</file>
+        <file>versionControllerTestData/set 1/pre_alpha 27/simulatorelectricity.exe</file>
+        <file>versionControllerTestData/set 1/pre_alpha 27/version_config.cfg</file>
+        <file>versionControllerTestData/set 1/pre-alpha_6/simulatorelectricity.exe</file>
+        <file>versionControllerTestData/set 1/pre-alpha_6/version_config.cfg</file>
+        <file>versionControllerTestData/set 1/release_58/simulatorelectricity.exe</file>
+        <file>versionControllerTestData/set 1/release_58/version_config.cfg</file>
+        <file>versionControllerTestData/set 2/alpha 88/simulatorelectricity.exe</file>
+        <file>versionControllerTestData/set 2/alpha 88/version_config.cfg</file>
+        <file>versionControllerTestData/set 2/alpha_336/simulatorelectricity.exe</file>
+        <file>versionControllerTestData/set 2/alpha_336/version_config.cfg</file>
+        <file>versionControllerTestData/set 2/beta_566/simulatorelectricity.exe</file>
+        <file>versionControllerTestData/set 2/beta_566/version_config.cfg</file>
+        <file>versionControllerTestData/set 2/pre_alpha 2/simulatorelectricity.exe</file>
+        <file>versionControllerTestData/set 2/pre_alpha 2/version_config.cfg</file>
+        <file>versionControllerTestData/set 2/pre-alpha 66/simulatorelectricity.exe</file>
+        <file>versionControllerTestData/set 2/pre-alpha 66/version_config.cfg</file>
+        <file>versionControllerTestData/set 2/pre-alpha_6/simulatorelectricity.exe</file>
+        <file>versionControllerTestData/set 2/pre-alpha_6/version_config.cfg</file>
+        <file>versionControllerTestData/set 2/release 34/simulatorelectricity.exe</file>
+        <file>versionControllerTestData/set 2/release 34/version_config.cfg</file>
+        <file>versionControllerTestData/set 2/release_566/simulatorelectricity.exe</file>
+        <file>versionControllerTestData/set 2/release_566/version_config.cfg</file>
+        <file>versionControllerTestData/set 3/beta 64/simulatorelectricity.exe</file>
+        <file>versionControllerTestData/set 3/beta 64/version_config.cfg</file>
+        <file>versionControllerTestData/set 3/pre_alpha_4/simulatorelectricity.exe</file>
+        <file>versionControllerTestData/set 3/pre_alpha_4/version_config.cfg</file>
+        <file>versionControllerTestData/set 3/release 68/simulatorelectricity.exe</file>
+        <file>versionControllerTestData/set 3/release 68/version_config.cfg</file>
+        <file>versionControllerTestData/set 4/alpha_96/simulatorelectricity.exe</file>
+        <file>versionControllerTestData/set 4/alpha_96/version_config.cfg</file>
+        <file>versionControllerTestData/set 4/beta_56/simulatorelectricity.exe</file>
+        <file>versionControllerTestData/set 4/beta_56/version_config.cfg</file>
+        <file>versionControllerTestData/set 4/pre_alpha 27/simulatorelectricity.exe</file>
+        <file>versionControllerTestData/set 4/pre_alpha 27/version_config.cfg</file>
+        <file>versionControllerTestData/set 4/release 34/simulatorelectricity.exe</file>
+        <file>versionControllerTestData/set 4/release 34/version_config.cfg</file>
     </qresource>
 </RCC>

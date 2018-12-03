@@ -12,15 +12,21 @@
 #include <QThread>
 #include <QTimer>
 #include <QDialog>
+#include <QDebug>
+#include <QDesktopWidget>
+#include <QDesktopServices>
+#include <QUrl>
 
 #include "log.h"
 #include "config.h"
 #include "network/network.h"
-#include "ui/menu.h"
-#include "ui/general.h"
-#include "ui/dialogupdatelauncher.h"
-#include "ui/menuGeneral.h"
-#include "applicationcontroller.h"
+#include "ui/uiHomePage.h"
+#include "ui/uiMainMenu.h"
+#include "ui/uiApplication.h"
+#include "ui/uiApplicationInstalled.h"
+
+#include "ui/dialogUpdateLauncher.h"
+#include "applicationController.h"
 
 namespace Ui {
 class MainWindow;
@@ -31,8 +37,14 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit MainWindow(QWidget *parent = 0);
+    explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+
+public slots:
+    void setUiApplication(UiApplication *app);
+    void setHomePage();
+    void setApplicationInstalled();
+
 private slots:
     void setWidgetApp ();
     void setFullScreanMode ();
@@ -42,11 +54,16 @@ private slots:
 private:
     Ui::MainWindow *ui;
     Log *log;
-    General *general;
     Network *network;
     DialogUpdateLauncher *updatelauncher;
-    MenuGeneral *menugeneral;
     ApplicationController *appCon;
+    UiMainMenu *mainMenu;
+    UiHomePage *homePage;
+    UiApplicationInstalled *appInstallPage;
+
+    QFrame *activeFrame;
+    void removeActiveFrame();
+    void setActiveFrame(QFrame *f);
 };
 
 #endif // MAINWINDOW_H

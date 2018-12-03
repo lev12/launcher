@@ -1,6 +1,10 @@
 #include "requestVersion.h"
 
-RequestVersion::RequestVersion(QString &serverAddress, unsigned short &serverPort, QString &Token , QString &app, QString &ver, QDir &saveFolderPath) : AbstractRequest (&serverAddress,serverPort)
+RequestVersion::RequestVersion() : AbstractRequest ()
+{}
+
+RequestVersion::RequestVersion(QString &serverAddress, unsigned short &serverPort, QString &Token , QString &app, QString &ver, QDir &saveFolderPath) :
+    AbstractRequest (&serverAddress,serverPort)
 {
     init (ver, app, saveFolderPath);
     token = new QString (Token);
@@ -26,21 +30,21 @@ bool RequestVersion::init(QString versionName, QString applicationName, QDir sav
 bool RequestVersion::getCheckVersion(QString *VerName, QString *AppName)
 {
     AbstractRequest *reqestCheckVer = new RequestCheckVersion (serverAddress, *serverPort, *token, *AppName, *VerName);
-    connect(reqestCheckVer, AbstractRequest::replyServer, this, RequestVersion::receiveCheckVersion);
+    connect(reqestCheckVer, &AbstractRequest::replyServer, this, &RequestVersion::receiveCheckVersion);
     return true;
 }
 
 bool RequestVersion::getVersionInfo(QString *VerName, QString *AppName)
 {
     AbstractRequest *reqestVerInfo = new RequestVersionInfo (serverAddress, *serverPort, *token, *AppName, *VerName);
-    connect(reqestVerInfo, AbstractRequest::replyServer, this, RequestVersion::receiveVersionInfo);
+    connect(reqestVerInfo, &AbstractRequest::replyServer, this, &RequestVersion::receiveVersionInfo);
     return true;
 }
 
 bool RequestVersion::getFileListVersion(QString *VerName, QString *AppName)
 {
     AbstractRequest *reqestFileListVer = new RequestFileListVersion (serverAddress, *serverPort, *token, *AppName, *VerName);
-    connect(reqestFileListVer, AbstractRequest::replyServer, this, RequestVersion::receiveFileListVersion);
+    connect(reqestFileListVer, &AbstractRequest::replyServer, this, &RequestVersion::receiveFileListVersion);
     return true;
 }
 
@@ -49,7 +53,7 @@ bool RequestVersion::getFile()
     QUrl absUrlFile (absoluteUrlPath(verFileReletivePathList->at(*indexDownloadFile)));
     QFileInfo absFilePath (QFileInfo(absoluteFilePath(verFileReletivePathList->at(*indexDownloadFile))));
     AbstractRequest *reqestFileListVer = new RequestFile (absUrlFile, absFilePath);
-    connect(reqestFileListVer, AbstractRequest::replyServer, this, RequestVersion::receiveFinishFileDownload);
+    connect(reqestFileListVer, &AbstractRequest::replyServer, this, &RequestVersion::receiveFinishFileDownload);
     return true;
 }
 
@@ -176,6 +180,10 @@ void RequestVersion::receiveFinishFileDownload(QList<NetworkData> *response)
     {
         qDebug () << "finish!!!!!!!!!!!!";
         QList<NetworkData> *responsever;
+        NetworkData netData;
+        netData.key = QString(keyPathVer);
+        netData.value = QVariant(saveFolder->absolutePath());
+        responsever->operator <<(netData);
         replyServer(responsever);
     }
 }

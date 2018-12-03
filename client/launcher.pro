@@ -1,5 +1,5 @@
 # Name of the project
-
+TARGET = launcher
 
 # Subdirectories
 TEMPLATE = subdirs

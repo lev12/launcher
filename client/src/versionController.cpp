@@ -3,7 +3,7 @@
 VersionController::VersionController(QDir &pathToFolderWithAllVersions, Network &network, QString &AppName) :
     net (&network), folderWithAllVersions (&pathToFolderWithAllVersions), appName (&AppName)
 {
-    if (AppName != QString(""))
+    if (AppName == QString(""))
     {
         QString estr ("no valid application name: ");
         estr.append(AppName);
@@ -15,40 +15,22 @@ VersionController::VersionController(QDir &pathToFolderWithAllVersions, Network 
         estr.append(AppName);
         throw std::invalid_argument (estr.toStdString());
     }
-    net = &network;
-
-    //initVersionController(pathToFolderWithAllVersions);
-    fillingVersionList(*folderWithAllVersions);
+    versionList = new QList <AbstractVersion*> ();
+    *versionList = getVersionList(*folderWithAllVersions);
 }
 
-bool VersionController::initVersionController(QString &pathToFolder)
+QList<AbstractVersion *> VersionController::getListVersion()
 {
-    initVersionsList();
-
-    return true;
+    return *versionList;
 }
 
-bool VersionController::initVersionsList()
+QStringList VersionController::getListVersionStrList()
 {
-    if (versionsList == NULL)
+    QStringList resaultList;
+
+    foreach (AbstractVersion *tempResList, *versionList)
     {
-        versionsList = new QList <AbstractVersion*> ();
-    }
-    return true;
-}
-
-QList<AbstractVersion *> VersionController::getFullListVersion()
-{
-    return *versionsList;
-}
-
-QStringList* VersionController::getFullListVersionStrList()
-{
-    QStringList* resaultList = new QStringList();
-
-    foreach (AbstractVersion *tempResList, *versionsList)
-    {
-        resaultList->operator <<(tempResList->getFullName());
+        resaultList << tempResList->getFullName();
     }
 
     return resaultList;
@@ -58,7 +40,7 @@ QList<VersionInstall *> VersionController::getListInsallVersion()
 {
     QList <VersionInstall*> result;
 
-    foreach (AbstractVersion *tempVer, *versionsList)
+    foreach (AbstractVersion *tempVer, *versionList)
     {
         if (tempVer->getIsInstall())
         {
@@ -69,11 +51,11 @@ QList<VersionInstall *> VersionController::getListInsallVersion()
     return result;
 }
 
-QList<VersionNoInstall *> VersionController::getListVersionOnServer()
+QList<VersionNoInstall *> VersionController::getListNoInstallVersion()
 {
     QList <VersionNoInstall*> result;
 
-    foreach (AbstractVersion *tempVer, *versionsList)
+    foreach (AbstractVersion *tempVer, *versionList)
     {
         if (!tempVer->getIsInstall())
         {
@@ -86,19 +68,20 @@ QList<VersionNoInstall *> VersionController::getListVersionOnServer()
 
 AbstractVersion* VersionController::getVersion(QString verName)
 {
-    foreach (AbstractVersion *tempVer, *versionsList)
+    foreach (AbstractVersion *tempVer, *versionList)
     {
         if (tempVer->getFullName() == verName)
         {
             return tempVer;
         }
     }
+    throw VersionControllerException (1002,QString ("not found version:") + verName);
     return NULL;
 }
 
 bool VersionController::deleteAllVersion()
 {
-    foreach (AbstractVersion *tempVer, *versionsList)
+    foreach (AbstractVersion *tempVer, *versionList)
     {
         static_cast<VersionInstall*>(tempVer)->deleteAllFile();
     }
@@ -108,27 +91,52 @@ bool VersionController::deleteAllVersion()
 
 bool VersionController::updateVersionsList()
 {
-    return fillingVersionList(*folderWithAllVersions);
+    try
+    {
+        *versionList = getVersionList(*folderWithAllVersions);
+    }
+    catch (const std::invalid_argument &e)
+    {
+        qDebug () << e.what();
+        if (!folderWithAllVersions->exists())
+        {
+            QString estr ("no exists folder with version");
+            throw VersionControllerException (1001, estr);
+        }
+        return false;
+    }
+    return true;
 }
 
 bool VersionController::downloadVersion(VersionNoInstall ver)
 {
-    //net->getVersion("Electrical_Simulator", ver.getFullName());
-    return false;
-}
-
-bool VersionController::initAppName(QString *name)
-{
-    appName = name;
-    return true;
-}
-
-bool VersionController::fillingVersionList(const QDir &verFolder)
-{
-    if (!verFolder.exists())
+    if (!net->isConnected())
     {
         return false;
     }
+    QString *verName = new QString (ver.getFullName());
+    AbstractRequest *requestVer = net->getVersion(*appName,*verName,*folderWithAllVersions);
+    connect(requestVer,&RequestVersion::replyServer,this,&VersionController::reciveDownloadVersion);
+    return true;
+}
+
+void VersionController::reciveDownloadVersion(QList<NetworkData> *response)
+{
+    QString folderVersion = response->at(0).value.toString();
+    VersionInstall *newVer = new VersionInstall (*appName,folderVersion,net);
+    updateVersionsList();
+    downloadNewVersion (newVer);
+}
+
+QList <AbstractVersion*> VersionController::getVersionList(const QDir &verFolder)
+{
+    if (!verFolder.exists())
+    {
+        QString estr ("no exists folder: ");
+        estr.append(verFolder.absolutePath());
+        throw std::invalid_argument (estr.toStdString());
+    }
+    QList <AbstractVersion*> verList;
     QStringList lstDirs = verFolder.entryList(QDir::Dirs |
                     QDir::AllDirs |
                     QDir::NoDotAndDotDot);
@@ -137,18 +145,26 @@ bool VersionController::fillingVersionList(const QDir &verFolder)
         QString entryAbsPath = verFolder.absolutePath() + "/" + entry;
         if (VersionInstall::checkVersion(QFileInfo (entryAbsPath)))
         {
-            VersionInstall *vertemp = new VersionInstall (*appName,entryAbsPath,net);
-            versionsList->operator <<(vertemp);
+            VersionInstall *vertemp;
+            try
+            {
+                vertemp = new VersionInstall (*appName,entryAbsPath,net);
+            }
+            catch (std::exception &e)
+            {
+                continue;
+            }
+            verList << vertemp;
         }
     }
-    return true;
+    verList = sortVersionList(verList);
+    return verList;
 }
 
-QList<AbstractVersion *> VersionController::sortVersionList()
+QList<AbstractVersion *> VersionController::sortVersionList(const QList<AbstractVersion *> &versions)
 {
     QList <AbstractVersion*> returnVersionsList;
 
-    QList <AbstractVersion*> versions = *versionsList;
     QList <AbstractVersion*> preAlpha;
     QList <AbstractVersion*> Alpha;
     QList <AbstractVersion*> Beta;
@@ -160,13 +176,13 @@ QList<AbstractVersion *> VersionController::sortVersionList()
         QString tempStrName = temp->getFullName();
         QString type = tempStrName.split(" ").at(0);
 
-        if      (type == "pre_alpha")   preAlpha.operator <<(versions.at(i));
+        if      (type == "pre-alpha")   preAlpha.operator <<(versions.at(i));
         else if (type == "alpha")       Alpha.operator <<(versions.at(i));
         else if (type == "beta")        Beta.operator <<(versions.at(i));
         else if (type == "release")     Release.operator <<(versions.at(i));
         else
         {
-            qDebug () << "error sort versions";
+            qDebug () << type << "error sort versions";
         }
     }
 
@@ -180,7 +196,7 @@ QList<AbstractVersion *> VersionController::sortVersionList()
 
 bool VersionController::isFoundVersions()
 {
-    if (versionsList->length() > 0){
+    if (versionList->length() > 0){
         return true;
     }
     else{

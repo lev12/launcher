@@ -11,6 +11,7 @@
 #include "globalVariable.h"
 #include "versionInstall.h"
 #include "versionNoInstall.h"
+#include "versionControllerException.h"
 #include "network/network.h"
 
 class VersionController : public QObject
@@ -18,10 +19,10 @@ class VersionController : public QObject
     Q_OBJECT
 public:
     VersionController(QDir &pathToFolderWithAllVersions, Network &network, QString &AppName);
-    QList <AbstractVersion*> getFullListVersion();
-    QStringList* getFullListVersionStrList();
+    QList <AbstractVersion*> getListVersion();
+    QStringList getListVersionStrList();
     QList <VersionInstall*> getListInsallVersion();
-    QList<VersionNoInstall*> getListVersionOnServer();
+    QList<VersionNoInstall*> getListNoInstallVersion();
     AbstractVersion *getVersion(QString verName);
 
     bool deleteAllVersion();
@@ -29,21 +30,21 @@ public:
     bool downloadVersion(VersionNoInstall ver);
 
     bool isFoundVersions ();
+    static QList<AbstractVersion *> sortVersionList(const QList<AbstractVersion *> &versions);
 private:
-    QList <AbstractVersion*> *versionsList;
+    QList <AbstractVersion*> *versionList;
     QDir *folderWithAllVersions;
     Network *net;
     QString *appName;
 
-    bool initAppName (QString *name);
-    bool initVersionController (QString &pathToFolder);
-    bool initVersionsList();
-
-    bool fillingVersionList(const QDir &verFolder);
-    QList<AbstractVersion *> sortVersionList();
+    QList<AbstractVersion *> getVersionList(const QDir &verFolder);
 
 signals:
     void responseActualVersion (QString verName);
+    void downloadNewVersion (VersionInstall *VersionInst);
+
+private slots:
+    void reciveDownloadVersion (QList<NetworkData> *response);
 };
 
 #endif // VERSIONCONTROLLER_H

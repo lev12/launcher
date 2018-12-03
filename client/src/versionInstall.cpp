@@ -1,6 +1,6 @@
 #include "versionInstall.h"
 
-VersionInstall::VersionInstall(QString AppName, QString pathToFolderWithVersions, Network *network) : AbstractVersion ()
+VersionInstall::VersionInstall(QString &AppName, QString &pathToFolderWithVersions, Network *network) : AbstractVersion ()
 {
     initIsInatall(true);
     initAppName(AppName);
@@ -119,7 +119,7 @@ bool VersionInstall::requestConfigFromNetwork(Network *network)
         return false;
     }
     AbstractRequest *request = network->getVersionInfo(*appName,getFullName());
-    connect(request, AbstractRequest::replyServer, this, reciveConfig);
+    connect(request, &AbstractRequest::replyServer, this, &VersionInstall::reciveConfig);
     return true;
 }
 

@@ -1,31 +1,44 @@
-#include "uiapplication.h"
-#include "ui_uiapplication.h"
+#include "uiApplication.h"
+//#include "ui_uiApplication.h"
 
-UiApplication::UiApplication(QWidget *parent, QString *AppName) :
-    QFrame(parent),
-    ui(new Ui::UiApplication)
+UiApplication::UiApplication(QString *AppName, QWidget *parent) :
+    QFrame(parent)
 {
-    ui->setupUi(this);
 
-    menuVert = new MenuVertical ();
-    ui->horizontalLayout->addWidget(menuVert);
+    if (this->objectName().isEmpty())
+        this->setObjectName(QLatin1String("UiApplication"));
+    this->resize(685, 480);
+    QSizePolicy sizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    sizePolicy.setHorizontalStretch(0);
+    sizePolicy.setVerticalStretch(0);
+    sizePolicy.setHeightForWidth(this->sizePolicy().hasHeightForWidth());
+    this->setSizePolicy(sizePolicy);
+    this->setMinimumSize(QSize(400, 400));
+    this->setMaximumSize(QSize(16777215, 16777215));
+    this->setAutoFillBackground(false);
+    this->setStyleSheet(QLatin1String("background-color: rgba(0, 0, 0, 20);"));
+    this->setFrameShape(QFrame::NoFrame);
+    this->setFrameShadow(QFrame::Plain);
+    this->setLineWidth(0);
+    horizontalLayout_2 = new QHBoxLayout(this);
+    horizontalLayout_2->setSpacing(0);
+    horizontalLayout_2->setObjectName(QLatin1String("horizontalLayout_2"));
+    horizontalLayout_2->setSizeConstraint(QLayout::SetMaximumSize);
+    horizontalLayout_2->setContentsMargins(0, 0, 0, 0);
+    horizontalLayout = new QHBoxLayout();
+    horizontalLayout->setSpacing(0);
+    horizontalLayout->setObjectName(QLatin1String("horizontalLayout"));
+    horizontalLayout->setSizeConstraint(QLayout::SetMaximumSize);
 
-    appName = NULL;
-    appIcon = NULL;
-    language = NULL;
-    platforms = NULL;
-    minSysRequiremets = NULL;
-    recommendedSysRequiremets = NULL;
-    currentVersion = NULL;
-    activePage = NULL;
-    versions = NULL;
+    horizontalLayout_2->addLayout(horizontalLayout);
+    retranslateUi(this);
 
     initName (AppName);
 }
 
 UiApplication::~UiApplication()
 {
-    delete ui;
+
 }
 
 QString *UiApplication::getCurrentVersion()
@@ -86,7 +99,6 @@ bool UiApplication::initVersionList()
 //set
 bool UiApplication::setIcon(QIcon *icon)
 {
-    if (appIcon == NULL) initIcon();
     *appIcon = *icon;
 
     return true;
@@ -94,7 +106,6 @@ bool UiApplication::setIcon(QIcon *icon)
 
 bool UiApplication::setSupportLanguage(QStringList *Language)
 {
-    if (language == NULL) initSupportLanguage();
     *language = *Language;
 
     return true;
@@ -102,7 +113,6 @@ bool UiApplication::setSupportLanguage(QStringList *Language)
 
 bool UiApplication::setPlatforms(QList<PlatformType> *Platforms)
 {
-    if (platforms == NULL) initPlatforms();
     *platforms = *Platforms;
 
     return true;
@@ -110,7 +120,6 @@ bool UiApplication::setPlatforms(QList<PlatformType> *Platforms)
 
 bool UiApplication::setMinimumSystemRequirements(QString *text)
 {
-    if (minSysRequiremets == NULL) initMinimumSystemRequirements();
     *minSysRequiremets = *text;
 
     return true;
@@ -118,7 +127,6 @@ bool UiApplication::setMinimumSystemRequirements(QString *text)
 
 bool UiApplication::setRecommendedSystemRequirements(QString *text)
 {
-    if (recommendedSysRequiremets == NULL) initRecommendedSystemRequirements();
     *recommendedSysRequiremets = *text;
 
     return true;
@@ -150,17 +158,13 @@ bool UiApplication::renderFrame(int i)
     removeActiveFrame();
 
     QWidget *frame;
+
     if (i == 1)
     {
         frame = createGeneralPage();
-        if (frame == NULL)
-        {
-            activePage = new int(0);
-            return false;
-        }
         activePage = new int(0);
+        horizontalLayout->addWidget(frame);
     }
-    ui->horizontalLayout->addWidget(frame);
     return true;
 }
 
@@ -173,7 +177,7 @@ bool UiApplication::removeActiveFrame()
 
     if (*activePage == 1)
     {
-        ui->horizontalLayout->removeWidget(generalApplication);
+        horizontalLayout->removeWidget(generalApplication);
         delete generalApplication;
         activePage = 0;
         return true;
@@ -218,4 +222,9 @@ void UiApplication::showSettings()
 void UiApplication::startApp()
 {
 
+}
+
+void UiApplication::retranslateUi(QFrame *UiApplication)
+{
+    UiApplication->setWindowTitle(tr("UiApplication"));
 }

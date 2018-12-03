@@ -1,5 +1,8 @@
 #include "requestFile.h"
 
+RequestFile::RequestFile()
+{}
+
 RequestFile::RequestFile(QUrl UrlFile, QFileInfo file)
 {
     if (!(UrlFile.isValid()) || UrlFile.isEmpty())
@@ -25,7 +28,7 @@ RequestFile::RequestFile(QUrl UrlFile, QFileInfo file)
         }
     }
     netReply->bytesAvailable();
-    connect(netReply,QNetworkReply::readyRead, this, RequestFile::readData);
+    connect(netReply,&QNetworkReply::readyRead, this, &RequestFile::readData);
 }
 
 RequestFile::~RequestFile()

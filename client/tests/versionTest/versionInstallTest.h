@@ -7,6 +7,7 @@
 #include <QString>
 #include "versionInstall.h"
 #include "versiondata.h"
+#include "networkMock/networkMock.h"
 
 class VersionInstallTest : public QObject
 {
@@ -20,10 +21,10 @@ private slots:
     void initTestCase();
     void test_init_data ();
     void test_init ();
-    void test_deleteFiles_data ();
-    void test_deleteFiles ();
     void test_initNoCfg_data ();
     void test_initNoCfg ();
+    void test_deleteFiles_data ();
+    void test_deleteFiles ();
     void cleanupTestCase();
 };
 

@@ -5,7 +5,9 @@
 
 class RequestVersionsList : public AbstractRequestForApplication
 {
+    Q_OBJECT
 public:
+    RequestVersionsList();
     RequestVersionsList(QString *serverAddress, unsigned short serverPort,QString token,QString app);
     virtual bool parse (QByteArray data);
 private:

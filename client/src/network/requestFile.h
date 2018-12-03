@@ -6,6 +6,7 @@
 class RequestFile : public AbstractRequest
 {
 public:
+    RequestFile();
     RequestFile(QUrl UrlFile, QFileInfo file);
     ~RequestFile ();
     virtual bool parse (QByteArray data);

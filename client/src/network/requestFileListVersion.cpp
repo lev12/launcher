@@ -1,10 +1,13 @@
 #include "requestFileListVersion.h"
 
+RequestFileListVersion::RequestFileListVersion() : AbstractRequestForVersion ()
+{}
+
 RequestFileListVersion::RequestFileListVersion(QString *serverAddress, unsigned short serverPort,QString token,QString app,QString ver) : AbstractRequestForVersion (serverAddress,serverPort)
 {
     sendRequest(getRequestUrl(method,getRequestParam(token,app,ver)));
     netReply = getNetReply();
-    connect(netReply,QNetworkReply::readyRead, this, RequestFileListVersion::readData);
+    connect(netReply,&QNetworkReply::readyRead, this, &RequestFileListVersion::readData);
 }
 
 bool RequestFileListVersion::parse(QByteArray data)

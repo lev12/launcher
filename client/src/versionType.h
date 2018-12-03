@@ -1,6 +1,8 @@
 #ifndef VERSIONTYPE_H
 #define VERSIONTYPE_H
 
+#include <QMetaType>
+
 enum VersionType
 {
     pre_alpha,
@@ -10,5 +12,5 @@ enum VersionType
     null
 };
 
-Q_DECLARE_METATYPE(VersionType);
+Q_DECLARE_METATYPE(VersionType)
 #endif // VERSIONTYPE_H

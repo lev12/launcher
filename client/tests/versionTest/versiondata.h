@@ -12,6 +12,7 @@ class versionData : public QObject
 public:
     explicit versionData(QObject *parent = nullptr);
     static void loadVersionNameData ();
+    static void loadInstallVersionData ();
     static QString randomString ();
 signals:
 

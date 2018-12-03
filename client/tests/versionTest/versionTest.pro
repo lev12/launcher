@@ -22,7 +22,18 @@ SOURCES += \
     versionControllerTest.cpp \
     versiondata.cpp \
     versionInstallTest.cpp \
-    versionNoInstallTest.cpp
+    versionNoInstallTest.cpp \
+    networkMock/networkMock.cpp \
+    networkMock/requestVersionMock.cpp \
+    networkMock/requestVersionListMock.cpp \
+    networkMock/requestActualVersionMock.cpp \
+    networkMock/requestApplicationListMock.cpp \
+    networkMock/requestCheckApplicationMock.cpp \
+    networkMock/requestCheckVersionMock.cpp \
+    networkMock/requestFileMock.cpp \
+    networkMock/requestFileListVersionMock.cpp \
+    networkMock/requestVersionInfoMock.cpp \
+    networkMock/requestApplicationInfoMock.cpp
 
 # Use the dynamically linked library
 LIBS += -L../../src -ltemplate
@@ -32,7 +43,18 @@ HEADERS += \
     versionControllerTest.h \
     versiondata.h \
     versionInstallTest.h \
-    versionNoInstallTest.h
+    versionNoInstallTest.h \
+    networkMock/networkMock.h \
+    networkMock/requestVersionMock.h \
+    networkMock/requestVersionListMock.h \
+    networkMock/requestActualVersionMock.h \
+    networkMock/requestApplicationListMock.h \
+    networkMock/requestCheckApplicationMock.h \
+    networkMock/requestCheckVersionMock.h \
+    networkMock/requestFileMock.h \
+    networkMock/requestFileListVersionMock.h \
+    networkMock/requestVersionInfoMock.h \
+    networkMock/requestApplicationInfoMock.h
 
 RESOURCES += \
     ../data.qrc

@@ -1,6 +1,8 @@
 #ifndef PLATFORMTYPE_H
 #define PLATFORMTYPE_H
 
+#include <QMetaType>
+
 enum PlatformType
 {
     PC,
@@ -12,5 +14,5 @@ enum PlatformType
     Null
 };
 
-Q_DECLARE_METATYPE(PlatformType);
+Q_DECLARE_METATYPE (PlatformType)
 #endif // PLATFORMTYPE_H

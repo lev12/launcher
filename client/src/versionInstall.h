@@ -6,7 +6,7 @@
 class VersionInstall : public AbstractVersion
 {
 public:
-    VersionInstall(QString AppName, QString pathToFolderWithVersions, Network *network);
+    VersionInstall(QString &AppName, QString &pathToFolderWithVersions, Network *network);
     ~VersionInstall ();
 
     QString getStartedFileName();

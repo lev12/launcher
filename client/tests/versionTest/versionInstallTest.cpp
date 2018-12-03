@@ -13,26 +13,7 @@ VersionInstallTest::~VersionInstallTest()
 
 VersionInstallTest::loadDataVersion()
 {
-    QTest::addColumn<QString>("pathVersion");
-    QTest::addColumn<VersionType>("versionTypeResult");
-    QTest::addColumn<int>("versionNumberResult");
-    QTest::addColumn<QString>("versionNameSpaceResult");
-    QTest::addColumn<QString>("versionNameUnderscoreResult");
-    QTest::addColumn<QString>("startFileName");
-    QTest::addColumn<int>("versionSizeResult");
-    QTest::addColumn<int>("versionCountFile");
-    QTest::addColumn<bool>("versionValidate");
-
-    QTest::newRow("pre-alpha space") << "./versionTestData/pre-alpha 66" << pre_alpha << 66 << "pre-alpha 66" << "pre-alpha_66" << "simulatorelectricity.exe" << 359461 << 2 << true;
-    QTest::newRow("pre_alpha space") << "./versionTestData/pre_alpha 27" << pre_alpha << 27 << "pre-alpha 27" << "pre-alpha_27" << "simulatorelectricity.exe" << 359461 << 2 << true;
-    QTest::newRow("alpha space") << "./versionTestData/alpha 88" << alpha << 88 << "alpha 88" << "alpha_88" << "simulatorelectricity.exe" << 359461 << 2 << true;
-    QTest::newRow("beta space") << "./versionTestData/beta 64" << beta << 64 << "beta 64" << "beta_64" << "simulatorelectricity.exe" << 359461 << 2 << true;
-    QTest::newRow("release space") << "./versionTestData/release 34" << release << 34 << "release 34" << "release_34" << "simulatorelectricity.exe" << 359461 << 2 << true;
-    QTest::newRow("pre-alpha underscore") << "./versionTestData/pre-alpha_6" << pre_alpha << 6 << "pre-alpha 6" << "pre-alpha_6" << "simulatorelectricity.exe" << 359461 << 2 << true;
-    QTest::newRow("pre_alpha underscore") << "./versionTestData/pre_alpha_4" << pre_alpha << 4 << "pre-alpha 4" << "pre-alpha_4" << "simulatorelectricity.exe" << 359461 << 2 << true;
-    QTest::newRow("alpha underscore") << "./versionTestData/alpha_96" << alpha << 96 << "alpha 96" << "alpha_96" << "simulatorelectricity.exe" << 359461 << 2 << true;
-    QTest::newRow("beta underscore") << "./versionTestData/beta_566" << beta << 566 << "beta 566" << "beta_566" << "simulatorelectricity.exe" << 359461 << 2 << true;
-    QTest::newRow("release underscore") << "./versionTestData/release_58" << release << 58 << "release 58" << "release_58" << "simulatorelectricity.exe" << 359461 << 2 << true;
+    versionData::loadInstallVersionData();
 }
 
 void VersionInstallTest::initTestCase()
@@ -77,7 +58,7 @@ void VersionInstallTest::test_init_data()
 
 void VersionInstallTest::test_init()
 {
-    Config cfgL(":/versionTestData/launcher config.cfg");
+    Config cfgL(":/launcher config.cfg");
     Network *network = new Network (cfgL.get("DomainServer").at(0),QString(cfgL.get("PortServer").at(0)).toUShort());
     QString appName = versionData::randomString();
     qDebug () << "app name:     " << appName;
@@ -122,6 +103,40 @@ void VersionInstallTest::test_init()
 
 }
 
+void VersionInstallTest::test_initNoCfg_data()
+{
+    loadDataVersion ();
+}
+
+void VersionInstallTest::test_initNoCfg()
+{
+    QFETCH (QString,pathVersion);
+    int cfg = qrand()%2;
+    qDebug () << cfg;
+    if (!cfg)
+    {
+        QString cfgFilePath (pathVersion);
+        cfgFilePath.append("/version_config.cfg");
+        qDebug () << cfgFilePath;
+        QFile cfgFile (cfgFilePath);
+        cfg = !cfgFile.remove();
+    }
+    qDebug () << cfg;
+    NetworkMock *network = new NetworkMock (false);
+
+    QString appName = versionData::randomString();
+    qDebug () << "app name:     " << appName;
+    try
+    {
+        VersionInstall *versionInstall = new VersionInstall (appName,pathVersion,network);
+    }
+    catch (std::exception &e)
+    {
+        QVERIFY (!cfg);
+    }
+    QVERIFY (!cfg);
+}
+
 void VersionInstallTest::test_deleteFiles_data()
 {
     loadDataVersion ();
@@ -129,23 +144,13 @@ void VersionInstallTest::test_deleteFiles_data()
 
 void VersionInstallTest::test_deleteFiles()
 {
-    Config cfgL(":/data/versionTestData/launcher config.cfg");
+    Config cfgL(":/launcher config.cfg");
     Network *network = new Network (cfgLauncher.get("DomainServer").at(0),QString(cfgLauncher.get("PortServer").at(0)).toUShort());
     QString appName = versionData::randomString();
     qDebug () << "app name:     " << appName;
     QFETCH (QString,pathVersion);
     VersionInstall *versionInstall = new VersionInstall (appName,pathVersion,network);
     versionInstall->deleteAllFile();
-}
-
-void VersionInstallTest::test_initNoCfg_data()
-{
-
-}
-
-void VersionInstallTest::test_initNoCfg()
-{
-
 }
 
 void VersionInstallTest::cleanupTestCase()

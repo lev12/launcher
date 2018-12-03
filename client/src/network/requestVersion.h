@@ -12,8 +12,11 @@
 class RequestVersion : public AbstractRequest
 {
 public:
+    RequestVersion();
     RequestVersion(QString &serverAddress, unsigned short &serverPort, QString &Token , QString &app, QString &ver, QDir &saveFolder);
     virtual bool parse (QByteArray data);
+
+    const QString keyPathVer = "path";
 private:
     bool init (QString versionName, QString applicationName, QDir saveFolder);
 
@@ -31,6 +34,8 @@ private:
     QStringList  *verFileReletivePathList;
     QString *token;
     QDir *saveFolder;
+
+
 private slots:
     void receiveCheckVersion (QList<NetworkData> *response);
     void receiveVersionInfo (QList<NetworkData> *response);

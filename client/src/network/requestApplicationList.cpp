@@ -1,6 +1,11 @@
 #include "requestApplicationList.h"
 
-RequestApplicationList::RequestApplicationList(QString *serverAddress, int serverPort, QString token) : AbstractRequest (serverAddress,serverPort)
+RequestApplicationList::RequestApplicationList() :
+    AbstractRequest (this)
+{}
+
+RequestApplicationList::RequestApplicationList(QString *serverAddress, int serverPort, QString token) :
+    AbstractRequest (serverAddress,serverPort,this)
 {
     sendRequest(getRequestUrl(method,getRequestParam(token)));
 }

@@ -14,25 +14,19 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 # Include files for this project
 SOURCES += mainwindow.cpp \
     ui/settings.cpp \
-    ui/menu.cpp \
-    ui/general.cpp \
     ui/versionmanager.cpp \
     ui/settingsmenu.cpp \
     ui/sendmassage.cpp \
     ui/updatelauncher.cpp \
     ui/dialogUpdateLauncher.cpp \
     network/uploader.cpp \
-    ui/menuGeneral.cpp \
     application.cpp \
     config.cpp \
     log.cpp \
     network/network.cpp \
     versionController.cpp \
     electricalsimulator.cpp \
-    ui/uiapplication.cpp \
-    ui/menuvertical.cpp \
     ui/uigeneralapplication.cpp \
-    ui/uiApplicationItem.cpp \
     network/abstractRequest.cpp \
     network/requestApplicationList.cpp \
     network/abstractRequestForVersion.cpp \
@@ -41,7 +35,6 @@ SOURCES += mainwindow.cpp \
     network/requestVersionInfo.cpp \
     network/requestVersionsList.cpp \
     network/requestCheckApplication.cpp \
-    network/requestAppicationInfo.cpp \
     network/requestFile.cpp \
     network/requestVersion.cpp \
     network/requestFileListVersion.cpp \
@@ -49,19 +42,32 @@ SOURCES += mainwindow.cpp \
     abstractVersion.cpp \
     versionInstall.cpp \
     versionNoInstall.cpp \
-    applicationController.cpp
+    applicationController.cpp \
+    versionException.cpp \
+    versionControllerException.cpp \
+    exception.cpp \
+    network/requestApplicationInfo.cpp \
+    ui/uiApplication.cpp \
+    ui/uiApplicationItem.cpp \
+    ui/uiHomePage.cpp \
+    ui/uiMainMenu.cpp \
+    ui/uiApplicationRequiremets.cpp \
+    ui/uiApplicationVersionManager.cpp \
+    ui/uiApplicationOverview.cpp \
+    ui/uiApplicationInstalled.cpp \
+    applicationInstall.cpp \
+    applicationNoInstall.cpp \
+    abstractApplication.cpp \
+    cacheOnDirve.cpp
 
 HEADERS  += mainwindow.h \
     ui/settings.h \
-    ui/menu.h \
-    ui/general.h \
     ui/versionmanager.h \
     ui/settingsmenu.h \
     ui/sendmassage.h \
     ui/updatelauncher.h \
     ui/dialogupdatelauncher.h \
     network/uploader.h \
-    ui/menuGeneral.h \
     globalVariable.h \
     log.h \
     network/network.h \
@@ -69,11 +75,7 @@ HEADERS  += mainwindow.h \
     config.h \
     versionController.h \
     electricalsimulator.h \
-    ui/uiapplication.h \
-    ui/menuvertical.h \
     ui/uigeneralapplication.h \
-    applicationcontroller.h \
-    ui/uiApplicationItem.h \
     network/abstractRequest.h \
     network/requestApplicationList.h \
     network/abstractRequestForVersion.h \
@@ -82,7 +84,6 @@ HEADERS  += mainwindow.h \
     network/requestVersionInfo.h \
     network/requestVersionsList.h \
     network/requestCheckApplication.h \
-    network/requestAppicationInfo.h \
     network/requestFile.h \
     network/requestVersion.h \
     network/requestFileListVersion.h \
@@ -92,22 +93,42 @@ HEADERS  += mainwindow.h \
     versionNoInstall.h \
     versionType.h \
     platformType.h \
-    network/networkData.h
+    network/networkData.h \
+    versionException.h \
+    versionControllerException.h \
+    exception.h \
+    network/requestApplicationInfo.h \
+    ui/uiApplication.h \
+    ui/uiApplicationItem.h \
+    ui/uiHomePage.h \
+    ui/uiMainMenu.h \
+    applicationController.h \
+    ui/uiApplicationRequiremets.h \
+    ui/uiApplicationVersionManager.h \
+    ui/uiApplicationOverview.h \
+    ui/uiApplicationInstalled.h \
+    applicationInstall.h \
+    applicationNoInstall.h \
+    abstractApplication.h \
+    network/networkKeys.h \
+    cacheOnDirve.h
 
 
 FORMS    += mainwindow.ui \
     ui/settings.ui \
-    ui/menu.ui \
-    ui/general.ui \
     ui/versionmanager.ui \
     ui/settingsmenu.ui \
     ui/sendmassage.ui \
     ui/updatelauncher.ui \
     ui/dialogUpdateLauncher.ui \
-    ui/menuGeneral.ui \
-    ui/uiapplication.ui \
-    ui/menuvertical.ui \
     ui/uigeneralapplication.ui \
-    ui/uiApplicationItem.ui
+    ui/uiApplicationItem.ui \
+    ui/uiApplication.ui \
+    ui/uiHomePage.ui \
+    ui/uiMainMenu.ui \
+    ui/uiApplicationRequiremets.ui \
+    ui/uiApplicationVersionManager.ui \
+    ui/uiApplicationOverview.ui \
+    ui/uiApplicationInstalled.ui
 
 RESOURCES += rec/rec.qrc \

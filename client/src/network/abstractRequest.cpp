@@ -1,11 +1,19 @@
 #include "abstractRequest.h"
 
+AbstractRequest::AbstractRequest(QObject *parent) : QObject (parent)
+{
+    emptyRequest = new bool;
+    *emptyRequest = false;
+}
+
 AbstractRequest::AbstractRequest(QString *ServerAddress, unsigned short ServerPort, QObject *parent) : QObject(parent)
 {
     netManager = new QNetworkAccessManager();
     serverAddress = new QString (*ServerAddress);
     serverPort = new unsigned short;
     *serverPort = ServerPort;
+    emptyRequest = new bool;
+    *emptyRequest = true;
 
     connect(netManager, &QNetworkAccessManager::finished, this, &AbstractRequest::readServer);
 }
@@ -137,6 +145,11 @@ QString AbstractRequest::deleteForRx (QString data)
         data_str.append(temp);
     }
     return data_str;
+}
+
+bool AbstractRequest::isEmptyRequest() const
+{
+    return *emptyRequest;
 }
 
 bool AbstractRequest::sendRequestUrl(QUrl url)

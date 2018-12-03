@@ -6,6 +6,7 @@
 class AbstractRequestForApplication : public AbstractRequest
 {
 public:
+    AbstractRequestForApplication();
     AbstractRequestForApplication(QString *serverAddress, unsigned short serverPort);
     virtual QString getRequestParam(QString token, QString app);
 };

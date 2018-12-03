@@ -2,21 +2,35 @@
 #define UIAPPLICATIONITEM_H
 
 #include <QFrame>
+#include <QIcon>
+#include <QString>
+#include <QSize>
 
 namespace Ui {
-class uiApplicationItem;
+class UiApplicationItem;
 }
 
-class uiApplicationItem : public QFrame
+class UiApplicationItem : public QFrame
 {
     Q_OBJECT
 
 public:
-    explicit uiApplicationItem(QWidget *parent = 0);
-    ~uiApplicationItem();
+    explicit UiApplicationItem(QString &name,QIcon &icon,QWidget *parent = nullptr);
+    ~UiApplicationItem();
+
+    QString *getAppName() const;
+    QIcon *getAppIcon() const;
+
+private slots:
+    void on_applicationButton_clicked();
+
+signals:
+    void clicked(UiApplicationItem *app);
 
 private:
-    Ui::uiApplicationItem *ui;
+    Ui::UiApplicationItem *ui;
+    QString *appName;
+    QIcon *appIcon;
 };
 
 #endif // UIAPPLICATIONITEM_H

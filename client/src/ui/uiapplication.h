@@ -2,8 +2,8 @@
 #define UIAPPLICATION_H
 
 #include <QFrame>
-
-#include "menuvertical.h"
+#include <QTranslator>
+#include <QHBoxLayout>
 #include "uigeneralapplication.h"
 
 namespace Ui {
@@ -15,7 +15,7 @@ class UiApplication : public QFrame
     Q_OBJECT
 
 public:
-    UiApplication(QWidget *parent = 0, QString *AppName = NULL);
+    UiApplication(QString *AppName,QWidget *parent = nullptr);
     ~UiApplication();
 
     QString *getCurrentVersion ();
@@ -31,9 +31,10 @@ public:
     bool setActivePage (int i);
 private:
     Ui::UiApplication *ui;
+    QHBoxLayout *horizontalLayout_2;
+    QHBoxLayout *horizontalLayout;
 
     int *activePage;
-    MenuVertical *menuVert;
     UiGeneralApplication *generalApplication;
     
     QString *appName;
@@ -58,6 +59,7 @@ private:
 
     bool removeActiveFrame();
     bool renderFrame (int i);
+    void retranslateUi(QFrame *UiApplication);
 private slots:
     void showGeneral();
     void showVersionMenager();

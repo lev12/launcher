@@ -19,7 +19,8 @@ class AbstractRequest : public QObject
 {
     Q_OBJECT
 public:
-    explicit AbstractRequest (QString *ServerAddress = &serverDomain, unsigned short ServerPort = 80, QObject *parent = nullptr);
+    AbstractRequest (QObject *parent = nullptr);
+    AbstractRequest (QString *ServerAddress, unsigned short ServerPort = 80, QObject *parent = nullptr);
     ~AbstractRequest ();
 
     QString getTokenParam (QString token);
@@ -35,13 +36,14 @@ public:
     static QString deleteForRx (QString data);
 
     QNetworkAccessManager *netManager;
+    bool isEmptyRequest() const;
+
 private:
     const QString keyToken = "token";
     const QString keyApplication = "app";
     const QString keyVersion = "ver";
-    virtual bool parse (QByteArray data) = 0;
 
-
+    bool *emptyRequest;
     QNetworkReply *realyServer;
     bool sendRequestUrl(QUrl url);
 protected:
@@ -52,8 +54,7 @@ protected:
     QNetworkReply *getNetReply();
     QString getUrlServer();
 
-
-
+    virtual bool parse (QByteArray data) = 0;
 signals:
     void replyServer (QList<NetworkData> *response);
 

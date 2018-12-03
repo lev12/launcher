@@ -1,10 +1,5 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include <QWidget>
-#include <QDebug>
-#include <QDesktopWidget>
-#include <QDesktopServices>
-#include <QUrl>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -13,33 +8,33 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     setCentralWidget(ui->verticalFrame);
 
-    menugeneral = new MenuGeneral();
-    network = new Network(cfgLauncher.get("DomainServer").at(0),QString(cfgLauncher.get("PortServer").at(0)).toUShort(),log);
+    mainMenu = new UiMainMenu();
+    network = new Network(cfgLauncher.get("DomainServer").at(0),
+                          QString(cfgLauncher.get("PortServer").at(0)).toUShort(),log);
     appCon = new ApplicationController (QString(".\\data"),network);
-    ui->general->addWidget(menugeneral);
-    ui->general->addWidget(appCon->getAppList()->at(0)->getUiApplication());
+    activeFrame = new QFrame();
+    ui->general->addWidget(mainMenu);
+    setHomePage();
+
+    connect(mainMenu,&UiMainMenu::clickedHomePage,this,&MainWindow::setHomePage);
+    connect(mainMenu,&UiMainMenu::clickedInstalledApplication,this,&MainWindow::setApplicationInstalled);
+    connect(homePage,&UiHomePage::clikedApplication,this,&MainWindow::setUiApplication);
+
     if (cfgLauncher.get("log").at(0) == "sendToTheServer")
     {
         log = new Log(cfgLauncher.get("logPath").at(0));
         log->head();
     }
 
-    QObject::connect(general, SIGNAL(fullScreenMode()), this, SLOT(setFullScreanMode()));
-    QObject::connect(general, SIGNAL(normalMode()), this, SLOT(setNormalMode()));
-
-
-    this->setGeometry(100,100,cfgLauncher.get("width").at(0).toInt(),cfgLauncher.get("height").at(0).toInt());
+    /*this->setGeometry(100,100,cfgLauncher.get("width").at(0).toInt(),cfgLauncher.get("height").at(0).toInt());
     if (cfgLauncher.get("fullScrean").at(0) == "true")
     {
         this->showMaximized();
-    }
+    }*/
 }
 
 MainWindow::~MainWindow()
 {
-    log->end();
-    log->compression();
-    log->comressionEnd(QString(".//log/compression.bin"));
     log->grabber(cfgLauncher.get("countFileLog").at(0).toInt());
 
     cfgLauncher.configKeyValue->clear();
@@ -51,6 +46,26 @@ MainWindow::~MainWindow()
     cfgLauncher.save();
 
     delete ui;
+}
+
+void MainWindow::setUiApplication(UiApplication *app)
+{
+    removeActiveFrame();
+    setActiveFrame(app);
+}
+
+void MainWindow::setHomePage()
+{
+    removeActiveFrame();
+    homePage = new UiHomePage (appCon->getAppList(),this);
+    setActiveFrame(homePage);
+}
+
+void MainWindow::setApplicationInstalled()
+{
+    removeActiveFrame();
+    appInstallPage = new UiApplicationInstalled (this);
+    setActiveFrame(appInstallPage);
 }
 
 void MainWindow::setFullScreanMode()
@@ -86,4 +101,17 @@ void MainWindow::currentLauncherVer(float ver)
         updatelauncher->show();
     }
 
+}
+
+void MainWindow::removeActiveFrame()
+{
+    ui->general->removeWidget(activeFrame);
+    delete activeFrame;
+    activeFrame = nullptr;
+}
+
+void MainWindow::setActiveFrame(QFrame *f)
+{
+    activeFrame = f;
+    ui->general->addWidget(f);
 }

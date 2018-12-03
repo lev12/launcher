@@ -14,11 +14,12 @@
 #include <QUrl>
 #include <QDateTime>
 #include <QDesktopServices>
+#include <QIcon>
 
 #include "globalVariable.h"
 #include "network/network.h"
 #include "versionController.h"
-#include "ui/uiapplication.h"
+#include "ui/uiApplication.h"
 #include "ui/uiApplicationItem.h"
 #include "config.h"
 
@@ -29,7 +30,7 @@ public:
     Application(QString path, Network *network);
 
     UiApplication* getUiApplication();
-    uiApplicationItem* getUiApplicationItem();
+    UiApplicationItem* getUiApplicationItem();
     bool deleteUiApplication ();
 
     bool deleteAllVersion ();
@@ -53,7 +54,7 @@ private:
     bool initNet (Network *network);
     bool initAppName (QDir *path);
     bool initAppNameConfig (Config *cfg);
-    bool initAppIcon ();
+    bool initAppIcon (Config *cfg);
     bool initUiApp ();
     bool initConfig ();
     bool initId (Config *cfg);

@@ -29,9 +29,11 @@ public:
     bool save ();
     QStringList get(QString parametr);
     bool set(QString parametr, QString value);
+    bool set(QString parametr, QStringList value);
     bool isEmpty ();
     void clear ();
 
     static bool isError (QString &value);
+    QStringList &getConfigKeyName() const;
 };
 #endif // CONFIG_H
