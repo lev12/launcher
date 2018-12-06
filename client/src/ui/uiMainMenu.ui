@@ -57,7 +57,30 @@
     <number>0</number>
    </property>
    <item>
-    <widget class="QPushButton" name="homebutton">
+    <widget class="QPushButton" name="backButton">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(255, 255, 255);
+background-color: rgba(0, 0, 0, 0);
+selection-background-color: rgba(0, 0, 0, 50);
+font: 14pt &quot;Calibri&quot;;</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="icon">
+      <iconset resource="../rec/rec.qrc">
+       <normaloff>:/icon/checkBox on.png</normaloff>:/icon/checkBox on.png</iconset>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="homeButton">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
        <horstretch>0</horstretch>
@@ -85,7 +108,30 @@ font: 14pt &quot;Calibri&quot;;</string>
     </widget>
    </item>
    <item>
-    <widget class="QPushButton" name="installedApplicatonButton">
+    <spacer name="horizontalSpacer">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>40</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item>
+    <widget class="QLineEdit" name="searchLineEdit">
+     <property name="styleSheet">
+      <string notr="true">color: rgb(255, 255, 255);
+background-color: rgba(0, 0, 0, 0);
+selection-background-color: rgba(0, 0, 0, 50);
+font: 14pt &quot;Calibri&quot;;</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="searchButton">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
        <horstretch>0</horstretch>
@@ -99,22 +145,13 @@ selection-background-color: rgba(0, 0, 0, 50);
 font: 14pt &quot;Calibri&quot;;</string>
      </property>
      <property name="text">
-      <string>Install Applicaton</string>
+      <string/>
+     </property>
+     <property name="icon">
+      <iconset resource="../rec/rec.qrc">
+       <normaloff>:/icon/checkBox on.png</normaloff>:/icon/checkBox on.png</iconset>
      </property>
     </widget>
-   </item>
-   <item>
-    <spacer name="horizontalSpacer">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>40</width>
-       <height>20</height>
-      </size>
-     </property>
-    </spacer>
    </item>
    <item>
     <widget class="QPushButton" name="settingbutton">
@@ -142,6 +179,8 @@ font: 14pt &quot;Calibri&quot;;</string>
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../rec/rec.qrc"/>
+ </resources>
  <connections/>
 </ui>
