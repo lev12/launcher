@@ -52,7 +52,6 @@ SOURCES += mainwindow.cpp \
     ui/uiApplicationRequiremets.cpp \
     ui/uiApplicationVersionManager.cpp \
     ui/uiApplicationOverview.cpp \
-    ui/uiApplicationInstalled.cpp \
     applicationInstall.cpp \
     applicationNoInstall.cpp \
     abstractApplication.cpp \
@@ -102,7 +101,6 @@ HEADERS  += mainwindow.h \
     ui/uiApplicationRequiremets.h \
     ui/uiApplicationVersionManager.h \
     ui/uiApplicationOverview.h \
-    ui/uiApplicationInstalled.h \
     applicationInstall.h \
     applicationNoInstall.h \
     abstractApplication.h \
@@ -124,8 +122,7 @@ FORMS    += mainwindow.ui \
     ui/uiMainMenu.ui \
     ui/uiApplicationRequiremets.ui \
     ui/uiApplicationVersionManager.ui \
-    ui/uiApplicationOverview.ui \
-    ui/uiApplicationInstalled.ui
+    ui/uiApplicationOverview.ui
 
 RESOURCES += rec/rec.qrc \
 
