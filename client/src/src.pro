@@ -20,12 +20,10 @@ SOURCES += mainwindow.cpp \
     ui/updatelauncher.cpp \
     ui/dialogUpdateLauncher.cpp \
     network/uploader.cpp \
-    application.cpp \
     config.cpp \
     log.cpp \
     network/network.cpp \
     versionController.cpp \
-    electricalsimulator.cpp \
     ui/uigeneralapplication.cpp \
     network/abstractRequest.cpp \
     network/requestApplicationList.cpp \
@@ -71,10 +69,8 @@ HEADERS  += mainwindow.h \
     globalVariable.h \
     log.h \
     network/network.h \
-    application.h \
     config.h \
     versionController.h \
-    electricalsimulator.h \
     ui/uigeneralapplication.h \
     network/abstractRequest.h \
     network/requestApplicationList.h \
@@ -132,3 +128,5 @@ FORMS    += mainwindow.ui \
     ui/uiApplicationInstalled.ui
 
 RESOURCES += rec/rec.qrc \
+
+TRANSLATIONS +=

@@ -134,7 +134,6 @@ bool UiApplication::setRecommendedSystemRequirements(QString *text)
 
 bool UiApplication::setVersionList(QStringList *versionsList)
 {
-    if (versions == NULL) initVersionList();
     *versions = *versionsList;
 
     return true;
@@ -170,7 +169,7 @@ bool UiApplication::renderFrame(int i)
 
 bool UiApplication::removeActiveFrame()
 {
-    if (activePage == NULL)
+    if (activePage == nullptr)
     {
         return false;
     }
@@ -179,7 +178,7 @@ bool UiApplication::removeActiveFrame()
     {
         horizontalLayout->removeWidget(generalApplication);
         delete generalApplication;
-        activePage = 0;
+        *activePage = 0;
         return true;
     }
     return false;
@@ -188,7 +187,7 @@ bool UiApplication::removeActiveFrame()
 QFrame* UiApplication::createGeneralPage()
 {
     generalApplication = new UiGeneralApplication(this, appName, appIcon);
-    if (versions != NULL)
+    if (versions != nullptr)
     {
         generalApplication->setVerListComboBox(versions);
         generalApplication->setCurrentVersion(currentVersion);
