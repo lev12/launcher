@@ -23,7 +23,7 @@
 #include "ui/uiHomePage.h"
 #include "ui/uiMainMenu.h"
 #include "ui/uiApplication.h"
-#include "ui/uiApplicationInstalled.h"
+#include "ui/settingsWrapper.h"
 
 #include "ui/dialogUpdateLauncher.h"
 #include "applicationController.h"
@@ -43,7 +43,6 @@ public:
 public slots:
     void setUiApplication(UiApplication *app);
     void setHomePage();
-    void setApplicationInstalled();
 
 private slots:
     void setWidgetApp ();
@@ -59,7 +58,7 @@ private:
     ApplicationController *appCon;
     UiMainMenu *mainMenu;
     UiHomePage *homePage;
-    UiApplicationInstalled *appInstallPage;
+    SettingsWrapper *settings;
 
     QFrame *activeFrame;
     void removeActiveFrame();

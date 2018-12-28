@@ -3,19 +3,21 @@
 
 #include <QFrame>
 #include <QDebug>
+#include <QLocale>
 #include "config.h"
+#include "log.h"
 
 namespace Ui {
 class settings;
 }
 
-class settings : public QFrame
+class Settings : public QFrame
 {
     Q_OBJECT
 
 public:
-    settings(QWidget *parent = 0, Config *cfg = NULL);
-    ~settings();
+    Settings(Config &cfg, QWidget *parent = nullptr);
+    ~Settings();
 
 private slots:
     void on_pushButton_clicked();
@@ -28,8 +30,11 @@ public slots:
 private:
     Ui::settings *ui;
     Config *conf;
-    bool fullScrean = false;
-    int lenguage = 0;
+    bool *fullscrean;
+    QLocale::Language *language;
+    bool *logState;
+    int *interfaceSize;
+    bool *checkUpdateLauncher;
 };
 
 #endif // SETTINGS_H

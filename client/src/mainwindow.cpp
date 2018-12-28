@@ -1,6 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-
+#include <QStackedWidget>
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -13,11 +13,11 @@ MainWindow::MainWindow(QWidget *parent) :
                           QString(cfgLauncher.get("PortServer").at(0)).toUShort(),log);
     appCon = new ApplicationController (QString(".\\data"),network);
     activeFrame = new QFrame();
+    settings = new SettingsWrapper (&cfgLauncher,this);
     ui->general->addWidget(mainMenu);
     setHomePage();
 
     connect(mainMenu,&UiMainMenu::clickedHomePage,this,&MainWindow::setHomePage);
-    connect(mainMenu,&UiMainMenu::clickedInstalledApplication,this,&MainWindow::setApplicationInstalled);
     connect(homePage,&UiHomePage::clikedApplication,this,&MainWindow::setUiApplication);
 
     if (cfgLauncher.get("log").at(0) == "sendToTheServer")
@@ -59,13 +59,6 @@ void MainWindow::setHomePage()
     removeActiveFrame();
     homePage = new UiHomePage (appCon->getAppList(),this);
     setActiveFrame(homePage);
-}
-
-void MainWindow::setApplicationInstalled()
-{
-    removeActiveFrame();
-    appInstallPage = new UiApplicationInstalled (this);
-    setActiveFrame(appInstallPage);
 }
 
 void MainWindow::setFullScreanMode()

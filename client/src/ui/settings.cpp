@@ -1,11 +1,11 @@
 #include "settings.h"
 #include "ui_settings.h"
 
-settings::settings(QWidget *parent, Config *cfg) :
+Settings::Settings(Config &cfg,QWidget *parent) :
     QFrame(parent),
     ui(new Ui::settings)
 {
-    ui->setupUi(this);
+/*    ui->setupUi(this);
     conf = cfg;
 
     QString fullScreanStr = cfg->get("fullScrean").at(0);
@@ -38,17 +38,17 @@ settings::settings(QWidget *parent, Config *cfg) :
     else if (lenguageStr != "EN" || "RU")
     {
         //TODO
-    }
+    }*/
 }
 
-settings::~settings()
+Settings::~Settings()
 {
     delete ui;
 }
 
-void settings::on_pushButton_clicked()
+void Settings::on_pushButton_clicked()
 {
-    if (!fullScrean)
+/*    if (!fullScrean)
     {
         ui->pushButton->setIcon(QIcon(":/icon/checkBox on.png"));
         fullScrean = true;
@@ -56,12 +56,12 @@ void settings::on_pushButton_clicked()
     {
         ui->pushButton->setIcon(QIcon (":/icon/off.png"));
         fullScrean = false;
-    }
+    }*/
 }
 
-void settings::save()
+void Settings::save()
 {
-    qDebug () << "save";
+    /*qDebug () << "save";
     //fullScrean
     QString fullScreanStr;
     if (fullScrean)
@@ -86,10 +86,10 @@ void settings::save()
     conf->set("lenguage", lenguageStr);
 
     conf->save();
-    close();
+    close();*/
 }
 
-void settings::on_lenguageComboBox_currentIndexChanged(int index)
+void Settings::on_lenguageComboBox_currentIndexChanged(int index)
 {
-    lenguage = index;
+    //lenguage = index;
 }

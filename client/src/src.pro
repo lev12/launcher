@@ -15,7 +15,6 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 SOURCES += mainwindow.cpp \
     ui/settings.cpp \
     ui/versionmanager.cpp \
-    ui/settingsmenu.cpp \
     ui/sendmassage.cpp \
     ui/updatelauncher.cpp \
     ui/dialogUpdateLauncher.cpp \
@@ -55,12 +54,14 @@ SOURCES += mainwindow.cpp \
     applicationInstall.cpp \
     applicationNoInstall.cpp \
     abstractApplication.cpp \
-    cacheOnDirve.cpp
+    cacheOnDirve.cpp \
+    ui/settingsGeneral.cpp \
+    ui/settingsWrapper.cpp \
+    ui/settingLanguges.cpp
 
 HEADERS  += mainwindow.h \
     ui/settings.h \
     ui/versionmanager.h \
-    ui/settingsmenu.h \
     ui/sendmassage.h \
     ui/updatelauncher.h \
     ui/dialogupdatelauncher.h \
@@ -105,13 +106,15 @@ HEADERS  += mainwindow.h \
     applicationNoInstall.h \
     abstractApplication.h \
     network/networkKeys.h \
-    cacheOnDirve.h
+    cacheOnDirve.h \
+    ui/settingsGeneral.h \
+    ui/settingsWrapper.h \
+    ui/settingLanguges.h
 
 
 FORMS    += mainwindow.ui \
     ui/settings.ui \
     ui/versionmanager.ui \
-    ui/settingsmenu.ui \
     ui/sendmassage.ui \
     ui/updatelauncher.ui \
     ui/dialogUpdateLauncher.ui \
@@ -122,7 +125,10 @@ FORMS    += mainwindow.ui \
     ui/uiMainMenu.ui \
     ui/uiApplicationRequiremets.ui \
     ui/uiApplicationVersionManager.ui \
-    ui/uiApplicationOverview.ui
+    ui/uiApplicationOverview.ui \
+    ui/settingsGeneral.ui \
+    ui/settingsWrapper.ui \
+    ui/settingLanguges.ui
 
 RESOURCES += rec/rec.qrc \
 
