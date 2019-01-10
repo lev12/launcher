@@ -1,5 +1,5 @@
-#include "settingsGeneral.h"
-#include "ui_settingsGeneral.h"
+#include "settingGeneral.h"
+#include "ui_settingGeneral.h"
 
 SettingsGeneral::SettingsGeneral(Config *config, QWidget *parent) :
     QFrame(parent),

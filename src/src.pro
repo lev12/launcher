@@ -55,9 +55,10 @@ SOURCES += mainwindow.cpp \
     applicationNoInstall.cpp \
     abstractApplication.cpp \
     cacheOnDirve.cpp \
-    ui/settingsGeneral.cpp \
-    ui/settingsWrapper.cpp \
-    ui/settingLanguges.cpp
+    ui/settings/settingLanguges.cpp \
+    ui/settings/settingCheckBox.cpp \
+    ui/settings/settingGeneral.cpp \
+    ui/settings/settingWrapper.cpp
 
 HEADERS  += mainwindow.h \
     ui/settings.h \
@@ -107,9 +108,10 @@ HEADERS  += mainwindow.h \
     abstractApplication.h \
     network/networkKeys.h \
     cacheOnDirve.h \
-    ui/settingsGeneral.h \
-    ui/settingsWrapper.h \
-    ui/settingLanguges.h
+    ui/settings/settingCheckBox.h \
+    ui/settings/settingGeneral.h \
+    ui/settings/settingWrapper.h \
+    ui/settings/settingLanguge.h
 
 
 FORMS    += mainwindow.ui \
@@ -126,9 +128,10 @@ FORMS    += mainwindow.ui \
     ui/uiApplicationRequiremets.ui \
     ui/uiApplicationVersionManager.ui \
     ui/uiApplicationOverview.ui \
-    ui/settingsGeneral.ui \
-    ui/settingsWrapper.ui \
-    ui/settingLanguges.ui
+    ui/settings/settingLanguges.ui \
+    ui/settings/settingCheckBox.ui \
+    ui/settings/settingGeneral.ui \
+    ui/settings/settingWrapper.ui
 
 RESOURCES += rec/rec.qrc \
 

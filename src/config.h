@@ -10,6 +10,17 @@
 #include <QDebug>
 #include <qmath.h>
 
+/*!
+ * This is a controller applications.
+ * =================================
+ *
+ * This class working wiht network.
+ * --------------------------------
+ * - request application list
+ *
+ * [Go to this page](@ref md_doc_config_syntax)
+ */
+
 class Config
 {
 private:

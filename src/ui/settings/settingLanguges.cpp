@@ -1,7 +1,7 @@
-#include "settingLanguges.h"
+#include "settingLanguge.h"
 #include "ui_settingLanguges.h"
 
-SettingLanguges::SettingLanguges(SettingsGeneral *settingsGeneral, QWidget *parent) :
+SettingLanguge::SettingLanguge(SettingsGeneral *settingsGeneral, QWidget *parent) :
     QFrame(parent),
     ui(new Ui::SettingLanguges)
 {
@@ -9,7 +9,7 @@ SettingLanguges::SettingLanguges(SettingsGeneral *settingsGeneral, QWidget *pare
     language = new QLocale::Language;
 }
 
-SettingLanguges::~SettingLanguges()
+SettingLanguge::~SettingLanguge()
 {
     delete ui;
 }

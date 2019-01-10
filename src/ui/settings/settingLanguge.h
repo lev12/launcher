@@ -3,19 +3,19 @@
 
 #include <QFrame>
 #include <QLocale>
-#include "settingsGeneral.h"
+#include "settingGeneral.h"
 
 namespace Ui {
 class SettingLanguges;
 }
 
-class SettingLanguges : public QFrame
+class SettingLanguge : public QFrame
 {
     Q_OBJECT
 
 public:
-    explicit SettingLanguges(SettingsGeneral *settingsGeneral,QWidget *parent = 0);
-    ~SettingLanguges();
+    explicit SettingLanguge(SettingsGeneral *settingsGeneral,QWidget *parent = 0);
+    ~SettingLanguge();
 
 private:
     Ui::SettingLanguges *ui;

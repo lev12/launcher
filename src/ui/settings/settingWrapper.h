@@ -3,26 +3,26 @@
 
 #include <QFrame>
 #include "config.h"
-#include "settingsGeneral.h"
-#include "settingLanguges.h"
+#include "settingGeneral.h"
+#include "settingLanguge.h"
 
 namespace Ui {
 class SettingsWrapper;
 }
 
-class SettingsWrapper : public QFrame
+class SettingWrapper : public QFrame
 {
     Q_OBJECT
 
 public:
-    explicit SettingsWrapper(Config *config,QWidget *parent = 0);
-    ~SettingsWrapper();
+    explicit SettingWrapper(Config *config,QWidget *parent = 0);
+    ~SettingWrapper();
 
 private:
     Ui::SettingsWrapper *ui;
     Config *cfg;
     SettingsGeneral *settingsGeneral;
-    SettingLanguges *settinglanguges;
+    SettingLanguge *settinglanguges;
 
 };
 

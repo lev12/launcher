@@ -37,3 +37,6 @@ Makefile*
 CMakeLists.txt.user*
 client/launcher.pro.user
 *.user
+
+# Project
+/doxygen

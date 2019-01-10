@@ -23,7 +23,7 @@
 #include "ui/uiHomePage.h"
 #include "ui/uiMainMenu.h"
 #include "ui/uiApplication.h"
-#include "ui/settingsWrapper.h"
+#include "ui/settings/settingWrapper.h"
 
 #include "ui/dialogUpdateLauncher.h"
 #include "applicationController.h"
@@ -58,7 +58,7 @@ private:
     ApplicationController *appCon;
     UiMainMenu *mainMenu;
     UiHomePage *homePage;
-    SettingsWrapper *settings;
+    SettingWrapper *settings;
 
     QFrame *activeFrame;
     void removeActiveFrame();

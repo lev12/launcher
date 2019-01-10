@@ -13,7 +13,7 @@ MainWindow::MainWindow(QWidget *parent) :
                           QString(cfgLauncher.get("PortServer").at(0)).toUShort(),log);
     appCon = new ApplicationController (QString(".\\data"),network);
     activeFrame = new QFrame();
-    settings = new SettingsWrapper (&cfgLauncher,this);
+    settings = new SettingWrapper (&cfgLauncher,this);
     ui->general->addWidget(mainMenu);
     setHomePage();
 
