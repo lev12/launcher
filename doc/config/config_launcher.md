@@ -1,5 +1,7 @@
 # Launcher config
+File path './/application_config.cfg'
 
+## Content
 width = 800 (unsigned short)  
 Width of the application at startup. Value in pixels (corrent value round from 1 to 65,535).
 
