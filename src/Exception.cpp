@@ -1,8 +1,9 @@
 #include "exception.h"
 
-Exception::Exception(int code, QString &estr) :
-    codeError (&code)
+Exception::Exception(int code, QString estr) : std::exception()
 {
+    codeError = new int;
+    *codeError = code;
     whatString = new QString();
     *whatString = getErrorStringWithCode (estr,code);
 }

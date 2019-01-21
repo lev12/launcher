@@ -58,7 +58,9 @@ SOURCES += mainwindow.cpp \
     ui/settings/settingLanguges.cpp \
     ui/settings/settingCheckBox.cpp \
     ui/settings/settingGeneral.cpp \
-    ui/settings/settingWrapper.cpp
+    ui/settings/settingWrapper.cpp \
+    launcherConfig.cpp \
+    ui/settings/settingSpinBox.cpp
 
 HEADERS  += mainwindow.h \
     ui/settings.h \
@@ -111,7 +113,9 @@ HEADERS  += mainwindow.h \
     ui/settings/settingCheckBox.h \
     ui/settings/settingGeneral.h \
     ui/settings/settingWrapper.h \
-    ui/settings/settingLanguge.h
+    ui/settings/settingLanguge.h \
+    launcherConfig.h \
+    ui/settings/settingSpinBox.h
 
 
 FORMS    += mainwindow.ui \
@@ -130,7 +134,6 @@ FORMS    += mainwindow.ui \
     ui/uiApplicationOverview.ui \
     ui/settings/settingLanguges.ui \
     ui/settings/settingCheckBox.ui \
-    ui/settings/settingGeneral.ui \
     ui/settings/settingWrapper.ui
 
 RESOURCES += rec/rec.qrc \

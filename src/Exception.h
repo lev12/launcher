@@ -7,7 +7,7 @@
 class Exception : public std::exception
 {
 public:
-    Exception(int code, QString &estr);
+    Exception(int code, QString estr);
     Exception();
     ~Exception();
 

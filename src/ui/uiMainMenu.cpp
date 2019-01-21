@@ -22,3 +22,8 @@ void UiMainMenu::on_installedApplicatonButton_clicked()
 {
     clickedInstalledApplication();
 }
+
+void UiMainMenu::on_settingbutton_clicked()
+{
+    clickedSettings();
+}

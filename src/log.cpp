@@ -1,6 +1,6 @@
 #include "log.h"
 
-Log::Log(QString PathLog)
+Log::Log(QDir PathLog) : QObject ()
 {
     QString date = QDate::currentDate().toString("dd-MM-yyyy");
     QString time = QTime::currentTime().toString("hh-mm-ss");
@@ -12,10 +12,10 @@ Log::Log(QString PathLog)
     logFileName.append("_client.log");
 
     QString pathFileLog;
-    QFileInfo LogFileInfo (PathLog);
+    QFileInfo LogFileInfo (PathLog.absolutePath());
     if (LogFileInfo.isDir())
     {
-        pathFileLog = PathLog;
+        pathFileLog = PathLog.absolutePath();
     }
     else
     {
@@ -49,7 +49,7 @@ Log::~Log()
 
 }
 
-void Log::print(QString text, type classMessages, transfer InOut)
+void Log::print(QString text, type classMessages)
 {
     QString send = "[";
     send.append(QTime::currentTime().toString());
@@ -74,7 +74,7 @@ void Log::print(QString text, type classMessages, transfer InOut)
         break;
     }
 
-    QString InOutTransfer;
+    /*QString InOutTransfer;
     switch (InOut) {
     case sreverIn:
         InOutTransfer = ">>server";
@@ -86,17 +86,17 @@ void Log::print(QString text, type classMessages, transfer InOut)
         InOutTransfer = "NULL";
     default:
         break;
-    }
+    }*/
 
     send.append(tempClassMassage);
     send.append("] ");
 
-    if (InOutTransfer != "NULL")
+    /*if (InOutTransfer != "NULL")
     {
         send.append("[");
         send.append(InOutTransfer);
         send.append("] ");
-    }
+    }*/
 
     send.append("[");
     send.append(text);
@@ -147,7 +147,7 @@ void Log::addMessage(QString message)
     qDebug () << message;
 }
 
-void Log::grabber(int countFileDelete)
+void Log::grabber(unsigned int countFileDelete)
 {
     if (countFileDelete != 0)
     {
@@ -177,7 +177,7 @@ void Log::grabber(int countFileDelete)
 
 }
 
-bool Log::compression()
+/*bool Log::compression()
 {
     qDebug () << "compression start";
 
@@ -413,14 +413,14 @@ void Log::buildTable(Node *root)
     }
 }
 
-Log::Node::Node(Node *l, Node *r)
+Node::Node(Node *l, Node *r) : QObject ()
 {
     left = l;
     right = r;
     n = l->n + r->n;
 }
 
-Log::Node::Node ()
+Node::Node () : QObject ()
 {
     left=right=NULL;
-}
+}*/

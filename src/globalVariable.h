@@ -4,15 +4,12 @@
 #include <QString>
 #include <QDir>
 #include "config.h"
-#include "log.h"
 #include "versionType.h"
 #include "platformType.h"
 #include "network/networkKeys.h"
 
 Q_DECLARE_METATYPE (QDir)
 const float number_version_launcher = 1.0;
-static Config cfgLauncher = Config(".\\conf.cfg");
-static Log logLauncher = Log (QString(".\\log"));
 const QString _Data = "data/";
 static QString serverDomain = "electrical-simulator.ru";
 

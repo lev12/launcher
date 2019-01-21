@@ -18,7 +18,7 @@
 #include <QUrl>
 
 #include "log.h"
-#include "config.h"
+#include "launcherConfig.h"
 #include "network/network.h"
 #include "ui/uiHomePage.h"
 #include "ui/uiMainMenu.h"
@@ -41,6 +41,7 @@ public:
     ~MainWindow();
 
 public slots:
+    void setSettings();
     void setUiApplication(UiApplication *app);
     void setHomePage();
 
@@ -59,6 +60,7 @@ private:
     UiMainMenu *mainMenu;
     UiHomePage *homePage;
     SettingWrapper *settings;
+    LauncherConfig *cfgLauncher;
 
     QFrame *activeFrame;
     void removeActiveFrame();

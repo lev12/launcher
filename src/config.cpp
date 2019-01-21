@@ -164,7 +164,7 @@ bool Config::isError(QString &value)
     return false;
 }
 
-void Config::clear()
+bool Config::clear()
 {
     if(configFile->remove())
     {
@@ -172,4 +172,5 @@ void Config::clear()
     }
     configFile->open(QFile::WriteOnly | QFile::Text);
     configFile->close();
+    return true;
 }

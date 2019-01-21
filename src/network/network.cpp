@@ -1,6 +1,6 @@
 #include "network.h"
 
-Network::Network(QString AddressServer,quint16 PortServer, Log *plog)
+Network::Network(QString AddressServer, unsigned short PortServer, Log *plog)
 {
     if (plog != NULL)
     {

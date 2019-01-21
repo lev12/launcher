@@ -13,24 +13,28 @@
 #include <QHostAddress>
 #include <QRegExp>
 
-class Log
+/*class Node : public QObject
 {
+    Q_OBJECT
+public:
+    int n;
+    char c;
+    Node *left, *right;
+
+    Node ();
+    Node (Node *l, Node *r);
+};*/
+
+class Log : public QObject
+{
+    Q_OBJECT
 private:
 
     QFile *logFile;
 
-    class Node
-    {
-    public:
-        int n;
-        char c;
-        Node *left, *right;
 
-        Node ();
-        Node (Node *l, Node *r);
-    };
 
-    void buildTable(Node *root);
+    //void buildTable(Node *root);
     QVector<bool> *code;
     QMap < char,QVector<bool> > *table;
     const QString defaultLogPath = ".\\log";
@@ -42,24 +46,27 @@ public:
         error,
         critical_error
     };
+    Q_ENUM (type)
 
-    enum transfer
+    enum state
     {
-        clientOut,
-        sreverIn,
-        null
+        noLogging,
+        logging,
+        loggingAndSend
     };
+    Q_ENUM (state)
 
-    Log(QString PathLog);
+
+    Log(QDir PathLog);
 
     void head ();
-    void print (QString text = "Null", type classMessages = info, transfer InOut = null);
-    void grabber (int countFileDelete);
+    void print (QString text = "Null", type classMessages = info);
+    void grabber (unsigned int countFileDelete);
     void addMessage (QString message);
     void end ();
 
-    bool compression();
-    bool compressionHaffman(QString pathInputFile, QString pathOutputFile);
+    //bool compression();
+    //bool compressionHaffman(QString pathInputFile, QString pathOutputFile);
 
     ~Log();
 };

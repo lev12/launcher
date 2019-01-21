@@ -9,6 +9,7 @@
 #include "versiondata.h"
 #include "networkMock/networkMock.h"
 
+
 class VersionInstallTest : public QObject
 {
     Q_OBJECT

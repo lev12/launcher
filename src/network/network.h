@@ -39,7 +39,7 @@ class Network : public QObject
 {
     Q_OBJECT
 public:
-    Network(QString AddressServer, quint16 PortServer, Log *plog = NULL);
+    Network(QString AddressServer, unsigned short PortServer, Log *plog = NULL);
 
     virtual bool isConnected ();
 

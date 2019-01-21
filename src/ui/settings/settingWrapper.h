@@ -15,7 +15,7 @@ class SettingWrapper : public QFrame
     Q_OBJECT
 
 public:
-    explicit SettingWrapper(Config *config,QWidget *parent = 0);
+    explicit SettingWrapper(LauncherConfig *config,QWidget *parent = 0);
     ~SettingWrapper();
 
 private:
@@ -23,6 +23,11 @@ private:
     Config *cfg;
     SettingsGeneral *settingsGeneral;
     SettingLanguge *settinglanguges;
+
+    QFrame *activeWidget;
+public slots:
+    void showGeneralSettings();
+    void showLauncherSetting();
 
 };
 

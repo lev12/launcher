@@ -145,7 +145,7 @@ void VersionInstallTest::test_deleteFiles_data()
 void VersionInstallTest::test_deleteFiles()
 {
     Config cfgL(":/launcher config.cfg");
-    Network *network = new Network (cfgLauncher.get("DomainServer").at(0),QString(cfgLauncher.get("PortServer").at(0)).toUShort());
+    Network *network = new Network (cfgL.get("ipServer").at(0),QString(cfgL.get("portServer").at(0)).toUShort());
     QString appName = versionData::randomString();
     qDebug () << "app name:     " << appName;
     QFETCH (QString,pathVersion);

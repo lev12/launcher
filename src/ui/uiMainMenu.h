@@ -18,10 +18,12 @@ public:
 signals:
     void clickedHomePage();
     void clickedInstalledApplication();
+    void clickedSettings();
 
 private slots:
     void on_homebutton_clicked();
     void on_installedApplicatonButton_clicked();
+    void on_settingbutton_clicked();
 
 private:
     Ui::UiMainMenu *ui;

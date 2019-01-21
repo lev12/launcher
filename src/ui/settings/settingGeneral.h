@@ -2,23 +2,30 @@
 #define SETTINGSGENERAL_H
 
 #include <QFrame>
-#include "config.h"
-
-namespace Ui {
-class SettingsGeneral;
-}
+#include <QHBoxLayout>
+#include <QVBoxLayout>
+#include <QSpacerItem>
+#include <QLine>
+#include "launcherConfig.h"
+#include "settingCheckBox.h"
+#include "settingSpinBox.h"
 
 class SettingsGeneral : public QFrame
 {
     Q_OBJECT
 
 public:
-    explicit SettingsGeneral(Config *config,QWidget *parent = 0);
+    explicit SettingsGeneral(QWidget *parent = nullptr);
     ~SettingsGeneral();
 
 private:
-    Ui::SettingsGeneral *ui;
-    Config *cfg;
+    LauncherConfig *cfg;
+
+    QVBoxLayout *content;
+    SettingSpinBox *uiWidth;
+    SettingSpinBox *uiHeight;
+    settingCheckbox *uiFullScrean;
+    SettingSpinBox *uiScale;
     bool *fullscrean;
     QLocale::Language *language;
     bool *logState;

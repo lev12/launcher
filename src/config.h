@@ -11,16 +11,10 @@
 #include <qmath.h>
 
 /*!
- * This is a controller applications.
- * =================================
- *
- * This class working wiht network.
- * --------------------------------
- * - request application list
- *
- * [Go to this page](@ref md_doc_config_syntax)
- */
-
+  * \brief The Config class
+  * This class make configuration file with extension '.cfg'.
+  * [Syntax configuration file.](@ref md_doc_config_config_syntax)
+  */
 class Config
 {
 private:
@@ -42,7 +36,7 @@ public:
     bool set(QString parametr, QString value);
     bool set(QString parametr, QStringList value);
     bool isEmpty ();
-    void clear ();
+    bool clear();
 
     static bool isError (QString &value);
     QStringList &getConfigKeyName() const;

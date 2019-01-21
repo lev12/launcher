@@ -12,8 +12,10 @@ class settingCheckbox : public QFrame
     Q_OBJECT
 
 public:
-    explicit settingCheckbox(QWidget *parent = nullptr);
+    explicit settingCheckbox(QString text,QWidget *parent = nullptr);
     ~settingCheckbox();
+
+    void setText (QString text);
 
 private:
     Ui::settingCheckbox *ui;
