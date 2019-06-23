@@ -1,6 +1,7 @@
 #include "abstractWindow.h"
 
-AbstractWindow::AbstractWindow(unsigned int idtemp, QWidget *parent) : QFrame (parent)
+AbstractWindow::AbstractWindow(unsigned int idtemp, QWidget *parent) :
+    QFrame (parent)
 {
     index = new unsigned int;
     id = new unsigned int;

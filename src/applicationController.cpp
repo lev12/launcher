@@ -58,7 +58,9 @@ bool ApplicationController::initAppList()
 
 bool ApplicationController::fillingAppListFromDrive(QDir *folder)
 {
-    QFileInfoList appDirList = folder->entryInfoList();
+    QFileInfoList appDirList = folder->entryInfoList(QDir::Dirs |
+                                                     QDir::AllDirs |
+                                                     QDir::NoDotAndDotDot);
     foreach (QFileInfo tempFileInfo, appDirList)
     {
         QString tempAppPath = tempFileInfo.absoluteFilePath();

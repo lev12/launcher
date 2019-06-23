@@ -42,6 +42,7 @@ public:
     ~MainWindow();
 
 public slots:
+    //menu
     void setSettings();
     void setUiApplication(UiApplication *app);
     void setHomePage();
@@ -65,6 +66,7 @@ private:
     LauncherConfig *cfgLauncher;
 
 
+    //menu
     QFrame *activeFrame;
     int *activeFrameIndex;
     QList<AbstractWindow*> *activeFramesList;

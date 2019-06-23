@@ -153,7 +153,7 @@ bool VersionInstall::checkVersion(QFileInfo path)
     QString pathToConfigVersion = path.absoluteFilePath();
     pathToConfigVersion.append("/version_config.cfg");
     QFile confIni (pathToConfigVersion);
-    if (!(confIni.open(QFile::ReadOnly | QFile::Text)))
+    if (!(confIni.exists()))
     {
         return false;
     }

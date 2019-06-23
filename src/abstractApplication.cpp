@@ -26,7 +26,7 @@ bool AbstractApplication::checkApplication(QString AppPath)
     }
 
     Config appConfig(pathToConfig);
-    QString AppName = appConfig.get("name").at(0);
+    QString AppName = appConfig.get("Name").at(0);
     if (AppName == appConfig.errorResponse)
     {
         return false;

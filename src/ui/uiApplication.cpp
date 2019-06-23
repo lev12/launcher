@@ -1,10 +1,11 @@
 #include "uiApplication.h"
-//#include "ui_uiApplication.h"
+#include "ui_uiApplication.h"
 
 UiApplication::UiApplication(QString *AppName, QWidget *parent) :
-    AbstractWindow (12,parent)
+    AbstractWindow (12,parent)//,
+    //ui(new Ui::UiApplication)
 {
-
+    //ui->setupUi(this);
     if (this->objectName().isEmpty())
         this->setObjectName(QLatin1String("UiApplication"));
     this->resize(685, 480);

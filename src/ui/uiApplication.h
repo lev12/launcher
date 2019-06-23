@@ -35,6 +35,7 @@ public:
 
     bool setActivePage (int i);
 private:
+    Ui::UiApplication *ui;
     QHBoxLayout *horizontalLayout_2;
     QHBoxLayout *horizontalLayout;
 

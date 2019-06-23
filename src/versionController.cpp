@@ -137,9 +137,11 @@ QList <AbstractVersion*> VersionController::getVersionList(const QDir &verFolder
         throw std::invalid_argument (estr.toStdString());
     }
     QList <AbstractVersion*> verList;
+    qDebug () << verFolder;
     QStringList lstDirs = verFolder.entryList(QDir::Dirs |
                     QDir::AllDirs |
                     QDir::NoDotAndDotDot);
+    qDebug () << lstDirs;
     foreach (QString entry, lstDirs)
     {
         QString entryAbsPath = verFolder.absolutePath() + "/" + entry;

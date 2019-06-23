@@ -20,15 +20,14 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->general->addWidget(mainMenu);
 
     *activeFrameIndex = -1;
+    mainMenu->enabledAllButton();
+    mainMenu->setEnabledBackButton(false);
     setHomePage();
 
     connect(mainMenu,&UiMainMenu::clickedHomePage,this,&MainWindow::setHomePage);
     connect(mainMenu,&UiMainMenu::clickedSettings,this,&MainWindow::setSettings);
     connect(mainMenu,&UiMainMenu::clickedBack,this,&MainWindow::setBeforeFrame);
     connect(homePage,&UiHomePage::clikedApplication,this,&MainWindow::setUiApplication);
-
-    mainMenu->enabledAllButton();
-    mainMenu->setEnabledBackButton(false);
 
     if (cfgLauncher->getLogState() == Log::loggingAndSend)
     {

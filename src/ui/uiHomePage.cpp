@@ -12,7 +12,7 @@ UiHomePage::UiHomePage(QList<AbstractApplication*> applist, QWidget *parent) :
     foreach (AbstractApplication* item, *applicationlist)
     {
         UiApplicationItem *appitem = item->getUiApplicationItem();
-        qDebug () << appitem->getAppName();
+        qDebug () << "view app on home page" << *(appitem->getAppName());
 
         ui->gridLayout->addWidget(appitem);
         applicationMap->insert(item,appitem);

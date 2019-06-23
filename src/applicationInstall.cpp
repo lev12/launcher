@@ -30,11 +30,12 @@ ApplicationInstall::ApplicationInstall(const QDir &dir, Network *network) : Abst
             throw Exception(12,errorStr);
         }
     }
+    uiApp = new UiApplication (appName);
 }
 
 UiApplication *ApplicationInstall::getUiApplication()
 {
-    
+    return uiApp;
 }
 
 bool ApplicationInstall::initUiApp()
@@ -106,9 +107,9 @@ bool ApplicationInstall::initConfig(QDir *path)
 
 bool ApplicationInstall::initIcon(Config *cfg)
 {
-    QString cfgAppName = cfg->get(configKeyAppName).at(0);
+    QString cfgAppName = cfg->get(configKeyAppIcon).at(0);
     if (cfg->isError(cfgAppName)) return false;
-    appName = new QString(cfgAppName);
+    appIcon = new QIcon(cfgAppName);
     return true;
 }
 
