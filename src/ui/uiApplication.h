@@ -5,12 +5,17 @@
 #include <QTranslator>
 #include <QHBoxLayout>
 #include "uigeneralapplication.h"
+#include "ui/abstractWindow.h"
+
+/*!
+ * Id 12
+ */
 
 namespace Ui {
 class UiApplication;
 }
 
-class UiApplication : public QFrame
+class UiApplication : public AbstractWindow
 {
     Q_OBJECT
 

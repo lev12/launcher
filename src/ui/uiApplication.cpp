@@ -2,7 +2,7 @@
 //#include "ui_uiApplication.h"
 
 UiApplication::UiApplication(QString *AppName, QWidget *parent) :
-    QFrame(parent)
+    AbstractWindow (12,parent)
 {
 
     if (this->objectName().isEmpty())

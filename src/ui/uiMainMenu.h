@@ -15,15 +15,27 @@ public:
     explicit UiMainMenu(QWidget *parent = nullptr);
     ~UiMainMenu();
 
+    bool getEnableBackButton();
+    bool getEnableHomePage();
+    bool getEnableSettings();
+
+    void setEnabledBackButton(bool state);
+    void setEnabledHomePage(bool state);
+    void setEnabledSettings(bool state);
+
+    void enabledAllButton();
+    void disabledAllButton();
+
 signals:
+    void clickedBack ();
     void clickedHomePage();
-    void clickedInstalledApplication();
     void clickedSettings();
 
 private slots:
-    void on_homebutton_clicked();
-    void on_installedApplicatonButton_clicked();
-    void on_settingbutton_clicked();
+    void on_backButton_clicked();
+    void on_homeButton_clicked();
+    void on_settingButton_clicked();
+
 
 private:
     Ui::UiMainMenu *ui;

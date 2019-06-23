@@ -5,17 +5,21 @@
 #include "config.h"
 #include "settingGeneral.h"
 #include "settingLanguge.h"
+#include "ui/abstractWindow.h"
 
+/*!
+ * Id 11
+ */
 namespace Ui {
 class SettingsWrapper;
 }
 
-class SettingWrapper : public QFrame
+class SettingWrapper : public AbstractWindow
 {
     Q_OBJECT
 
 public:
-    explicit SettingWrapper(LauncherConfig *config,QWidget *parent = 0);
+    explicit SettingWrapper(LauncherConfig *config,QWidget *parent = nullptr);
     ~SettingWrapper();
 
 private:

@@ -10,17 +10,25 @@ MainWindow::MainWindow(QWidget *parent) :
     setCentralWidget(ui->verticalFrame);
 
     cfgLauncher = &LauncherConfig::instance();
-    mainMenu = new UiMainMenu();
     network = new Network(cfgLauncher->getServerAddress().host(),
                           cfgLauncher->getServerPort(),log);
     appCon = new ApplicationController (QString(".\\data"),network);
-    activeFrame = new QFrame();
+
+    mainMenu = new UiMainMenu();
+    activeFrameIndex = new int;
+    activeFramesList = new QList<AbstractWindow*> ();
     ui->general->addWidget(mainMenu);
+
+    *activeFrameIndex = -1;
     setHomePage();
 
     connect(mainMenu,&UiMainMenu::clickedHomePage,this,&MainWindow::setHomePage);
-    connect(homePage,&UiHomePage::clikedApplication,this,&MainWindow::setUiApplication);
     connect(mainMenu,&UiMainMenu::clickedSettings,this,&MainWindow::setSettings);
+    connect(mainMenu,&UiMainMenu::clickedBack,this,&MainWindow::setBeforeFrame);
+    connect(homePage,&UiHomePage::clikedApplication,this,&MainWindow::setUiApplication);
+
+    mainMenu->enabledAllButton();
+    mainMenu->setEnabledBackButton(false);
 
     if (cfgLauncher->getLogState() == Log::loggingAndSend)
     {
@@ -52,20 +60,27 @@ void MainWindow::setSettings()
 {
     removeActiveFrame();
     settings = new SettingWrapper (cfgLauncher);
-    setActiveFrame(settings);
+    addActiveFrame(settings);
+    mainMenu->setEnabledSettings(false);
 }
 
 void MainWindow::setUiApplication(UiApplication *app)
 {
     removeActiveFrame();
-    setActiveFrame(app);
+    addActiveFrame(app);
 }
 
 void MainWindow::setHomePage()
 {
     removeActiveFrame();
     homePage = new UiHomePage (appCon->getAppList(),this);
-    setActiveFrame(homePage);
+    addActiveFrame(homePage);
+    mainMenu->setEnabledHomePage(false);
+}
+
+void MainWindow::setBeforeFrame()
+{
+    setBeforeActiveFrame();
 }
 
 void MainWindow::setFullScreanMode()
@@ -96,7 +111,7 @@ void MainWindow::currentLauncherVer(float ver)
     if (isNewVer)
     {
         qDebug () << "dfdfdsdsfdffggf>";
-        updatelauncher = new DialogUpdateLauncher(this, QString::number(ver));
+        updatelauncher = new DialogUpdateLauncher(this, QString::number(double(ver)));
         QObject::connect(updatelauncher, SIGNAL(download(QString,versionType,int)), network, SLOT(downloadVersion(QString,versionType,int)));
         updatelauncher->show();
     }
@@ -105,13 +120,52 @@ void MainWindow::currentLauncherVer(float ver)
 
 void MainWindow::removeActiveFrame()
 {
-    ui->general->removeWidget(activeFrame);
-    delete activeFrame;
-    activeFrame = nullptr;
+    if (!activeFramesList->isEmpty())
+    {
+        mainMenu->enabledAllButton();
+        ui->general->removeWidget(activeFrame);
+        activeFrame->hide();
+    }
+}
+
+void MainWindow::addActiveFrame(AbstractWindow *f)
+{
+    if (activeFramesList->length()-1 > *activeFrameIndex)
+    {
+        while (activeFramesList->length() != 0)
+        {
+            activeFramesList->pop_back();
+        }
+    }
+
+    activeFramesList->operator<<(f);
+    activeFrame = f;
+    setActiveFrame (activeFrame);
+    *activeFrameIndex = *activeFrameIndex + 1;
 }
 
 void MainWindow::setActiveFrame(QFrame *f)
 {
-    activeFrame = f;
     ui->general->addWidget(f);
+}
+
+void MainWindow::setBeforeActiveFrame()
+{
+    if (activeFramesList->length() > 1)
+    {
+        *activeFrameIndex = *activeFrameIndex - 1;
+        removeActiveFrame();
+        QFrame *f = activeFramesList->at(*activeFrameIndex);
+        f->show();
+        activeFrame = f;
+        setActiveFrame (f);
+    }
+    if (*activeFrameIndex <= 0)
+    {
+        mainMenu->setEnabledBackButton(false);
+    }
+    else
+    {
+       mainMenu->setEnabledBackButton(true); 
+    }
 }

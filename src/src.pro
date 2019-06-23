@@ -60,7 +60,8 @@ SOURCES += mainwindow.cpp \
     ui/settings/settingGeneral.cpp \
     ui/settings/settingWrapper.cpp \
     launcherConfig.cpp \
-    ui/settings/settingSpinBox.cpp
+    ui/settings/settingSpinBox.cpp \
+    ui/abstractWindow.cpp
 
 HEADERS  += mainwindow.h \
     ui/settings.h \
@@ -115,7 +116,8 @@ HEADERS  += mainwindow.h \
     ui/settings/settingWrapper.h \
     ui/settings/settingLanguge.h \
     launcherConfig.h \
-    ui/settings/settingSpinBox.h
+    ui/settings/settingSpinBox.h \
+    ui/abstractWindow.h
 
 
 FORMS    += mainwindow.ui \

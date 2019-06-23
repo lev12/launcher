@@ -27,6 +27,7 @@
 
 #include "ui/dialogUpdateLauncher.h"
 #include "applicationController.h"
+#include "ui/abstractWindow.h"
 
 namespace Ui {
 class MainWindow;
@@ -44,6 +45,7 @@ public slots:
     void setSettings();
     void setUiApplication(UiApplication *app);
     void setHomePage();
+    void setBeforeFrame();
 
 private slots:
     void setWidgetApp ();
@@ -62,9 +64,15 @@ private:
     SettingWrapper *settings;
     LauncherConfig *cfgLauncher;
 
+
     QFrame *activeFrame;
+    int *activeFrameIndex;
+    QList<AbstractWindow*> *activeFramesList;
+
     void removeActiveFrame();
+    void addActiveFrame(AbstractWindow *f);
     void setActiveFrame(QFrame *f);
+    void setBeforeActiveFrame();
 };
 
 #endif // MAINWINDOW_H

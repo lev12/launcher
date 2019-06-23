@@ -154,7 +154,7 @@ font: 14pt &quot;Calibri&quot;;</string>
     </widget>
    </item>
    <item>
-    <widget class="QPushButton" name="settingbutton">
+    <widget class="QPushButton" name="settingButton">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
        <horstretch>0</horstretch>

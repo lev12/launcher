@@ -6,12 +6,17 @@
 #include <QDebug>
 #include <QMap>
 #include "abstractApplication.h"
+#include "abstractWindow.h"
 
+/*!
+ * \brief
+ * Id 10
+ */
 namespace Ui {
 class UiHomePage;
 }
 
-class UiHomePage : public QFrame
+class UiHomePage : public AbstractWindow
 {
     Q_OBJECT
 

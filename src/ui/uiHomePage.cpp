@@ -2,7 +2,7 @@
 #include "ui_uiHomePage.h"
 
 UiHomePage::UiHomePage(QList<AbstractApplication*> applist, QWidget *parent) :
-    QFrame(parent),
+    AbstractWindow (10,parent),
     ui(new Ui::UiHomePage)
 {
     ui->setupUi(this);

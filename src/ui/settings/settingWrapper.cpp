@@ -2,7 +2,7 @@
 #include "ui_settingWrapper.h"
 
 SettingWrapper::SettingWrapper(LauncherConfig *config, QWidget *parent) :
-    QFrame(parent),
+    AbstractWindow(11,parent),
     ui(new Ui::SettingsWrapper)
 {
     ui->setupUi(this);
